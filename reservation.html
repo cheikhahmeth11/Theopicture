@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Réservation | TEOPICTURE</title>
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<header>
+<h1 class="logo">TEOPICTURE</h1>
+
+<nav>
+<a href="index.html">Accueil</a>
+<a href="portfolio.html">Portfolio</a>
+<a href="services.html">Services</a>
+<a href="reservation.html">Réservation</a>
+<a href="contact.html">Contact</a>
+</nav>
+</header>
+
+<main class="container">
+<h2>Réserver une séance</h2>
+<p class="subtitle">Remplissez le formulaire pour réserver votre séance photo</p>
+
+<form class="reservation-form">
+<div class="form-group">
+<label>Nom</label>
+<input type="text" id="nom" required>
+</div>
+
+<div class="form-group">
+<label>Téléphone</label>
+<input type="tel" id="telephone" required placeholder="77 830 60 776">
+</div>
+
+<div class="form-group">
+<label>Type d'événement</label>
+<select id="evenement" name="evenement">
+<option>Mariage</option>
+<option>Anniversaire</option>
+<option>Baptême</option>
+<option>Shooting</option>
+</select>
+</div>
+
+<div class="form-group">
+<label>Date</label>
+<input type="date" id="date" name="date">
+</div>
+
+<div class="form-group">
+<label>Lieu</label>
+<input type="text" id="lieu" name="lieu">
+</div>
+
+<div class="form-group">
+<label>Message</label>
+<textarea id="message" rows="4"></textarea>
+</div>
+
+<button type="button" onclick="envoyerReservation()" class="btn">Réserver</button>
+</form>
+
+</main>
+
+<footer>
+<p>© 2026 TEOPICTURE - Tous droits réservés</p>
+</footer>
+
+<script>
+function envoyerReservation() {
+  let nom = document.getElementById("nom").value;
+  let telephone = document.getElementById("telephone").value;
+  let evenement = document.getElementById("evenement").value;
+  let date = document.getElementById("date").value;
+  let lieu = document.getElementById("lieu").value;
+  let message = document.getElementById("message").value;
+
+  let texte =
+    "Bonjour, je souhaite réserver une séance photo.%0A%0A" +
+    "Nom : " + nom + "%0A" +
+    "Téléphone : " + telephone + "%0A" +
+    "Événement : " + evenement + "%0A" +
+    "Date : " + date + "%0A" +
+    "Lieu : " + lieu + "%0A" +
+    "Message : " + message;
+
+  let numero = "221783060776";
+
+  window.open("https://wa.me/" + numero + "?text=" + texte);
+}
+</script>
+
+<script>
+// Sélectionne tous les éléments à animer
+const elements = document.querySelectorAll(".container, .card, .photo");
+
+function checkScroll() {
+  const screenHeight = window.innerHeight;
+
+  elements.forEach(el => {
+    const position = el.getBoundingClientRect().top;
+
+    if(position < screenHeight - 100){
+      el.classList.add("visible");
+    }
+  });
+}
+
+// Vérifie le scroll au chargement et à chaque mouvement de scroll
+window.addEventListener("scroll", checkScroll);
+window.addEventListener("load", checkScroll);
+</script>
+
+</body>
+</html>

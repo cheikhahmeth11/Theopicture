@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portfolio | TEOPICTURE</title>
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<header>
+<h1 class="logo">TEOPICTURE</h1>
+
+<nav>
+<a href="index.html">Accueil</a>
+<a href="portfolio.html">Portfolio</a>
+<a href="services.html">Services</a>
+<a href="reservation.html">Réservation</a>
+<a href="contact.html">Contact</a>
+</nav>
+</header>
+
+<main class="container">
+<h2>Mon Portfolio</h2>
+<p class="subtitle">Quelques moments capturés lors de mes événements</p>
+
+<div class="gallery">
+<div class="photo"><img src="photo1.jpg" alt="Mariage"></div>
+<div class="photo"><img src="photo2.jpg" alt="Anniversaire"></div>
+<div class="photo"><img src="photo3.jpg" alt="Événement"></div>
+<div class="photo"><img src="photo4.jpg" alt="Shooting"></div>
+<div class="photo"><img src="photo5.jpg" alt="Baptême"></div>
+<div class="photo"><img src="photo6.jpg" alt="Mariage"></div>
+</div>
+</main>
+
+<footer>
+<p>© 2026 TEOPICTURE - Tous droits réservés</p>
+</footer>
+
+<script>
+// Sélectionne tous les éléments à animer
+const elements = document.querySelectorAll(".container, .card, .photo");
+
+function checkScroll() {
+  const screenHeight = window.innerHeight;
+
+  elements.forEach(el => {
+    const position = el.getBoundingClientRect().top;
+
+    if(position < screenHeight - 100){
+      el.classList.add("visible");
+    }
+  });
+}
+
+// Vérifie le scroll au chargement et à chaque mouvement de scroll
+window.addEventListener("scroll", checkScroll);
+window.addEventListener("load", checkScroll);
+</script>
+
+</body>
+</html>

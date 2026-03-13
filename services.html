@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Services | TEOPICTURE</title>
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<header>
+<h1 class="logo">TEOPICTURE</h1>
+
+<nav>
+<a href="index.html">Accueil</a>
+<a href="portfolio.html">Portfolio</a>
+<a href="services.html">Services</a>
+<a href="reservation.html">Réservation</a>
+<a href="contact.html">Contact</a>
+</nav>
+</header>
+
+<main class="container">
+<h2>Mes Services</h2>
+<p class="subtitle">Des prestations adaptées à vos événements</p>
+
+<div class="cards">
+<div class="card">
+<h3>Mariage</h3>
+<p>Couverture complète de votre mariage</p>
+<p class="price">150 000 FCFA</p>
+<a href="reservation.html" class="btn">Réserver</a>
+</div>
+
+<div class="card">
+<h3>Anniversaire</h3>
+<p>3 heures de shooting photo</p>
+<p class="price">50 000 FCFA</p>
+<a href="reservation.html" class="btn">Réserver</a>
+</div>
+
+<div class="card">
+<h3>Shooting</h3>
+<p>10 photos professionnelles retouchées</p>
+<p class="price">30 000 FCFA</p>
+<a href="reservation.html" class="btn">Réserver</a>
+</div>
+</div>
+</main>
+
+<footer>
+<p>© 2026 TEOPICTURE - Tous droits réservés</p>
+</footer>
+<script>
+// Sélectionne tous les éléments à animer
+const elements = document.querySelectorAll(".container, .card, .photo");
+
+function checkScroll() {
+  const screenHeight = window.innerHeight;
+
+  elements.forEach(el => {
+    const position = el.getBoundingClientRect().top;
+
+    if(position < screenHeight - 100){
+      el.classList.add("visible");
+    }
+  });
+}
+
+// Vérifie le scroll au chargement et à chaque mouvement de scroll
+window.addEventListener("scroll", checkScroll);
+window.addEventListener("load", checkScroll);
+</script>
+
+</body>
+</html>
