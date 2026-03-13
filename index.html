@@ -93,16 +93,16 @@ section{padding:80px 20px;}
 
 /* SERVICES */
 .cards{display:flex;justify-content:center;gap:30px;flex-wrap:wrap;margin-top:40px;}
-.card{background:black;padding:25px;border-radius:15px;width:280px;transition:.4s; border:2px solid #ff9800;}
+.card{background:black;padding:25px;border-radius:15px;width:280px;transition:.4s; border:2px solid #ff9800;   box-shadow: #ff9800 0px 0px 10px;}
 .card:hover{transform:translateY(-5px) scale(1.03);box-shadow:0 10px 25px rgba(0,0,0,0.2);}
 .card h3{margin-bottom:15px;color: white;}
 .card p{margin-bottom:10px;color:white;}
 .card .price{font-weight:700;color:#ff9800;margin-bottom:15px;}
 
-/* CONTACT SECTION */
+/* CONTACT SECTION & RÉSERVATION */
 #contact, #reservation {
   padding: 60px 20px;
-  background-color: #111; /* fond noir uniforme */
+  background-color: black; /* fond noir uniforme */
   color: #fff;
 }
 #contact h2, #reservation h2 {
@@ -112,15 +112,136 @@ section{padding:80px 20px;}
   color: #ff9800; /* titre orange */
 }
 
+/* SECTION RÉSERVATION */
+#reservation{
+  padding:80px 20px;
+  background:black;
+  color:white;
+  text-align:center;
+}
+
+#reservation h2{
+  font-size:28px;
+  margin-bottom:10px;
+  color:#ff9800;
+}
+
+#reservation .subtitle{
+  margin-bottom:35px;
+  color:#ddd;
+  font-size:16px;
+}
+
+/* FORMULAIRE */
+.reservation-form{
+  max-width:500px;
+  margin:0 auto;
+  background:#1a1a1a;
+  padding:30px;
+  border-radius:15px;
+  border:2px solid #ff9800;
+}
+
+/* GROUPES */
+.reservation-form .form-group{
+  margin-bottom:18px;
+  text-align:left;
+}
+
+.reservation-form label{
+  display:block;
+  margin-bottom:6px;
+  font-size:14px;
+  color:#ff9800;
+  font-weight:500;
+}
+
+/* INPUTS */
+.reservation-form input,
+.reservation-form select,
+.reservation-form textarea{
+  width:100%;
+  padding:10px 12px;
+  border-radius:8px;
+  border:1px solid #555;
+  background:#222;
+  color:white;
+  font-size:14px;
+  outline:none;
+  transition:0.3s;
+}
+
+.reservation-form input:focus,
+.reservation-form select:focus,
+.reservation-form textarea:focus{
+  border-color:#ff9800;
+}
+
+/* BOUTON */
+.reservation-form .btn{
+  width:100%;
+  margin-top:10px;
+  padding:12px;
+  border:none;
+  border-radius:25px;
+  background:#ff9800;
+  color:white;
+  font-weight:500;
+  cursor:pointer;
+  transition:0.3s;
+}
+
+.reservation-form .btn:hover{
+  background:#ffc107;
+  transform:scale(1.03);
+}
+
+/* MOBILE */
+@media(max-width:768px){
+  .reservation-form{
+    max-width:100%;
+    padding:25px;
+  }
+
+  #reservation h2{
+    font-size:24px;
+  }
+}
+
 /* CONTACT GRID */
 .contact-grid {
+
   display: flex;
   flex-wrap: wrap;
   gap: 40px;
   justify-content: center;
 }
-.contact-info, .contact-form, .reservation-form {
-  flex: 1 1 300px;
+.contact-info {
+       box-shadow: #ff9800 0px 0px 10px;
+    flex: 1 1 300px;
+  max-width: 500px;
+  background-color: #1a1a1a;
+  padding: 25px;
+  border-radius: 15px;
+  border: 2px solid #ff9800;
+}
+
+.contact-form  {
+    background: url(logo.jpeg);
+    background-size: cover;
+    flex: 1 1 300px;
+    box-shadow: #ff9800 0px 0px 10px;
+  max-width: 500px;
+  padding: 25px;
+  border-radius: 15px;
+  border: 2px solid #ff9800;
+}
+
+.reservation-form {
+     background: url(logo.jpeg);
+       background-size: cover;
+          box-shadow: #ff9800 0px 0px 10px;
+    flex: 1 1 300px;
   max-width: 500px;
   background-color: #1a1a1a;
   padding: 25px;
@@ -140,6 +261,7 @@ section{padding:80px 20px;}
 .contact-info strong { color:#fff; }
 
 .icon-btn {
+
   display: inline-flex;
   align-items: center;
   gap: 6px;
