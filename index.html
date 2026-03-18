@@ -237,6 +237,58 @@ section{padding:80px 20px;}
   border: 2px solid #ff9800;
 }
 
+/* BOUTONS FLOTTANTS */
+.social-float {
+  position: fixed;
+  bottom: 20px;   /* ⬅️ en bas */
+  right: 20px;    /* ⬅️ à droite */
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  z-index: 999;
+}
+
+.social-float .social {
+  width: 45px;
+  height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: 0.3s;
+  box-shadow: 0 0 10px rgba(0,0,0,0.4);
+}
+
+.social-float img {
+  width: 22px;
+  height: 22px;
+}
+
+/* SNAP PERSONNALISÉ */
+
+
+/* LOGO */
+.social.snap img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  filter: none; /* IMPORTANT */
+}
+
+/* HOVER GLOW 🔥 */
+
+
+
+/* COULEURS */
+.social.insta { background: #E1306C; }
+.social.tiktok { background: #000; }
+.social.snap { background: #FFFC00; }
+
+
+/* HOVER */
+.social:hover {
+  transform: scale(1.15);
+}
 .reservation-form {
      background: url(logo.jpeg);
        background-size: cover;
@@ -463,6 +515,8 @@ footer{background:#111;color:white;padding:20px 0;text-align:center;margin-top:5
 <!-- FOOTER -->
 <footer><p>© 2026 TEOPICTURE - Tous droits réservés</p></footer>
 
+
+
 <!-- SCRIPTS -->
 <script>
 // Scroll animations
@@ -500,6 +554,20 @@ function envoyerContact(){
   window.open("https://wa.me/221775781956?text="+texte);
 }
 </script>
+
+<div class="social-float">
+  <a href="https://www.instagram.com/theo._.picture?igsh=MnhrZTlzZXN4Nzh2&utm_source=qr" target="_blank" class="social insta">
+    <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png">
+  </a>
+
+  <a href="https://www.tiktok.com/@theopic0?_r=1&_t=ZS-94nAo7q3VBc" target="_blank" class="social tiktok">
+    <img src="https://cdn-icons-png.flaticon.com/512/3046/3046121.png">
+  </a>
+
+  <a href="https://snapchat.com/t/nbfODNLb" target="_blank" class="social snap">
+  <img src="./snappp.jpg" alt="Snapchat">
+</a>
+</div>
 
 </body>
 </html>
