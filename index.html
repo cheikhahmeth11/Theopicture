@@ -378,7 +378,7 @@ footer{background:#111;color:white;padding:20px 0;text-align:center;margin-top:5
   max-width: 90%;
   max-height: 85%;
   border-radius: 10px;
-  box-shadow: 0 0 20px #ff9800;
+  box-shadow: 0 0 20px white ;
   animation: zoom 0.3s ease;
 }
 
@@ -402,7 +402,7 @@ footer{background:#111;color:white;padding:20px 0;text-align:center;margin-top:5
 #lightbox .prev:hover,
 #lightbox .next:hover,
 #lightbox .close:hover {
-  color: #ff9800;
+  color: orange;
 }
 
 @keyframes zoom {
@@ -501,6 +501,7 @@ footer{background:#111;color:white;padding:20px 0;text-align:center;margin-top:5
       <div id="details-shooting" class="details" style="display:none;margin-top:10px;">
         <ul>
           <li>6 photos : 10 000 FCFA</li>
+
           <li>9 photos : 15 000 FCFA</li>
           <li>12 photos : 20 000 FCFA</li>
         </ul>
@@ -589,7 +590,6 @@ function toggleDetails(service){ const el = document.getElementById('details-'+s
 const mobileMenu = document.getElementById('mobile-menu');
 const navLinks = document.querySelector('.nav-links');
 mobileMenu.addEventListener('click',()=>{ navLinks.classList.toggle('active'); });
-
 // Réservation WhatsApp
 function envoyerReservation(){
   let nom=document.getElementById("nom").value;
