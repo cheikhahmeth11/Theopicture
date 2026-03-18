@@ -359,6 +359,56 @@ footer{background:#111;color:white;padding:20px 0;text-align:center;margin-top:5
 @media(max-width:1024px){.cards{justify-content:center;}.contact-grid{flex-direction:column;}.gallery{column-count:2;}}
 @media(max-width:768px){.hero-text h1{font-size:36px;}.hero-text p{font-size:18px;}.nav-links{display:none;}.menu-toggle{display:block;}}
 @media(max-width:600px){.hero-text h1{font-size:32px;}.hero-text p{font-size:16px;}.gallery{column-count:1;}}
+
+/* LIGHTBOX PRO */
+#lightbox {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.95);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+#lightbox img {
+  max-width: 90%;
+  max-height: 85%;
+  border-radius: 10px;
+  box-shadow: 0 0 20px #ff9800;
+  animation: zoom 0.3s ease;
+}
+
+/* boutons */
+#lightbox .close,
+#lightbox .prev,
+#lightbox .next {
+  position: absolute;
+  color: white;
+  font-size: 40px;
+  cursor: pointer;
+  user-select: none;
+}
+
+/* positions */
+#lightbox .close { top: 20px; right: 30px; }
+#lightbox .prev { left: 30px; top: 50%; transform: translateY(-50%); }
+#lightbox .next { right: 30px; top: 50%; transform: translateY(-50%); }
+
+/* hover */
+#lightbox .prev:hover,
+#lightbox .next:hover,
+#lightbox .close:hover {
+  color: #ff9800;
+}
+
+@keyframes zoom {
+  from {transform: scale(0.7);}
+  to {transform: scale(1);}
+}
 </style>
 </head>
 <body>
@@ -404,6 +454,13 @@ footer{background:#111;color:white;padding:20px 0;text-align:center;margin-top:5
 </div>
 </section>
 
+<!-- LIGHTBOX PRO -->
+<div id="lightbox">
+  <span class="close">&times;</span>
+  <span class="prev">&#10094;</span>
+  <img id="lightbox-img" src="">
+  <span class="next">&#10095;</span>
+</div>
 <!-- SERVICES -->
 <section id="services" class="container">
   <h2>Services</h2>
@@ -553,6 +610,81 @@ function envoyerContact(){
   let texte="Bonjour, je vous contacte depuis TEOPICTURE.%0A%0ANom : "+nom+"%0ATéléphone : "+tel+"%0AMessage : "+msg;
   window.open("https://wa.me/221775781956?text="+texte);
 }
+
+// LIGHTBOX PRO
+const images = document.querySelectorAll(".gallery img");
+const lightbox = document.getElementById("lightbox");
+const lightboxImg = document.getElementById("lightbox-img");
+const closeBtn = document.querySelector(".close");
+const nextBtn = document.querySelector(".next");
+const prevBtn = document.querySelector(".prev");
+
+let currentIndex = 0;
+
+// ouvrir image
+images.forEach((img, index) => {
+  img.addEventListener("click", () => {
+    currentIndex = index;
+    showImage();
+    lightbox.style.display = "flex";
+  });
+});
+
+// afficher image
+function showImage() {
+  lightboxImg.src = images[currentIndex].src;
+}
+
+// suivant
+function nextImage() {
+  currentIndex = (currentIndex + 1) % images.length;
+  showImage();
+}
+
+// précédent
+function prevImage() {
+  currentIndex = (currentIndex - 1 + images.length) % images.length;
+  showImage();
+}
+
+// events
+nextBtn.addEventListener("click", nextImage);
+prevBtn.addEventListener("click", prevImage);
+
+// fermer
+closeBtn.addEventListener("click", () => {
+  lightbox.style.display = "none";
+});
+
+// fermer en cliquant dehors
+lightbox.addEventListener("click", (e) => {
+  if (e.target === lightbox) {
+    lightbox.style.display = "none";
+  }
+});
+
+// clavier
+document.addEventListener("keydown", (e) => {
+  if (lightbox.style.display === "flex") {
+    if (e.key === "ArrowRight") nextImage();
+    if (e.key === "ArrowLeft") prevImage();
+    if (e.key === "Escape") lightbox.style.display = "none";
+  }
+});
+
+// SWIPE MOBILE
+let startX = 0;
+
+lightbox.addEventListener("touchstart", (e) => {
+  startX = e.touches[0].clientX;
+});
+
+lightbox.addEventListener("touchend", (e) => {
+  let endX = e.changedTouches[0].clientX;
+
+  if (startX - endX > 50) nextImage(); // swipe gauche
+  if (endX - startX > 50) prevImage(); // swipe droite
+});
 </script>
 
 <div class="social-float">
