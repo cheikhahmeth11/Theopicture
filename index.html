@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
+  <link rel="icon" type="image/png" href="logo.png">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>TEOPICTURE | Photographe Événementiel</title>
@@ -275,7 +276,19 @@ section{padding:80px 20px;}
   filter: none; /* IMPORTANT */
 }
 
-/* HOVER GLOW 🔥 */
+.logo img {
+  height: 50px;
+  width: 50px;          /* important pour cercle parfait */
+  border-radius: 50%;   /* rend le logo rond */
+  object-fit: cover;    /* évite déformation */
+  border: 2px solid #ff9800; /* optionnel : contour stylé */
+  transition: 0.3s;
+}
+
+.logo img:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 10px #ff9800;
+}
 
 
 
@@ -409,6 +422,7 @@ footer{background:#111;color:white;padding:20px 0;text-align:center;margin-top:5
   from {transform: scale(0.7);}
   to {transform: scale(1);}
 }
+
 </style>
 </head>
 <body>
@@ -428,6 +442,9 @@ footer{background:#111;color:white;padding:20px 0;text-align:center;margin-top:5
   </nav>
 </header>
 
+<link rel="icon" type="image/png" sizes="32x32" href="logo.png">
+<link rel="icon" type="image/png" sizes="16x16" href="logo.png">
+<link rel="apple-touch-icon" href="logo.png">
 <!-- HERO -->
 <section id="home" class="hero">
 <div class="hero-text">
