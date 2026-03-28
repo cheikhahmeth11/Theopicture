@@ -423,6 +423,41 @@ footer{background:#111;color:white;padding:20px 0;text-align:center;margin-top:5
   to {transform: scale(1);}
 }
 
+/* POPUP CONFIRMATION */
+#confirmBox {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.8);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 3000;
+}
+
+.confirm-content {
+  background: #1a1a1a;
+  padding: 25px;
+  border-radius: 15px;
+  border: 2px solid #ff9800;
+  text-align: center;
+  max-width: 400px;
+  width: 90%;
+}
+
+.confirm-content h3 {
+  color: #ff9800;
+  margin-bottom: 15px;
+}
+
+.confirm-content p {
+  white-space: pre-line;
+  margin-bottom: 20px;
+  color: #ddd;
+}
+
 </style>
 </head>
 <body>
@@ -600,7 +635,152 @@ footer{background:#111;color:white;padding:20px 0;text-align:center;margin-top:5
 <footer><p>© 2026 TEOPICTURE - Tous droits réservés</p></footer>
 
 
+<!-- FIREBASE -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+  // =============================
+  // CONFIG FIREBASE
+  // =============================
+  const firebaseConfig = {
+    apiKey: "AIzaSyCP3ruoYjCeRTUBhRVsbRzi-R2UtNmrxGs",
+    authDomain: "teopicture-ca10f.firebaseapp.com",
+    projectId: "teopicture-ca10f",
+    storageBucket: "teopicture-ca10f.firebasestorage.app",
+    messagingSenderId: "205836454272",
+    appId: "1:205836454272:web:e7c4b001049d03972bd965"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+
+  let datesIndisponibles = [];
+
+  // =============================
+  // DATE MIN
+  // =============================
+  const dateInput = document.getElementById("date");
+  if(dateInput){
+    let today = new Date().toISOString().split("T")[0];
+    dateInput.setAttribute("min", today);
+  }
+
+  // =============================
+  // CHARGER DATES
+  // =============================
+  function chargerDates(){
+    db.collection("reservations").get().then(snapshot => {
+      datesIndisponibles = [];
+      snapshot.forEach(doc => {
+        datesIndisponibles.push(doc.data().date);
+      });
+    });
+  }
+  chargerDates();
+
+  // =============================
+  // BLOQUER DATE
+  // =============================
+  if(dateInput){
+    dateInput.addEventListener("change", function(){
+      if(datesIndisponibles.includes(this.value)){
+        alert("❌ Cette date est déjà réservée !");
+        this.value = "";
+      }
+    });
+  }
+
+  // =============================
+  // OUVRIR POPUP CONFIRMATION
+  // =============================
+  window.envoyerReservation = function(){
+
+    let nom = document.getElementById("nom").value;
+    let tel = document.getElementById("telephone").value;
+    let evenement = document.getElementById("evenement").value;
+    let date = document.getElementById("date").value;
+    let lieu = document.getElementById("lieu").value;
+
+    if(!nom || !tel || !date){
+      alert("Veuillez remplir les champs obligatoires !");
+      return;
+    }
+
+    if(datesIndisponibles.includes(date)){
+      alert("Date déjà prise !");
+      return;
+    }
+
+    document.getElementById("confirmText").innerText =
+      "Nom : " + nom +
+      "\nTéléphone : " + tel +
+      "\nÉvénement : " + evenement +
+      "\nDate : " + date +
+      "\nLieu : " + lieu;
+
+    document.getElementById("confirmBox").style.display = "flex";
+  }
+
+  // =============================
+  // CONFIRMER + FIREBASE + WHATSAPP
+  // =============================
+  window.confirmerEnvoi = function(){
+
+    let nom = document.getElementById("nom").value;
+    let tel = document.getElementById("telephone").value;
+    let evenement = document.getElementById("evenement").value;
+    let date = document.getElementById("date").value;
+    let lieu = document.getElementById("lieu").value;
+    let msg = document.getElementById("message").value;
+
+    let data = {
+      nom,
+      telephone: tel,
+      evenement,
+      date,
+      lieu,
+      message: msg,
+      createdAt: new Date()
+    };
+
+    let texteWhatsApp =
+      "📸 *NOUVELLE RÉSERVATION* %0A%0A" +
+      "*Nom* : " + nom + "%0A" +
+      "*Téléphone* : " + tel + "%0A" +
+      "*Événement* : " + evenement + "%0A" +
+      "*Date* : " + date + "%0A" +
+      "*Lieu* : " + lieu + "%0A" +
+      "*Message* : " + msg;
+
+    db.collection("reservations").add(data)
+    .then(() => {
+
+      // ✅ ouverture WhatsApp (100% fiable mobile)
+      window.location.href = "https://wa.me/221775781956?text=" + texteWhatsApp;
+
+      fermerConfirm();
+      document.querySelector(".reservation-form").reset();
+      chargerDates();
+
+    })
+    .catch(err => {
+      console.error(err);
+      alert("❌ Erreur lors de l'enregistrement !");
+    });
+  }
+
+  // =============================
+  // FERMER POPUP
+  // =============================
+  window.fermerConfirm = function(){
+    document.getElementById("confirmBox").style.display = "none";
+  }
+
+});
+</script>
 <!-- SCRIPTS -->
 <script>
 // Scroll animations
@@ -616,17 +796,6 @@ function toggleDetails(service){ const el = document.getElementById('details-'+s
 const mobileMenu = document.getElementById('mobile-menu');
 const navLinks = document.querySelector('.nav-links');
 mobileMenu.addEventListener('click',()=>{ navLinks.classList.toggle('active'); });
-// Réservation WhatsApp
-function envoyerReservation(){
-  let nom=document.getElementById("nom").value;
-  let tel=document.getElementById("telephone").value;
-  let evenement=document.getElementById("evenement").value;
-  let date=document.getElementById("date").value;
-  let lieu=document.getElementById("lieu").value;
-  let msg=document.getElementById("message").value;
-  let texte="Bonjour, je souhaite réserver une séance photo.%0A%0ANom : "+nom+"%0ATéléphone : "+tel+"%0AÉvénement : "+evenement+"%0ADate : "+date+"%0ALieu : "+lieu+"%0AMessage : "+msg;
-  window.open("https://wa.me/221775781956?text="+texte);
-}
 
 // Contact WhatsApp
 function envoyerContact(){
@@ -726,6 +895,14 @@ lightbox.addEventListener("touchend", (e) => {
   <img src="./snappp.jpg" alt="Snapchat">
 </a>
 </div>
-
+<!-- POPUP CONFIRMATION -->
+<div id="confirmBox" style="display:none;">
+  <div class="confirm-content">
+    <h3>Confirmer votre réservation</h3>
+    <p id="confirmText"></p>
+    <button onclick="confirmerEnvoi()" class="btn">Confirmer</button>
+    <button onclick="fermerConfirm()" class="btn" style="background:#555;">Annuler</button>
+  </div>
+</div>
 </body>
 </html>

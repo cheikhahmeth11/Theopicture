@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin - TEOPICTURE</title>
+
+<style>
+/* RESET */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  background: #0e0e0e;
+  color: #fff;
+  padding: 20px;
+}
+
+/* TITRES */
+h1, h2 {
+  text-align: center;
+  color: #ff9800;
+  margin-bottom: 20px;
+}
+
+/* LOGIN BOX */
+.login-box {
+  max-width: 400px;
+  margin: 50px auto;
+  background: #1a1a1a;
+  padding: 30px;
+  border-radius: 15px;
+  border: 2px solid #ff9800;
+  box-shadow: 0 0 20px #ff9800;
+  text-align: center;
+}
+
+.login-box input {
+  width: 80%;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #555;
+  background: #222;
+  color: #fff;
+  margin: 10px 0;
+  font-size: 14px;
+  outline: none;
+  transition: 0.3s;
+}
+
+.login-box input:focus {
+  border-color: #ff9800;
+}
+
+.login-box button {
+  padding: 12px 25px;
+  background: #ff9800;
+  color: #fff;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: 0.3s;
+}
+
+.login-box button:hover {
+  background: #ffc107;
+  transform: scale(1.05);
+}
+
+/* ADMIN PANEL */
+#adminPanel {
+  max-width: 1000px;
+  margin: 20px auto;
+}
+
+#liste {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+/* CARD RESERVATION */
+.card {
+  background: #1a1a1a;
+  border: 2px solid #ff9800;
+  border-radius: 15px;
+  padding: 20px;
+  width: 280px;
+  transition: transform 0.3s, box-shadow 0.3s;
+  position: relative;
+  box-shadow: 0 0 10px #ff9800;
+}
+
+.card:hover {
+  transform: translateY(-5px) scale(1.03);
+  box-shadow: 0 5px 20px #ff9800;
+}
+
+.card p {
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: #ddd;
+}
+
+.card p b {
+  color: #fff;
+}
+
+.card button {
+  position: absolute;
+  bottom: 15px;
+  right: 15px;
+  padding: 8px 15px;
+  background: #ff3b3b;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  color: #fff;
+  font-weight: 500;
+  transition: 0.3s;
+}
+
+.card button:hover {
+  background: #ff5555;
+  transform: scale(1.05);
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  #liste {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .card {
+    width: 90%;
+  }
+
+  .login-box {
+    width: 90%;
+    padding: 25px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<h1>🔒 Admin TEOPICTURE</h1>
+
+<div class="login-box" id="loginBox">
+  <input type="password" id="password" placeholder="Mot de passe">
+  <br>
+  <button onclick="login()">Connexion</button>
+</div>
+
+<div id="adminPanel" style="display:none;">
+  <h2>📋 Réservations</h2>
+  <div id="liste"></div>
+</div>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyCP3ruoYjCeRTUBhRVsbRzi-R2UtNmrxGs",
+  authDomain: "teopicture-ca10f.firebaseapp.com",
+  projectId: "teopicture-ca10f",
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+// 🔐 LOGIN
+function login(){
+  const pass = document.getElementById("password").value;
+
+  if(pass === "Teopic10"){ // 🔥 change ici
+    document.getElementById("loginBox").style.display = "none";
+    document.getElementById("adminPanel").style.display = "block";
+    chargerData();
+  } else {
+    alert("Mot de passe incorrect !");
+  }
+}
+
+// 📋 CHARGER DATA
+function chargerData(){
+
+  db.collection("reservations")
+    .orderBy("createdAt","desc")
+    .onSnapshot(snapshot => {
+
+      const container = document.getElementById("liste");
+      container.innerHTML = "";
+
+      snapshot.forEach(doc => {
+
+        let d = doc.data();
+
+        let div = document.createElement("div");
+        div.className = "card";
+
+        div.innerHTML = `
+          <p><b>Nom:</b> ${d.nom}</p>
+          <p><b>Téléphone:</b> ${d.telephone}</p>
+          <p><b>Événement:</b> ${d.evenement}</p>
+          <p><b>Date:</b> ${d.date}</p>
+          <p><b>Lieu:</b> ${d.lieu}</p>
+          <p><b>Message:</b> ${d.message}</p>
+          <button onclick="supprimer('${doc.id}')">🗑 Supprimer</button>
+        `;
+
+        container.appendChild(div);
+
+      });
+
+    });
+}
+
+// 🗑 SUPPRIMER
+function supprimer(id){
+  if(confirm("Supprimer ?")){
+    db.collection("reservations").doc(id).delete();
+  }
+}
+</script>
+
+</body>
+</html>
