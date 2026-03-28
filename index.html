@@ -596,8 +596,14 @@ footer{background:#111;color:white;padding:20px 0;text-align:center;margin-top:5
       </select>
     </div>
     <div class="form-group">
-      <label for="date">Date</label>
-      <input type="date" id="date">
+  <label for="date">Date</label>
+  <input type="date" id="date" required>
+</div>
+
+<div class="form-group">
+  <label for="heure">Heure</label>
+  <input type="time" id="heure" required>
+</div>
     </div>
     <div class="form-group">
       <label for="lieu">Lieu</label>
@@ -660,57 +666,63 @@ document.addEventListener("DOMContentLoaded", () => {
   let datesIndisponibles = [];
 
   // =============================
-  // DATE MIN
+  // DATE MIN (aujourd’hui)
   // =============================
   const dateInput = document.getElementById("date");
-  if(dateInput){
+  if (dateInput) {
     let today = new Date().toISOString().split("T")[0];
     dateInput.setAttribute("min", today);
   }
 
   // =============================
-  // CHARGER DATES
+  // CHARGER DATES DEJA RESERVEES
   // =============================
-  function chargerDates(){
+  function chargerDates() {
     db.collection("reservations").get().then(snapshot => {
       datesIndisponibles = [];
       snapshot.forEach(doc => {
-        datesIndisponibles.push(doc.data().date);
+        datesIndisponibles.push(doc.data().dateComplete);
       });
     });
   }
   chargerDates();
 
   // =============================
-  // BLOQUER DATE
+  // BLOQUER DATE + HEURE
   // =============================
-  if(dateInput){
-    dateInput.addEventListener("change", function(){
-      if(datesIndisponibles.includes(this.value)){
-        alert("❌ Cette date est déjà réservée !");
+  if (dateInput) {
+    dateInput.addEventListener("change", function () {
+      let heure = document.getElementById("heure").value;
+      let dateComplete = this.value + " " + heure;
+
+      if (datesIndisponibles.includes(dateComplete)) {
+        alert("❌ Cette date et heure sont déjà réservées !");
         this.value = "";
       }
     });
   }
 
   // =============================
-  // OUVRIR POPUP CONFIRMATION
+  // BOUTON RESERVER → POPUP
   // =============================
-  window.envoyerReservation = function(){
+  window.envoyerReservation = function () {
 
     let nom = document.getElementById("nom").value;
     let tel = document.getElementById("telephone").value;
     let evenement = document.getElementById("evenement").value;
     let date = document.getElementById("date").value;
+    let heure = document.getElementById("heure").value;
     let lieu = document.getElementById("lieu").value;
 
-    if(!nom || !tel || !date){
-      alert("Veuillez remplir les champs obligatoires !");
+    if (!nom || !tel || !date || !heure) {
+      alert("⚠️ Veuillez remplir tous les champs obligatoires !");
       return;
     }
 
-    if(datesIndisponibles.includes(date)){
-      alert("Date déjà prise !");
+    let dateComplete = date + " " + heure;
+
+    if (datesIndisponibles.includes(dateComplete)) {
+      alert("❌ Ce créneau est déjà réservé !");
       return;
     }
 
@@ -719,28 +731,34 @@ document.addEventListener("DOMContentLoaded", () => {
       "\nTéléphone : " + tel +
       "\nÉvénement : " + evenement +
       "\nDate : " + date +
+      "\nHeure : " + heure +
       "\nLieu : " + lieu;
 
     document.getElementById("confirmBox").style.display = "flex";
   }
 
   // =============================
-  // CONFIRMER + FIREBASE + WHATSAPP
+  // CONFIRMATION
   // =============================
-  window.confirmerEnvoi = function(){
+  window.confirmerEnvoi = function () {
 
     let nom = document.getElementById("nom").value;
     let tel = document.getElementById("telephone").value;
     let evenement = document.getElementById("evenement").value;
     let date = document.getElementById("date").value;
+    let heure = document.getElementById("heure").value;
     let lieu = document.getElementById("lieu").value;
     let msg = document.getElementById("message").value;
+
+    let dateComplete = date + " " + heure;
 
     let data = {
       nom,
       telephone: tel,
       evenement,
       date,
+      heure,
+      dateComplete,
       lieu,
       message: msg,
       createdAt: new Date()
@@ -752,30 +770,31 @@ document.addEventListener("DOMContentLoaded", () => {
       "*Téléphone* : " + tel + "%0A" +
       "*Événement* : " + evenement + "%0A" +
       "*Date* : " + date + "%0A" +
+      "*Heure* : " + heure + "%0A" +
       "*Lieu* : " + lieu + "%0A" +
       "*Message* : " + msg;
 
     db.collection("reservations").add(data)
-    .then(() => {
+      .then(() => {
 
-      // ✅ ouverture WhatsApp (100% fiable mobile)
-      window.location.href = "https://wa.me/221775781956?text=" + texteWhatsApp;
+        // Ouvre WhatsApp
+        window.location.href = "https://wa.me/221775781956?text=" + texteWhatsApp;
 
-      fermerConfirm();
-      document.querySelector(".reservation-form").reset();
-      chargerDates();
+        fermerConfirm();
+        document.querySelector(".reservation-form").reset();
+        chargerDates();
 
-    })
-    .catch(err => {
-      console.error(err);
-      alert("❌ Erreur lors de l'enregistrement !");
-    });
+      })
+      .catch(err => {
+        console.error(err);
+        alert("❌ Erreur lors de l'enregistrement !");
+      });
   }
 
   // =============================
   // FERMER POPUP
   // =============================
-  window.fermerConfirm = function(){
+  window.fermerConfirm = function () {
     document.getElementById("confirmBox").style.display = "none";
   }
 
