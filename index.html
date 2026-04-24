@@ -36,7 +36,6 @@
 
     a { text-decoration: none; color: inherit; }
 
-    /* ===== SCROLLBAR ===== */
     ::-webkit-scrollbar { width: 4px; }
     ::-webkit-scrollbar-track { background: var(--black); }
     ::-webkit-scrollbar-thumb { background: var(--orange); border-radius: 2px; }
@@ -64,86 +63,21 @@
       border-bottom-color: rgba(255, 152, 0, 0.15);
     }
 
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
+    .logo { display: flex; align-items: center; gap: 12px; }
+    .logo-img { height: 38px; width: 38px; border-radius: 50%; object-fit: cover; border: 1.5px solid var(--orange); }
+    .logo-text { font-size: 20px; font-weight: 700; letter-spacing: 0.08em; color: var(--orange); }
 
-    .logo-img {
-      height: 38px;
-      width: 38px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 1.5px solid var(--orange);
-    }
+    nav ul { list-style: none; display: flex; gap: 8px; align-items: center; }
+    nav ul li a { font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.6); padding: 6px 14px; border-radius: 6px; transition: all 0.2s; letter-spacing: 0.03em; }
+    nav ul li a:hover { color: var(--white); background: rgba(255,152,0,0.08); }
+    nav ul li:last-child a { color: var(--black); background: var(--orange); padding: 8px 20px; border-radius: 8px; font-weight: 600; }
+    nav ul li:last-child a:hover { background: var(--orange-light); }
 
-    .logo-text {
-      font-size: 20px;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      color: var(--orange);
-    }
+    .menu-toggle { display: none; font-size: 24px; cursor: pointer; color: var(--orange); background: none; border: none; }
 
-    nav ul {
-      list-style: none;
-      display: flex;
-      gap: 8px;
-      align-items: center;
-    }
-
-    nav ul li a {
-      font-size: 13px;
-      font-weight: 500;
-      color: rgba(255,255,255,0.6);
-      padding: 6px 14px;
-      border-radius: 6px;
-      transition: all 0.2s;
-      letter-spacing: 0.03em;
-    }
-
-    nav ul li a:hover {
-      color: var(--white);
-      background: rgba(255,152,0,0.08);
-    }
-
-    nav ul li:last-child a {
-      color: var(--black);
-      background: var(--orange);
-      padding: 8px 20px;
-      border-radius: 8px;
-      font-weight: 600;
-    }
-
-    nav ul li:last-child a:hover {
-      background: var(--orange-light);
-    }
-
-    .menu-toggle {
-      display: none;
-      font-size: 24px;
-      cursor: pointer;
-      color: var(--orange);
-      background: none;
-      border: none;
-    }
-
-    /* Mobile nav */
     @media (max-width: 768px) {
       header { padding: 0 24px; }
-      nav ul {
-        position: fixed;
-        top: 70px;
-        left: 0;
-        width: 100%;
-        flex-direction: column;
-        background: rgba(10,10,10,0.98);
-        backdrop-filter: blur(20px);
-        padding: 20px 0 28px;
-        gap: 4px;
-        display: none;
-        border-bottom: 1px solid var(--border);
-      }
+      nav ul { position: fixed; top: 70px; left: 0; width: 100%; flex-direction: column; background: rgba(10,10,10,0.98); backdrop-filter: blur(20px); padding: 20px 0 28px; gap: 4px; display: none; border-bottom: 1px solid var(--border); }
       nav ul.active { display: flex; }
       nav ul li a { padding: 10px 24px; border-radius: 0; width: 100%; display: block; }
       nav ul li:last-child a { margin: 8px 24px 0; width: auto; border-radius: 8px; text-align: center; }
@@ -165,20 +99,10 @@
     .hero-overlay {
       position: absolute;
       inset: 0;
-      background: linear-gradient(
-        to bottom,
-        rgba(0,0,0,0.3) 0%,
-        rgba(0,0,0,0.6) 60%,
-        rgba(10,10,10,1) 100%
-      );
+      background: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.6) 60%, rgba(10,10,10,1) 100%);
     }
 
-    .hero-content {
-      position: relative;
-      z-index: 1;
-      max-width: 700px;
-      padding: 0 24px;
-    }
+    .hero-content { position: relative; z-index: 1; max-width: 700px; padding: 0 24px; }
 
     .hero-eyebrow {
       display: inline-flex;
@@ -196,101 +120,22 @@
       background: rgba(255,152,0,0.08);
     }
 
-    .hero-eyebrow::before {
-      content: '';
-      width: 6px;
-      height: 6px;
-      background: var(--orange);
-      border-radius: 50%;
-    }
+    .hero-eyebrow::before { content: ''; width: 6px; height: 6px; background: var(--orange); border-radius: 50%; }
 
-    .hero h1 {
-      font-size: clamp(36px, 6vw, 68px);
-      font-weight: 700;
-      line-height: 1.08;
-      letter-spacing: -0.02em;
-      margin-bottom: 20px;
-    }
+    .hero h1 { font-size: clamp(36px, 6vw, 68px); font-weight: 700; line-height: 1.08; letter-spacing: -0.02em; margin-bottom: 20px; }
+    .hero h1 span { color: var(--orange); display: block; }
+    .hero p { font-size: 17px; color: rgba(255,255,255,0.6); margin-bottom: 36px; font-weight: 300; }
 
-    .hero h1 span {
-      color: var(--orange);
-      display: block;
-    }
+    .hero-cta-group { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
 
-    .hero p {
-      font-size: 17px;
-      color: rgba(255,255,255,0.6);
-      margin-bottom: 36px;
-      font-weight: 300;
-    }
+    .btn { display: inline-flex; align-items: center; gap: 8px; padding: 13px 28px; border-radius: 10px; font-weight: 600; font-size: 14px; cursor: pointer; transition: all 0.25s ease; border: none; font-family: 'Poppins', sans-serif; letter-spacing: 0.02em; }
+    .btn-primary { background: var(--orange); color: var(--black); }
+    .btn-primary:hover { background: var(--orange-light); transform: translateY(-2px); }
+    .btn-outline { background: transparent; color: var(--white); border: 1px solid rgba(255,255,255,0.25); }
+    .btn-outline:hover { border-color: var(--orange); color: var(--orange); transform: translateY(-2px); }
 
-    .hero-cta-group {
-      display: flex;
-      gap: 14px;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 13px 28px;
-      border-radius: 10px;
-      font-weight: 600;
-      font-size: 14px;
-      cursor: pointer;
-      transition: all 0.25s ease;
-      border: none;
-      font-family: 'Poppins', sans-serif;
-      letter-spacing: 0.02em;
-    }
-
-    .btn-primary {
-      background: var(--orange);
-      color: var(--black);
-    }
-
-    .btn-primary:hover {
-      background: var(--orange-light);
-      transform: translateY(-2px);
-    }
-
-    .btn-outline {
-      background: transparent;
-      color: var(--white);
-      border: 1px solid rgba(255,255,255,0.25);
-    }
-
-    .btn-outline:hover {
-      border-color: var(--orange);
-      color: var(--orange);
-      transform: translateY(-2px);
-    }
-
-    .hero-scroll {
-      position: absolute;
-      bottom: 36px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 8px;
-      color: rgba(255,255,255,0.35);
-      font-size: 11px;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-    }
-
-    .scroll-line {
-      width: 1px;
-      height: 40px;
-      background: linear-gradient(to bottom, rgba(255,152,0,0.6), transparent);
-      animation: scrollAnim 2s infinite;
-    }
-
+    .hero-scroll { position: absolute; bottom: 36px; left: 50%; transform: translateX(-50%); z-index: 1; display: flex; flex-direction: column; align-items: center; gap: 8px; color: rgba(255,255,255,0.35); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; }
+    .scroll-line { width: 1px; height: 40px; background: linear-gradient(to bottom, rgba(255,152,0,0.6), transparent); animation: scrollAnim 2s infinite; }
     @keyframes scrollAnim {
       0% { transform: scaleY(0); transform-origin: top; }
       50% { transform: scaleY(1); transform-origin: top; }
@@ -299,638 +144,290 @@
     }
 
     /* ===== STATS BAR ===== */
-    .stats-bar {
-      background: var(--dark2);
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-      padding: 32px 50px;
-    }
-
-    .stats-inner {
-      max-width: 1000px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 24px;
-      text-align: center;
-    }
-
-    .stat-item {
-      padding: 16px;
-    }
-
-    .stat-num {
-      font-size: 34px;
-      font-weight: 700;
-      color: var(--orange);
-      line-height: 1;
-      margin-bottom: 6px;
-    }
-
-    .stat-label {
-      font-size: 12px;
-      color: var(--text-muted);
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-    }
-
-    @media (max-width: 640px) {
-      .stats-inner { grid-template-columns: repeat(2, 1fr); }
-      .stats-bar { padding: 24px 20px; }
-    }
+    .stats-bar { background: var(--dark2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 32px 50px; }
+    .stats-inner { max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; text-align: center; }
+    .stat-item { padding: 16px; }
+    .stat-num { font-size: 34px; font-weight: 700; color: var(--orange); line-height: 1; margin-bottom: 6px; }
+    .stat-label { font-size: 12px; color: var(--text-muted); letter-spacing: 0.05em; text-transform: uppercase; }
+    @media (max-width: 640px) { .stats-inner { grid-template-columns: repeat(2, 1fr); } .stats-bar { padding: 24px 20px; } }
 
     /* ===== SECTIONS ===== */
-    section {
-      padding: 100px 50px;
+    section { padding: 100px 50px; }
+    .section-inner { max-width: 1200px; margin: 0 auto; }
+    .section-header { text-align: center; margin-bottom: 56px; }
+    .section-tag { display: inline-block; font-size: 11px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--orange); margin-bottom: 14px; }
+    .section-title { font-size: clamp(28px, 4vw, 44px); font-weight: 700; letter-spacing: -0.02em; line-height: 1.15; margin-bottom: 14px; }
+    .section-subtitle { font-size: 16px; color: var(--text-muted); max-width: 500px; margin: 0 auto; }
+
+    /* ===== PORTFOLIO — MASONRY ===== */
+    #portfolio {
+      background: var(--black);
+      padding: 120px 60px;
     }
 
-    .section-inner {
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    .section-header {
-      text-align: center;
+    .portfolio-filters {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
       margin-bottom: 64px;
     }
 
-    .section-tag {
-      display: inline-block;
+    .pf-btn {
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.12);
+      color: rgba(255,255,255,0.45);
       font-size: 11px;
       font-weight: 600;
-      letter-spacing: 0.15em;
+      letter-spacing: 0.18em;
       text-transform: uppercase;
-      color: var(--orange);
-      margin-bottom: 14px;
-    }
-
-    .section-title {
-      font-size: clamp(28px, 4vw, 44px);
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      line-height: 1.15;
-      margin-bottom: 14px;
-    }
-
-    .section-subtitle {
-      font-size: 16px;
-      color: var(--text-muted);
-      max-width: 500px;
-      margin: 0 auto;
-    }
-
-    /* ===== PORTFOLIO ===== */
-    #portfolio {
-      background: var(--black);
-    }
-
-    .gallery {
-      columns: 3;
-      column-gap: 12px;
-    }
-
-    .gallery-item {
-      break-inside: avoid;
-      margin-bottom: 12px;
-      border-radius: 10px;
-      overflow: hidden;
+      padding: 10px 28px;
+      border-radius: 2px;
       cursor: pointer;
-      position: relative;
+      transition: all 0.25s ease;
+      font-family: 'Poppins', sans-serif;
     }
 
-    .gallery-item::after {
-      content: '';
+    .pf-btn:hover { color: var(--white); border-color: rgba(255,255,255,0.4); }
+    .pf-btn.active { background: var(--orange); border-color: var(--orange); color: var(--black); font-weight: 700; }
+
+    /* Masonry container : 3 colonnes CSS columns */
+    .masonry-grid {
+      columns: 3;
+      column-gap: 14px;
+    }
+
+    .pm-item {
+      break-inside: avoid;
+      margin-bottom: 14px;
+      position: relative;
+      overflow: hidden;
+      border-radius: 8px;
+      cursor: pointer;
+      display: block;
+      background: var(--dark2);
+    }
+
+    /* L'image garde sa hauteur naturelle — zéro crop */
+    .pm-item img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 8px;
+      transition: transform 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94), filter 0.4s ease;
+      filter: brightness(0.85);
+    }
+
+    .pm-item:hover img {
+      transform: scale(1.04);
+      filter: brightness(1);
+    }
+
+    /* Overlay info au hover */
+    .pm-overlay {
       position: absolute;
       inset: 0;
-      background: rgba(255,152,0,0);
-      transition: background 0.3s;
-      border-radius: 10px;
-    }
-
-    .gallery-item:hover::after {
-      background: rgba(255,152,0,0.12);
-    }
-
-    .gallery-item img {
-      width: 100%;
-      display: block;
-      border-radius: 10px;
-      transition: transform 0.4s ease;
-    }
-
-    .gallery-item:hover img {
-      transform: scale(1.03);
-    }
-
-    @media (max-width: 900px) { .gallery { columns: 2; } }
-    @media (max-width: 550px) { .gallery { columns: 1; } }
-
-    /* ===== SERVICES ===== */
-    #services {
-      background: var(--dark);
-    }
-
-    .cards-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 20px;
-    }
-
-    .card {
-      background: var(--dark2);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 32px 28px;
-      transition: all 0.3s ease;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 2px;
-      background: linear-gradient(90deg, var(--orange), var(--orange-light));
-      opacity: 0;
-      transition: opacity 0.3s;
-    }
-
-    .card:hover {
-      border-color: rgba(255,152,0,0.4);
-      transform: translateY(-4px);
-    }
-
-    .card:hover::before {
-      opacity: 1;
-    }
-
-    .card-icon {
-      width: 48px;
-      height: 48px;
-      background: rgba(255,152,0,0.1);
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 22px;
-      margin-bottom: 20px;
-    }
-
-    .card h3 {
-      font-size: 20px;
-      font-weight: 600;
-      margin-bottom: 10px;
-    }
-
-    .card > p {
-      font-size: 14px;
-      color: var(--text-muted);
-      margin-bottom: 16px;
-    }
-
-    .card .price {
-      font-size: 22px;
-      font-weight: 700;
-      color: var(--orange);
-      margin-bottom: 20px;
-    }
-
-    .card .price span {
-      font-size: 13px;
-      font-weight: 400;
-      color: var(--text-muted);
-    }
-
-    .btn-ghost {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--orange);
-      cursor: pointer;
-      background: none;
-      border: none;
-      font-family: 'Poppins', sans-serif;
-      padding: 0;
-      transition: gap 0.2s;
-    }
-
-    .btn-ghost:hover { gap: 10px; }
-
-    .details-list {
-      display: none;
-      margin-top: 20px;
-      padding-top: 20px;
-      border-top: 1px solid var(--border);
-    }
-
-    .details-list ul { list-style: none; }
-
-    .details-list ul li {
-      font-size: 13px;
-      color: rgba(255,255,255,0.7);
-      padding: 8px 0;
-      border-bottom: 1px solid rgba(255,255,255,0.05);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .details-list ul li:last-child { border-bottom: none; }
-
-    /* ===== RESERVATION ===== */
-    #reservation {
-      background: var(--black);
-    }
-
-    .reservation-grid {
-      display: grid;
-      grid-template-columns: 1fr 1.3fr;
-      gap: 48px;
-      align-items: start;
-    }
-
-    .reservation-info {
-      padding-top: 12px;
-    }
-
-    .reservation-info h3 {
-      font-size: 24px;
-      font-weight: 600;
-      margin-bottom: 16px;
-    }
-
-    .reservation-info p {
-      font-size: 14px;
-      color: var(--text-muted);
-      margin-bottom: 32px;
-      line-height: 1.7;
-    }
-
-    .info-list {
-      list-style: none;
+      background: linear-gradient(
+        to top,
+        rgba(0,0,0,0.82) 0%,
+        rgba(0,0,0,0.1) 50%,
+        transparent 75%
+      );
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      justify-content: flex-end;
+      padding: 22px 20px;
+      opacity: 0;
+      transition: opacity 0.32s ease;
+      border-radius: 8px;
     }
 
-    .info-list li {
-      display: flex;
-      align-items: flex-start;
-      gap: 14px;
-      font-size: 14px;
-      color: rgba(255,255,255,0.75);
+    .pm-item:hover .pm-overlay { opacity: 1; }
+
+    .pm-category {
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--orange);
+      margin-bottom: 5px;
     }
 
-    .info-list li .icon-circle {
+    .pm-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--white);
+      line-height: 1.3;
+    }
+
+    .pm-location {
+      font-size: 12px;
+      color: rgba(255,255,255,0.5);
+      margin-top: 4px;
+    }
+
+    /* Barre orange glissante en bas */
+    .pm-item::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--orange);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.35s ease;
+      border-radius: 0 0 8px 8px;
+    }
+    .pm-item:hover::after { transform: scaleX(1); }
+
+    /* Icône zoom */
+    .pm-zoom {
+      position: absolute;
+      top: 14px;
+      right: 14px;
       width: 36px;
       height: 36px;
-      min-width: 36px;
+      background: rgba(0,0,0,0.55);
+      border: 1px solid rgba(255,255,255,0.18);
       border-radius: 50%;
-      background: rgba(255,152,0,0.1);
-      border: 1px solid rgba(255,152,0,0.2);
       display: flex;
       align-items: center;
       justify-content: center;
+      opacity: 0;
+      transition: opacity 0.25s ease, transform 0.2s;
       font-size: 15px;
+      color: #fff;
     }
+    .pm-item:hover .pm-zoom { opacity: 1; }
+    .pm-zoom:hover { transform: scale(1.15); }
 
-    .form-card {
-      background: var(--dark2);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 36px 32px;
+    /* Filtre masonry : cacher sans casser le layout */
+    .pm-item.hidden { display: none; }
+
+    /* Animation d'apparition */
+    .pm-item {
+      animation: fadeInUp 0.45s ease both;
     }
-
-    .form-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-    }
-
-    .form-group {
-      margin-bottom: 18px;
-    }
-
-    .form-group label {
-      display: block;
-      font-size: 12px;
-      font-weight: 600;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-      margin-bottom: 8px;
-    }
-
-    .form-group input,
-    .form-group select,
-    .form-group textarea {
-      width: 100%;
-      padding: 11px 14px;
-      background: var(--dark3);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 10px;
-      color: var(--white);
-      font-size: 14px;
-      font-family: 'Poppins', sans-serif;
-      outline: none;
-      transition: border-color 0.2s;
-      appearance: none;
-    }
-
-    .form-group input::placeholder,
-    .form-group textarea::placeholder {
-      color: var(--gray2);
-    }
-
-    .form-group select option { background: var(--dark2); }
-
-    .form-group input:focus,
-    .form-group select:focus,
-    .form-group textarea:focus {
-      border-color: var(--orange);
-    }
-
-    .form-submit {
-      width: 100%;
-      margin-top: 6px;
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
 
     @media (max-width: 900px) {
-      .reservation-grid { grid-template-columns: 1fr; }
-      .reservation-info { display: none; }
-      .form-row { grid-template-columns: 1fr; }
+      .masonry-grid { columns: 2; column-gap: 12px; }
+      .pm-item { margin-bottom: 12px; }
     }
+
+    @media (max-width: 520px) {
+      #portfolio { padding: 80px 18px; }
+      .masonry-grid { columns: 2; column-gap: 8px; }
+      .pm-item { margin-bottom: 8px; border-radius: 6px; }
+      .portfolio-filters { margin-bottom: 36px; }
+      .pf-btn { padding: 8px 16px; font-size: 10px; }
+    }
+
+    /* ===== SERVICES ===== */
+    #services { background: var(--dark); }
+
+    .cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+
+    .card { background: var(--dark2); border: 1px solid var(--border); border-radius: 16px; padding: 32px 28px; transition: all 0.3s ease; position: relative; overflow: hidden; }
+    .card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--orange), var(--orange-light)); opacity: 0; transition: opacity 0.3s; }
+    .card:hover { border-color: rgba(255,152,0,0.4); transform: translateY(-4px); }
+    .card:hover::before { opacity: 1; }
+    .card-icon { width: 48px; height: 48px; background: rgba(255,152,0,0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; margin-bottom: 20px; }
+    .card h3 { font-size: 20px; font-weight: 600; margin-bottom: 10px; }
+    .card > p { font-size: 14px; color: var(--text-muted); margin-bottom: 16px; }
+    .card .price { font-size: 22px; font-weight: 700; color: var(--orange); margin-bottom: 20px; }
+    .card .price span { font-size: 13px; font-weight: 400; color: var(--text-muted); }
+
+    .btn-ghost { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 500; color: var(--orange); cursor: pointer; background: none; border: none; font-family: 'Poppins', sans-serif; padding: 0; transition: gap 0.2s; }
+    .btn-ghost:hover { gap: 10px; }
+
+    .details-list { display: none; margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border); }
+    .details-list ul { list-style: none; }
+    .details-list ul li { font-size: 13px; color: rgba(255,255,255,0.7); padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center; }
+    .details-list ul li:last-child { border-bottom: none; }
+
+    /* ===== RESERVATION ===== */
+    #reservation { background: var(--black); }
+
+    .reservation-grid { display: grid; grid-template-columns: 1fr 1.3fr; gap: 48px; align-items: start; }
+    .reservation-info { padding-top: 12px; }
+    .reservation-info h3 { font-size: 24px; font-weight: 600; margin-bottom: 16px; }
+    .reservation-info p { font-size: 14px; color: var(--text-muted); margin-bottom: 32px; line-height: 1.7; }
+
+    .info-list { list-style: none; display: flex; flex-direction: column; gap: 16px; }
+    .info-list li { display: flex; align-items: flex-start; gap: 14px; font-size: 14px; color: rgba(255,255,255,0.75); }
+    .info-list li .icon-circle { width: 36px; height: 36px; min-width: 36px; border-radius: 50%; background: rgba(255,152,0,0.1); border: 1px solid rgba(255,152,0,0.2); display: flex; align-items: center; justify-content: center; font-size: 15px; }
+
+    .form-card { background: var(--dark2); border: 1px solid var(--border); border-radius: 20px; padding: 36px 32px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .form-group { margin-bottom: 18px; }
+    .form-group label { display: block; font-size: 12px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 8px; }
+    .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 11px 14px; background: var(--dark3); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; color: var(--white); font-size: 14px; font-family: 'Poppins', sans-serif; outline: none; transition: border-color 0.2s; appearance: none; }
+    .form-group input::placeholder, .form-group textarea::placeholder { color: var(--gray2); }
+    .form-group select option { background: var(--dark2); }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--orange); }
+    .form-submit { width: 100%; margin-top: 6px; }
+
+    @media (max-width: 900px) { .reservation-grid { grid-template-columns: 1fr; } .reservation-info { display: none; } .form-row { grid-template-columns: 1fr; } }
 
     /* ===== CONTACT ===== */
-    #contact {
-      background: var(--dark);
-    }
+    #contact { background: var(--dark); }
 
-    .contact-grid {
-      display: grid;
-      grid-template-columns: 1fr 1.4fr;
-      gap: 48px;
-      align-items: start;
-    }
+    .contact-grid { display: grid; grid-template-columns: 1fr 1.4fr; gap: 48px; align-items: start; }
+    .contact-info-card { background: var(--dark2); border: 1px solid var(--border); border-radius: 20px; padding: 36px 32px; }
+    .contact-info-card h3 { font-size: 22px; font-weight: 600; margin-bottom: 8px; }
+    .contact-info-card .tagline { font-size: 14px; color: var(--text-muted); margin-bottom: 32px; }
 
-    .contact-info-card {
-      background: var(--dark2);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 36px 32px;
-    }
-
-    .contact-info-card h3 {
-      font-size: 22px;
-      font-weight: 600;
-      margin-bottom: 8px;
-    }
-
-    .contact-info-card .tagline {
-      font-size: 14px;
-      color: var(--text-muted);
-      margin-bottom: 32px;
-    }
-
-    .contact-item {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      padding: 14px 0;
-      border-bottom: 1px solid rgba(255,255,255,0.06);
-    }
-
+    .contact-item { display: flex; align-items: center; gap: 14px; padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.06); }
     .contact-item:last-of-type { border-bottom: none; }
+    .contact-item-icon { width: 40px; height: 40px; min-width: 40px; border-radius: 10px; background: rgba(255,152,0,0.1); display: flex; align-items: center; justify-content: center; font-size: 17px; }
+    .contact-item-text { flex: 1; }
+    .contact-item-label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 2px; }
+    .contact-item-value { font-size: 14px; font-weight: 500; }
 
-    .contact-item-icon {
-      width: 40px;
-      height: 40px;
-      min-width: 40px;
-      border-radius: 10px;
-      background: rgba(255,152,0,0.1);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 17px;
-    }
-
-    .contact-item-text {
-      flex: 1;
-    }
-
-    .contact-item-label {
-      font-size: 11px;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      margin-bottom: 2px;
-    }
-
-    .contact-item-value {
-      font-size: 14px;
-      font-weight: 500;
-    }
-
-    .icon-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 5px 12px;
-      border-radius: 6px;
-      font-size: 12px;
-      font-weight: 500;
-      text-decoration: none;
-      transition: all 0.2s;
-      margin-right: 6px;
-    }
-
+    .icon-btn { display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px; border-radius: 6px; font-size: 12px; font-weight: 500; text-decoration: none; transition: all 0.2s; margin-right: 6px; }
     .icon-btn img { width: 14px; height: 14px; }
     .icon-btn.phone { background: rgba(40,167,69,0.15); color: #4caf50; border: 1px solid rgba(40,167,69,0.2); }
     .icon-btn.whatsapp { background: rgba(37,211,102,0.1); color: #25d366; border: 1px solid rgba(37,211,102,0.2); }
     .icon-btn:hover { opacity: 0.8; }
 
-    .contact-form-card {
-      background: var(--dark2);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 36px 32px;
-    }
+    .contact-form-card { background: var(--dark2); border: 1px solid var(--border); border-radius: 20px; padding: 36px 32px; }
+    .contact-form-card h3 { font-size: 20px; font-weight: 600; margin-bottom: 24px; }
 
-    .contact-form-card h3 {
-      font-size: 20px;
-      font-weight: 600;
-      margin-bottom: 24px;
-    }
-
-    @media (max-width: 900px) {
-      .contact-grid { grid-template-columns: 1fr; }
-    }
+    @media (max-width: 900px) { .contact-grid { grid-template-columns: 1fr; } }
 
     /* ===== LIGHTBOX ===== */
-    #lightbox {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,0.96);
-      display: none;
-      justify-content: center;
-      align-items: center;
-      z-index: 2000;
-    }
-
-    #lightbox img {
-      max-width: 88%;
-      max-height: 82%;
-      border-radius: 8px;
-      animation: lbZoom 0.25s ease;
-    }
-
-    @keyframes lbZoom {
-      from { transform: scale(0.85); opacity: 0; }
-      to { transform: scale(1); opacity: 1; }
-    }
-
-    #lightbox .lb-close,
-    #lightbox .lb-prev,
-    #lightbox .lb-next {
-      position: absolute;
-      color: rgba(255,255,255,0.6);
-      font-size: 36px;
-      cursor: pointer;
-      user-select: none;
-      transition: color 0.2s;
-    }
-
-    #lightbox .lb-close:hover,
-    #lightbox .lb-prev:hover,
-    #lightbox .lb-next:hover { color: var(--orange); }
-
+    #lightbox { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.97); display: none; justify-content: center; align-items: center; z-index: 2000; }
+    #lightbox img { max-width: 88%; max-height: 82%; border-radius: 8px; animation: lbZoom 0.25s ease; }
+    @keyframes lbZoom { from { transform: scale(0.85); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+    #lightbox .lb-close, #lightbox .lb-prev, #lightbox .lb-next { position: absolute; color: rgba(255,255,255,0.6); font-size: 36px; cursor: pointer; user-select: none; transition: color 0.2s; }
+    #lightbox .lb-close:hover, #lightbox .lb-prev:hover, #lightbox .lb-next:hover { color: var(--orange); }
     #lightbox .lb-close { top: 20px; right: 28px; font-size: 28px; }
     #lightbox .lb-prev { left: 24px; top: 50%; transform: translateY(-50%); }
     #lightbox .lb-next { right: 24px; top: 50%; transform: translateY(-50%); }
-
-    .lb-counter {
-      position: absolute;
-      bottom: 24px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 13px;
-      color: var(--text-muted);
-      letter-spacing: 0.05em;
-    }
+    .lb-counter { position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%); font-size: 13px; color: var(--text-muted); letter-spacing: 0.05em; }
 
     /* ===== POPUP CONFIRM ===== */
-    #confirmBox {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,0.85);
-      display: none;
-      justify-content: center;
-      align-items: center;
-      z-index: 3000;
-      padding: 20px;
-    }
-
-    .confirm-content {
-      background: var(--dark2);
-      border: 1px solid rgba(255,152,0,0.3);
-      border-radius: 20px;
-      padding: 36px 32px;
-      max-width: 440px;
-      width: 100%;
-      text-align: center;
-      animation: popIn 0.25s ease;
-    }
-
-    @keyframes popIn {
-      from { transform: scale(0.9); opacity: 0; }
-      to { transform: scale(1); opacity: 1; }
-    }
-
-    .confirm-icon {
-      width: 56px;
-      height: 56px;
-      background: rgba(255,152,0,0.1);
-      border: 1px solid rgba(255,152,0,0.2);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 24px;
-      margin: 0 auto 20px;
-    }
-
-    .confirm-content h3 {
-      font-size: 20px;
-      font-weight: 600;
-      margin-bottom: 6px;
-      color: var(--orange);
-    }
-
-    .confirm-content .confirm-sub {
-      font-size: 13px;
-      color: var(--text-muted);
-      margin-bottom: 20px;
-    }
-
-    .confirm-details {
-      background: var(--dark3);
-      border-radius: 12px;
-      padding: 16px 20px;
-      text-align: left;
-      margin-bottom: 24px;
-      font-size: 13px;
-      color: rgba(255,255,255,0.75);
-      white-space: pre-line;
-      line-height: 1.9;
-    }
-
-    .confirm-buttons {
-      display: flex;
-      gap: 12px;
-    }
-
-    .confirm-buttons .btn {
-      flex: 1;
-      justify-content: center;
-    }
-
-    .btn-gray {
-      background: var(--dark3);
-      color: var(--text-muted);
-      border: 1px solid rgba(255,255,255,0.1);
-    }
-
+    #confirmBox { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: center; z-index: 3000; padding: 20px; }
+    .confirm-content { background: var(--dark2); border: 1px solid rgba(255,152,0,0.3); border-radius: 20px; padding: 36px 32px; max-width: 440px; width: 100%; text-align: center; animation: popIn 0.25s ease; }
+    @keyframes popIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+    .confirm-icon { width: 56px; height: 56px; background: rgba(255,152,0,0.1); border: 1px solid rgba(255,152,0,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; margin: 0 auto 20px; }
+    .confirm-content h3 { font-size: 20px; font-weight: 600; margin-bottom: 6px; color: var(--orange); }
+    .confirm-content .confirm-sub { font-size: 13px; color: var(--text-muted); margin-bottom: 20px; }
+    .confirm-details { background: var(--dark3); border-radius: 12px; padding: 16px 20px; text-align: left; margin-bottom: 24px; font-size: 13px; color: rgba(255,255,255,0.75); white-space: pre-line; line-height: 1.9; }
+    .confirm-buttons { display: flex; gap: 12px; }
+    .confirm-buttons .btn { flex: 1; justify-content: center; }
+    .btn-gray { background: var(--dark3); color: var(--text-muted); border: 1px solid rgba(255,255,255,0.1); }
     .btn-gray:hover { background: var(--gray); color: var(--white); }
 
     /* ===== SOCIAL FLOAT ===== */
-    .social-float {
-      position: fixed;
-      bottom: 24px;
-      right: 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      z-index: 999;
-    }
-
-    .social-float a {
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.25s;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-    }
-
+    .social-float { position: fixed; bottom: 24px; right: 20px; display: flex; flex-direction: column; gap: 10px; z-index: 999; }
+    .social-float a { width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: all 0.25s; box-shadow: 0 4px 12px rgba(0,0,0,0.4); }
     .social-float img { width: 20px; height: 20px; }
     .social-float .insta { background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
     .social-float .tiktok { background: #111; border: 1px solid #333; }
@@ -938,84 +435,25 @@
     .social-float a:hover { transform: scale(1.12) translateY(-2px); }
 
     /* ===== FOOTER ===== */
-    footer {
-      background: var(--dark);
-      border-top: 1px solid var(--border);
-      padding: 40px 50px;
-    }
-
-    .footer-inner {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 20px;
-      flex-wrap: wrap;
-    }
-
-    .footer-logo {
-      font-size: 18px;
-      font-weight: 700;
-      color: var(--orange);
-    }
-
-    .footer-links {
-      display: flex;
-      gap: 24px;
-    }
-
-    .footer-links a {
-      font-size: 13px;
-      color: var(--text-muted);
-      transition: color 0.2s;
-    }
-
+    footer { background: var(--dark); border-top: 1px solid var(--border); padding: 40px 50px; }
+    .footer-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+    .footer-logo { font-size: 18px; font-weight: 700; color: var(--orange); }
+    .footer-links { display: flex; gap: 24px; }
+    .footer-links a { font-size: 13px; color: var(--text-muted); transition: color 0.2s; }
     .footer-links a:hover { color: var(--white); }
+    .footer-copy { font-size: 12px; color: var(--text-muted); text-align: right; }
 
-    .footer-copy {
-      font-size: 12px;
-      color: var(--text-muted);
-      text-align: right;
-    }
-
-    @media (max-width: 640px) {
-      footer { padding: 32px 24px; }
-      .footer-inner { flex-direction: column; text-align: center; }
-      .footer-copy { text-align: center; }
-      section { padding: 70px 24px; }
-    }
+    @media (max-width: 640px) { footer { padding: 32px 24px; } .footer-inner { flex-direction: column; text-align: center; } .footer-copy { text-align: center; } section { padding: 70px 24px; } }
 
     /* ===== ANIMATIONS ===== */
-    .reveal {
-      opacity: 0;
-      transform: translateY(30px);
-      transition: opacity 0.7s ease, transform 0.7s ease;
-    }
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
     .reveal-delay-1 { transition-delay: 0.1s; }
     .reveal-delay-2 { transition-delay: 0.2s; }
     .reveal-delay-3 { transition-delay: 0.3s; }
 
-    .admin-link {
-  margin-left: 20px;
-  padding: 9px 18px;
-  background: linear-gradient(135deg, var(--orange), var(--orange-light));
-  color: var(--black);
-  font-size: 13px;
-  font-weight: 700;
-  border-radius: 20px;
-  box-shadow: 0 4px 10px rgba(255,152,0,0.3);
-  transition: all 0.3s ease;
-}
-
-.admin-link:hover {
-  transform: scale(1.05);
-  box-shadow: 0 6px 15px rgba(255,152,0,0.5);
-}
+    .admin-link { margin-left: 20px; padding: 9px 18px; background: linear-gradient(135deg, var(--orange), var(--orange-light)); color: var(--black); font-size: 13px; font-weight: 700; border-radius: 20px; box-shadow: 0 4px 10px rgba(255,152,0,0.3); transition: all 0.3s ease; }
+    .admin-link:hover { transform: scale(1.05); box-shadow: 0 6px 15px rgba(255,152,0,0.5); }
   </style>
 </head>
 <body>
@@ -1061,26 +499,14 @@
 <!-- STATS -->
 <div class="stats-bar reveal">
   <div class="stats-inner">
-    <div class="stat-item">
-      <div class="stat-num">200+</div>
-      <div class="stat-label">Événements couverts</div>
-    </div>
-    <div class="stat-item">
-      <div class="stat-num">5★</div>
-      <div class="stat-label">Satisfaction client</div>
-    </div>
-    <div class="stat-item">
-      <div class="stat-num">48h</div>
-      <div class="stat-label">Délai de livraison</div>
-    </div>
-    <div class="stat-item">
-      <div class="stat-num">3+</div>
-      <div class="stat-label">Ans d'expérience</div>
-    </div>
+    <div class="stat-item"><div class="stat-num">200+</div><div class="stat-label">Événements couverts</div></div>
+    <div class="stat-item"><div class="stat-num">5★</div><div class="stat-label">Satisfaction client</div></div>
+    <div class="stat-item"><div class="stat-num">48h</div><div class="stat-label">Délai de livraison</div></div>
+    <div class="stat-item"><div class="stat-num">3+</div><div class="stat-label">Ans d'expérience</div></div>
   </div>
 </div>
 
-<!-- PORTFOLIO -->
+<!-- PORTFOLIO — NEW MOSAIC DESIGN -->
 <section id="portfolio">
   <div class="section-inner">
     <div class="section-header reveal">
@@ -1088,25 +514,197 @@
       <h2 class="section-title">Moments capturés</h2>
       <p class="section-subtitle">Chaque image raconte une histoire unique</p>
     </div>
-    <div class="gallery reveal">
-      <div class="gallery-item"><img src="photo1.jpeg" alt="Mariage"></div>
-      <div class="gallery-item"><img src="photo2.jpeg" alt="Anniversaire"></div>
-      <div class="gallery-item"><img src="photo3.jpeg" alt="Événement"></div>
-      <div class="gallery-item"><img src="photo4.jpeg" alt="Shooting"></div>
-      <div class="gallery-item"><img src="photo5.jpeg" alt="Baptême"></div>
-      <div class="gallery-item"><img src="photo6.jpeg" alt="Mariage"></div>
-      <div class="gallery-item"><img src="photo7.jpeg" alt="Mariage"></div>
-      <div class="gallery-item"><img src="photo8.jpeg" alt="Mariage"></div>
-      <div class="gallery-item"><img src="photo9.jpeg" alt="Mariage"></div>
-      <div class="gallery-item"><img src="photo10.jpeg" alt="Mariage"></div>
-      <div class="gallery-item"><img src="photo11.jpeg" alt="Mariage"></div>
-      <div class="gallery-item"><img src="photo12.jpeg" alt="Mariage"></div>
-      <div class="gallery-item"><img src="photo13.jpeg" alt="Mariage"></div>
-      <div class="gallery-item"><img src="photo14.jpeg" alt="Mariage"></div>
-      <div class="gallery-item"><img src="photo15.jpeg" alt="Mariage"></div>
-      <div class="gallery-item"><img src="photo16.jpeg" alt="Mariage"></div>
-      <div class="gallery-item"><img src="photo17.jpeg" alt="Mariage"></div>
-      <div class="gallery-item"><img src="photo18.jpeg" alt="Mariage"></div>
+
+    <!-- Filters -->
+    <div class="portfolio-filters reveal">
+      <button class="pf-btn active" data-filter="all">Tous</button>
+      <button class="pf-btn" data-filter="mariage">Mariage</button>
+      <button class="pf-btn" data-filter="anniversaire">Anniversaire</button>
+      <button class="pf-btn" data-filter="bapteme">Baptême</button>
+      <button class="pf-btn" data-filter="shooting">Shooting</button>
+    </div>
+
+    <!-- Masonry gallery — proportions naturelles, zéro déformation -->
+    <div class="masonry-grid reveal" id="portfolioGrid">
+
+      <!-- Block 1: hero + portrait -->
+      <div class="pm-item" data-cat="mariage">
+        <img src="photo1.jpeg" alt="Mariage" loading="lazy">
+        <div class="pm-overlay">
+          <div class="pm-category">Mariage</div>
+          <div class="pm-title">Cérémonie de mariage</div>
+          <div class="pm-location">📍 Dakar, Sénégal</div>
+        </div>
+        <div class="pm-zoom">⤢</div>
+      </div>
+      <div class="pm-item" data-cat="shooting">
+        <img src="photo2.jpeg" alt="Shooting" loading="lazy">
+        <div class="pm-overlay">
+          <div class="pm-category">Shooting</div>
+          <div class="pm-title">Portrait élégant</div>
+          <div class="pm-location">📍 Thiès, Sénégal</div>
+        </div>
+        <div class="pm-zoom">⤢</div>
+      </div>
+
+      <!-- Block 2: 3 standard cards -->
+      <div class="pm-item" data-cat="anniversaire">
+        <img src="photo3.jpeg" alt="Anniversaire" loading="lazy">
+        <div class="pm-overlay">
+          <div class="pm-category">Anniversaire</div>
+          <div class="pm-title">Fête d'anniversaire</div>
+          <div class="pm-location">📍 Dakar, Sénégal</div>
+        </div>
+        <div class="pm-zoom">⤢</div>
+      </div>
+      <div class="pm-item" data-cat="bapteme">
+        <img src="photo4.jpeg" alt="Baptême" loading="lazy">
+        <div class="pm-overlay">
+          <div class="pm-category">Baptême</div>
+          <div class="pm-title">Cérémonie baptême</div>
+          <div class="pm-location">📍 Dakar, Sénégal</div>
+        </div>
+        <div class="pm-zoom">⤢</div>
+      </div>
+      <div class="pm-item" data-cat="mariage">
+        <img src="photo5.jpeg" alt="Mariage" loading="lazy">
+        <div class="pm-overlay">
+          <div class="pm-category">Mariage</div>
+          <div class="pm-title">Les mariés</div>
+          <div class="pm-location">📍 Thiès, Sénégal</div>
+        </div>
+        <div class="pm-zoom">⤢</div>
+      </div>
+
+      <!-- Block 3: full banner -->
+      <div class="pm-item" data-cat="mariage">
+        <img src="photo6.jpeg" alt="Mariage" loading="lazy">
+        <div class="pm-overlay">
+          <div class="pm-category">Mariage</div>
+          <div class="pm-title">Réception & grande fête</div>
+          <div class="pm-location">📍 Dakar, Sénégal</div>
+        </div>
+        <div class="pm-zoom">⤢</div>
+      </div>
+
+      <!-- Block 4: portrait + landscape -->
+      <div class="pm-item" data-cat="shooting">
+        <img src="photo7.jpeg" alt="Shooting" loading="lazy">
+        <div class="pm-overlay">
+          <div class="pm-category">Shooting</div>
+          <div class="pm-title">Mode & portrait</div>
+          <div class="pm-location">📍 Dakar, Sénégal</div>
+        </div>
+        <div class="pm-zoom">⤢</div>
+      </div>
+      <div class="pm-item" data-cat="anniversaire">
+        <img src="photo8.jpeg" alt="Anniversaire" loading="lazy">
+        <div class="pm-overlay">
+          <div class="pm-category">Anniversaire</div>
+          <div class="pm-title">Ambiance festive</div>
+          <div class="pm-location">📍 Dakar, Sénégal</div>
+        </div>
+        <div class="pm-zoom">⤢</div>
+      </div>
+      <div class="pm-item" data-cat="bapteme">
+        <img src="photo9.jpeg" alt="Baptême" loading="lazy">
+        <div class="pm-overlay">
+          <div class="pm-category">Baptême</div>
+          <div class="pm-title">Baptême en famille</div>
+          <div class="pm-location">📍 Thiès, Sénégal</div>
+        </div>
+        <div class="pm-zoom">⤢</div>
+      </div>
+
+      <!-- Block 5: 3 standard -->
+      <div class="pm-item" data-cat="mariage">
+        <img src="photo10.jpeg" alt="Mariage" loading="lazy">
+        <div class="pm-overlay">
+          <div class="pm-category">Mariage</div>
+          <div class="pm-title">Instant complice</div>
+          <div class="pm-location">📍 Dakar, Sénégal</div>
+        </div>
+        <div class="pm-zoom">⤢</div>
+      </div>
+      <div class="pm-item" data-cat="shooting">
+        <img src="photo11.jpeg" alt="Shooting" loading="lazy">
+        <div class="pm-overlay">
+          <div class="pm-category">Shooting</div>
+          <div class="pm-title">Séance créative</div>
+          <div class="pm-location">📍 Dakar, Sénégal</div>
+        </div>
+        <div class="pm-zoom">⤢</div>
+      </div>
+      <div class="pm-item" data-cat="anniversaire">
+        <img src="photo12.jpeg" alt="Anniversaire" loading="lazy">
+        <div class="pm-overlay">
+          <div class="pm-category">Anniversaire</div>
+          <div class="pm-title">Moments de joie</div>
+          <div class="pm-location">📍 Dakar, Sénégal</div>
+        </div>
+        <div class="pm-zoom">⤢</div>
+      </div>
+
+      <!-- Block 6: hero inversé -->
+      <div class="pm-item" data-cat="mariage">
+        <img src="photo13.jpeg" alt="Mariage" loading="lazy">
+        <div class="pm-overlay">
+          <div class="pm-category">Mariage</div>
+          <div class="pm-title">Échange des vœux</div>
+          <div class="pm-location">📍 Dakar, Sénégal</div>
+        </div>
+        <div class="pm-zoom">⤢</div>
+      </div>
+      <div class="pm-item" data-cat="bapteme">
+        <img src="photo14.jpeg" alt="Baptême" loading="lazy">
+        <div class="pm-overlay">
+          <div class="pm-category">Baptême</div>
+          <div class="pm-title">Jour de baptême</div>
+          <div class="pm-location">📍 Dakar, Sénégal</div>
+        </div>
+        <div class="pm-zoom">⤢</div>
+      </div>
+
+      <!-- Block 7: 3 standard -->
+      <div class="pm-item" data-cat="shooting">
+        <img src="photo15.jpeg" alt="Shooting" loading="lazy">
+        <div class="pm-overlay">
+          <div class="pm-category">Shooting</div>
+          <div class="pm-title">Lumière naturelle</div>
+          <div class="pm-location">📍 Dakar, Sénégal</div>
+        </div>
+        <div class="pm-zoom">⤢</div>
+      </div>
+      <div class="pm-item" data-cat="mariage">
+        <img src="photo16.jpeg" alt="Mariage" loading="lazy">
+        <div class="pm-overlay">
+          <div class="pm-category">Mariage</div>
+          <div class="pm-title">La grande fête</div>
+          <div class="pm-location">📍 Dakar, Sénégal</div>
+        </div>
+        <div class="pm-zoom">⤢</div>
+      </div>
+      <div class="pm-item" data-cat="anniversaire">
+        <img src="photo17.jpeg" alt="Anniversaire" loading="lazy">
+        <div class="pm-overlay">
+          <div class="pm-category">Anniversaire</div>
+          <div class="pm-title">Gâteau & célébration</div>
+          <div class="pm-location">📍 Thiès, Sénégal</div>
+        </div>
+        <div class="pm-zoom">⤢</div>
+      </div>
+
+      <!-- Block 8: full banner final -->
+      <div class="pm-item" data-cat="shooting">
+        <img src="photo18.jpeg" alt="Shooting" loading="lazy">
+        <div class="pm-overlay">
+          <div class="pm-category">Shooting</div>
+          <div class="pm-title">Lumière & composition</div>
+          <div class="pm-location">📍 Dakar, Sénégal</div>
+        </div>
+        <div class="pm-zoom">⤢</div>
+      </div>
+
     </div>
   </div>
 </section>
@@ -1191,31 +789,19 @@
         <ul class="info-list">
           <li>
             <div class="icon-circle">📅</div>
-            <div>
-              <strong>Disponibilité flexible</strong><br>
-              <span style="color:var(--text-muted);font-size:13px;">Semaine & week-end, jour et soirée</span>
-            </div>
+            <div><strong>Disponibilité flexible</strong><br><span style="color:var(--text-muted);font-size:13px;">Semaine & week-end, jour et soirée</span></div>
           </li>
           <li>
             <div class="icon-circle">⚡</div>
-            <div>
-              <strong>Livraison rapide</strong><br>
-              <span style="color:var(--text-muted);font-size:13px;">Photos retouchées livrées en 48h</span>
-            </div>
+            <div><strong>Livraison rapide</strong><br><span style="color:var(--text-muted);font-size:13px;">Photos retouchées livrées en 48h</span></div>
           </li>
           <li>
             <div class="icon-circle">📍</div>
-            <div>
-              <strong>Dakar & Thiès</strong><br>
-              <span style="color:var(--text-muted);font-size:13px;">Déplacements possibles dans tout le Sénégal</span>
-            </div>
+            <div><strong>Dakar & Thiès</strong><br><span style="color:var(--text-muted);font-size:13px;">Déplacements possibles dans tout le Sénégal</span></div>
           </li>
           <li>
             <div class="icon-circle">💬</div>
-            <div>
-              <strong>Accompagnement personnalisé</strong><br>
-              <span style="color:var(--text-muted);font-size:13px;">Échange avant et après la séance</span>
-            </div>
+            <div><strong>Accompagnement personnalisé</strong><br><span style="color:var(--text-muted);font-size:13px;">Échange avant et après la séance</span></div>
           </li>
         </ul>
       </div>
@@ -1382,7 +968,6 @@
 <script>
 document.addEventListener("DOMContentLoaded", () => {
 
-  // Firebase config
   const firebaseConfig = {
     apiKey: "AIzaSyCP3ruoYjCeRTUBhRVsbRzi-R2UtNmrxGs",
     authDomain: "teopicture-ca10f.firebaseapp.com",
@@ -1395,11 +980,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const db = firebase.firestore();
   let datesIndisponibles = [];
 
-  // Date min
   const dateInput = document.getElementById("date");
   if (dateInput) dateInput.setAttribute("min", new Date().toISOString().split("T")[0]);
 
-  // Charger dates
   function chargerDates() {
     db.collection("reservations").get().then(snapshot => {
       datesIndisponibles = [];
@@ -1418,7 +1001,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Réservation
   window.envoyerReservation = function () {
     let nom = document.getElementById("nom").value;
     let tel = document.getElementById("telephone").value;
@@ -1465,7 +1047,6 @@ document.addEventListener("DOMContentLoaded", () => {
     db.collection("reservations").add(data).then(() => {
       window.location.href = "https://wa.me/221775781956?text=" + texteWA;
       fermerConfirm();
-      document.querySelector(".form-card").reset && document.querySelector(".form-card").reset();
       chargerDates();
     }).catch(err => {
       console.error(err);
@@ -1506,7 +1087,6 @@ document.getElementById("menuToggle").addEventListener("click", () => {
   document.getElementById("navLinks").classList.toggle("active");
 });
 
-// Close mobile menu on link click
 document.querySelectorAll(".nav-links a").forEach(a => {
   a.addEventListener("click", () => document.getElementById("navLinks").classList.remove("active"));
 });
@@ -1519,47 +1099,84 @@ function envoyerContact() {
   window.open("https://wa.me/221775781956?text=Bonjour, je vous contacte depuis TEOPICTURE.%0A%0ANom : " + nom + "%0ATéléphone : " + tel + "%0AMessage : " + msg);
 }
 
-// Lightbox
-const galleryItems = document.querySelectorAll(".gallery-item img");
+// ===== PORTFOLIO FILTERS =====
+const filterBtns = document.querySelectorAll(".pf-btn");
+const portfolioItems = document.querySelectorAll(".pm-item");
+
+filterBtns.forEach(btn => {
+  btn.addEventListener("click", () => {
+    filterBtns.forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+
+    const filter = btn.dataset.filter;
+
+    portfolioItems.forEach(item => {
+      if (filter === "all" || item.dataset.cat === filter) {
+        item.classList.remove("hidden");
+      } else {
+        item.classList.add("hidden");
+      }
+    });
+  });
+});
+
+// ===== LIGHTBOX =====
+const galleryItems = document.querySelectorAll(".pm-item img");
 const lightbox = document.getElementById("lightbox");
 const lbImg = document.getElementById("lbImg");
 const lbCounter = document.getElementById("lbCounter");
 let currentIdx = 0;
+let visibleItems = [];
 
-function showLb(idx) {
-  lbImg.src = galleryItems[idx].src;
-  lbCounter.textContent = (idx + 1) + " / " + galleryItems.length;
+function getVisibleItems() {
+  return Array.from(document.querySelectorAll(".pm-item:not(.hidden) img"));
 }
 
-galleryItems.forEach((img, i) => {
-  img.addEventListener("click", () => {
-    currentIdx = i;
-    showLb(i);
+function showLb(idx) {
+  visibleItems = getVisibleItems();
+  lbImg.src = visibleItems[idx].src;
+  lbCounter.textContent = (idx + 1) + " / " + visibleItems.length;
+}
+
+document.querySelectorAll(".pm-item").forEach((item) => {
+  item.addEventListener("click", () => {
+    visibleItems = getVisibleItems();
+    const img = item.querySelector("img");
+    currentIdx = visibleItems.indexOf(img);
+    showLb(currentIdx);
     lightbox.style.display = "flex";
   });
 });
 
 document.querySelector(".lb-close").addEventListener("click", () => lightbox.style.display = "none");
-document.querySelector(".lb-next").addEventListener("click", () => { currentIdx = (currentIdx + 1) % galleryItems.length; showLb(currentIdx); });
-document.querySelector(".lb-prev").addEventListener("click", () => { currentIdx = (currentIdx - 1 + galleryItems.length) % galleryItems.length; showLb(currentIdx); });
+document.querySelector(".lb-next").addEventListener("click", () => {
+  visibleItems = getVisibleItems();
+  currentIdx = (currentIdx + 1) % visibleItems.length;
+  showLb(currentIdx);
+});
+document.querySelector(".lb-prev").addEventListener("click", () => {
+  visibleItems = getVisibleItems();
+  currentIdx = (currentIdx - 1 + visibleItems.length) % visibleItems.length;
+  showLb(currentIdx);
+});
 
 lightbox.addEventListener("click", e => { if (e.target === lightbox) lightbox.style.display = "none"; });
 
 document.addEventListener("keydown", e => {
   if (lightbox.style.display === "flex") {
-    if (e.key === "ArrowRight") { currentIdx = (currentIdx + 1) % galleryItems.length; showLb(currentIdx); }
-    if (e.key === "ArrowLeft") { currentIdx = (currentIdx - 1 + galleryItems.length) % galleryItems.length; showLb(currentIdx); }
+    if (e.key === "ArrowRight") { visibleItems = getVisibleItems(); currentIdx = (currentIdx + 1) % visibleItems.length; showLb(currentIdx); }
+    if (e.key === "ArrowLeft") { visibleItems = getVisibleItems(); currentIdx = (currentIdx - 1 + visibleItems.length) % visibleItems.length; showLb(currentIdx); }
     if (e.key === "Escape") lightbox.style.display = "none";
   }
 });
 
-// Swipe
 let touchStartX = 0;
 lightbox.addEventListener("touchstart", e => touchStartX = e.touches[0].clientX);
 lightbox.addEventListener("touchend", e => {
   let diff = touchStartX - e.changedTouches[0].clientX;
-  if (diff > 50) { currentIdx = (currentIdx + 1) % galleryItems.length; showLb(currentIdx); }
-  if (diff < -50) { currentIdx = (currentIdx - 1 + galleryItems.length) % galleryItems.length; showLb(currentIdx); }
+  visibleItems = getVisibleItems();
+  if (diff > 50) { currentIdx = (currentIdx + 1) % visibleItems.length; showLb(currentIdx); }
+  if (diff < -50) { currentIdx = (currentIdx - 1 + visibleItems.length) % visibleItems.length; showLb(currentIdx); }
 });
 </script>
 </body>
