@@ -515,15 +515,6 @@
       <p class="section-subtitle">Chaque image raconte une histoire unique</p>
     </div>
 
-    <!-- Filters -->
-    <div class="portfolio-filters reveal">
-      <button class="pf-btn active" data-filter="all">Tous</button>
-      <button class="pf-btn" data-filter="mariage">Mariage</button>
-      <button class="pf-btn" data-filter="anniversaire">Anniversaire</button>
-      <button class="pf-btn" data-filter="bapteme">Baptême</button>
-      <button class="pf-btn" data-filter="shooting">Shooting</button>
-    </div>
-
     <!-- Masonry gallery — proportions naturelles, zéro déformation -->
     <div class="masonry-grid reveal" id="portfolioGrid">
 
@@ -1098,27 +1089,6 @@ function envoyerContact() {
   let msg = document.getElementById("contactMsg").value;
   window.open("https://wa.me/221775781956?text=Bonjour, je vous contacte depuis TEOPICTURE.%0A%0ANom : " + nom + "%0ATéléphone : " + tel + "%0AMessage : " + msg);
 }
-
-// ===== PORTFOLIO FILTERS =====
-const filterBtns = document.querySelectorAll(".pf-btn");
-const portfolioItems = document.querySelectorAll(".pm-item");
-
-filterBtns.forEach(btn => {
-  btn.addEventListener("click", () => {
-    filterBtns.forEach(b => b.classList.remove("active"));
-    btn.classList.add("active");
-
-    const filter = btn.dataset.filter;
-
-    portfolioItems.forEach(item => {
-      if (filter === "all" || item.dataset.cat === filter) {
-        item.classList.remove("hidden");
-      } else {
-        item.classList.add("hidden");
-      }
-    });
-  });
-});
 
 // ===== LIGHTBOX =====
 const galleryItems = document.querySelectorAll(".pm-item img");
