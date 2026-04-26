@@ -160,18 +160,9 @@
     .section-subtitle { font-size: 16px; color: var(--text-muted); max-width: 500px; margin: 0 auto; }
 
     /* ===== PORTFOLIO — MASONRY ===== */
-    #portfolio {
-      background: var(--black);
-      padding: 120px 60px;
-    }
+    #portfolio { background: var(--black); padding: 120px 60px; }
 
-    .portfolio-filters {
-      display: flex;
-      gap: 10px;
-      justify-content: center;
-      flex-wrap: wrap;
-      margin-bottom: 64px;
-    }
+    .portfolio-filters { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 64px; }
 
     .pf-btn {
       background: transparent;
@@ -191,11 +182,7 @@
     .pf-btn:hover { color: var(--white); border-color: rgba(255,255,255,0.4); }
     .pf-btn.active { background: var(--orange); border-color: var(--orange); color: var(--black); font-weight: 700; }
 
-    /* Masonry container : 3 colonnes CSS columns */
-    .masonry-grid {
-      columns: 3;
-      column-gap: 14px;
-    }
+    .masonry-grid { columns: 3; column-gap: 14px; }
 
     .pm-item {
       break-inside: avoid;
@@ -208,125 +195,34 @@
       background: var(--dark2);
     }
 
-    /* L'image garde sa hauteur naturelle — zéro crop */
-    .pm-item img {
-      width: 100%;
-      height: auto;
-      display: block;
-      border-radius: 8px;
-      transition: transform 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94), filter 0.4s ease;
-      filter: brightness(0.85);
-    }
+    .pm-item img { width: 100%; height: auto; display: block; border-radius: 8px; transition: transform 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94), filter 0.4s ease; filter: brightness(0.85); }
+    .pm-item:hover img { transform: scale(1.04); filter: brightness(1); }
 
-    .pm-item:hover img {
-      transform: scale(1.04);
-      filter: brightness(1);
-    }
-
-    /* Overlay info au hover */
     .pm-overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(
-        to top,
-        rgba(0,0,0,0.82) 0%,
-        rgba(0,0,0,0.1) 50%,
-        transparent 75%
-      );
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      padding: 22px 20px;
-      opacity: 0;
-      transition: opacity 0.32s ease;
-      border-radius: 8px;
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.1) 50%, transparent 75%);
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 22px 20px; opacity: 0; transition: opacity 0.32s ease; border-radius: 8px;
     }
-
     .pm-item:hover .pm-overlay { opacity: 1; }
 
-    .pm-category {
-      font-size: 9px;
-      font-weight: 700;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: var(--orange);
-      margin-bottom: 5px;
-    }
+    .pm-category { font-size: 9px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: var(--orange); margin-bottom: 5px; }
+    .pm-title { font-size: 15px; font-weight: 600; color: var(--white); line-height: 1.3; }
+    .pm-location { font-size: 12px; color: rgba(255,255,255,0.5); margin-top: 4px; }
 
-    .pm-title {
-      font-size: 15px;
-      font-weight: 600;
-      color: var(--white);
-      line-height: 1.3;
-    }
-
-    .pm-location {
-      font-size: 12px;
-      color: rgba(255,255,255,0.5);
-      margin-top: 4px;
-    }
-
-    /* Barre orange glissante en bas */
-    .pm-item::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 3px;
-      background: var(--orange);
-      transform: scaleX(0);
-      transform-origin: left;
-      transition: transform 0.35s ease;
-      border-radius: 0 0 8px 8px;
-    }
+    .pm-item::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: var(--orange); transform: scaleX(0); transform-origin: left; transition: transform 0.35s ease; border-radius: 0 0 8px 8px; }
     .pm-item:hover::after { transform: scaleX(1); }
 
-    /* Icône zoom */
-    .pm-zoom {
-      position: absolute;
-      top: 14px;
-      right: 14px;
-      width: 36px;
-      height: 36px;
-      background: rgba(0,0,0,0.55);
-      border: 1px solid rgba(255,255,255,0.18);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      opacity: 0;
-      transition: opacity 0.25s ease, transform 0.2s;
-      font-size: 15px;
-      color: #fff;
-    }
+    .pm-zoom { position: absolute; top: 14px; right: 14px; width: 36px; height: 36px; background: rgba(0,0,0,0.55); border: 1px solid rgba(255,255,255,0.18); border-radius: 50%; display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.25s ease, transform 0.2s; font-size: 15px; color: #fff; }
     .pm-item:hover .pm-zoom { opacity: 1; }
     .pm-zoom:hover { transform: scale(1.15); }
 
-    /* Filtre masonry : cacher sans casser le layout */
     .pm-item.hidden { display: none; }
+    .pm-item { animation: fadeInUp 0.45s ease both; }
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
 
-    /* Animation d'apparition */
-    .pm-item {
-      animation: fadeInUp 0.45s ease both;
-    }
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(18px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    @media (max-width: 900px) {
-      .masonry-grid { columns: 2; column-gap: 12px; }
-      .pm-item { margin-bottom: 12px; }
-    }
-
-    @media (max-width: 520px) {
-      #portfolio { padding: 80px 18px; }
-      .masonry-grid { columns: 2; column-gap: 8px; }
-      .pm-item { margin-bottom: 8px; border-radius: 6px; }
-      .portfolio-filters { margin-bottom: 36px; }
-      .pf-btn { padding: 8px 16px; font-size: 10px; }
-    }
+    @media (max-width: 900px) { .masonry-grid { columns: 2; column-gap: 12px; } .pm-item { margin-bottom: 12px; } }
+    @media (max-width: 520px) { #portfolio { padding: 80px 18px; } .masonry-grid { columns: 2; column-gap: 8px; } .pm-item { margin-bottom: 8px; border-radius: 6px; } .portfolio-filters { margin-bottom: 36px; } .pf-btn { padding: 8px 16px; font-size: 10px; } }
 
     /* ===== SERVICES ===== */
     #services { background: var(--dark); }
@@ -454,6 +350,9 @@
 
     .admin-link { margin-left: 20px; padding: 9px 18px; background: linear-gradient(135deg, var(--orange), var(--orange-light)); color: var(--black); font-size: 13px; font-weight: 700; border-radius: 20px; box-shadow: 0 4px 10px rgba(255,152,0,0.3); transition: all 0.3s ease; }
     .admin-link:hover { transform: scale(1.05); box-shadow: 0 6px 15px rgba(255,152,0,0.5); }
+
+    /* Bouton désactivé pendant envoi */
+    .btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none !important; }
   </style>
 </head>
 <body>
@@ -506,7 +405,7 @@
   </div>
 </div>
 
-<!-- PORTFOLIO — NEW MOSAIC DESIGN -->
+<!-- PORTFOLIO -->
 <section id="portfolio">
   <div class="section-inner">
     <div class="section-header reveal">
@@ -515,187 +414,97 @@
       <p class="section-subtitle">Chaque image raconte une histoire unique</p>
     </div>
 
-    <!-- Masonry gallery — proportions naturelles, zéro déformation -->
     <div class="masonry-grid reveal" id="portfolioGrid">
-
-      <!-- Block 1: hero + portrait -->
       <div class="pm-item" data-cat="mariage">
         <img src="photo1.jpeg" alt="Mariage" loading="lazy">
-        <div class="pm-overlay">
-          <div class="pm-category">Mariage</div>
-          <div class="pm-title">Cérémonie de mariage</div>
-          <div class="pm-location">📍 Dakar, Sénégal</div>
-        </div>
+        <div class="pm-overlay"><div class="pm-category">Mariage</div><div class="pm-title">Cérémonie de mariage</div><div class="pm-location">📍 Dakar, Sénégal</div></div>
         <div class="pm-zoom">⤢</div>
       </div>
       <div class="pm-item" data-cat="shooting">
         <img src="photo2.jpeg" alt="Shooting" loading="lazy">
-        <div class="pm-overlay">
-          <div class="pm-category">Shooting</div>
-          <div class="pm-title">Portrait élégant</div>
-          <div class="pm-location">📍 Thiès, Sénégal</div>
-        </div>
+        <div class="pm-overlay"><div class="pm-category">Shooting</div><div class="pm-title">Portrait élégant</div><div class="pm-location">📍 Thiès, Sénégal</div></div>
         <div class="pm-zoom">⤢</div>
       </div>
-
-      <!-- Block 2: 3 standard cards -->
       <div class="pm-item" data-cat="anniversaire">
         <img src="photo3.jpeg" alt="Anniversaire" loading="lazy">
-        <div class="pm-overlay">
-          <div class="pm-category">Anniversaire</div>
-          <div class="pm-title">Fête d'anniversaire</div>
-          <div class="pm-location">📍 Dakar, Sénégal</div>
-        </div>
+        <div class="pm-overlay"><div class="pm-category">Anniversaire</div><div class="pm-title">Fête d'anniversaire</div><div class="pm-location">📍 Dakar, Sénégal</div></div>
         <div class="pm-zoom">⤢</div>
       </div>
       <div class="pm-item" data-cat="bapteme">
         <img src="photo4.jpeg" alt="Baptême" loading="lazy">
-        <div class="pm-overlay">
-          <div class="pm-category">Baptême</div>
-          <div class="pm-title">Cérémonie baptême</div>
-          <div class="pm-location">📍 Dakar, Sénégal</div>
-        </div>
+        <div class="pm-overlay"><div class="pm-category">Baptême</div><div class="pm-title">Cérémonie baptême</div><div class="pm-location">📍 Dakar, Sénégal</div></div>
         <div class="pm-zoom">⤢</div>
       </div>
       <div class="pm-item" data-cat="mariage">
         <img src="photo5.jpeg" alt="Mariage" loading="lazy">
-        <div class="pm-overlay">
-          <div class="pm-category">Mariage</div>
-          <div class="pm-title">Les mariés</div>
-          <div class="pm-location">📍 Thiès, Sénégal</div>
-        </div>
+        <div class="pm-overlay"><div class="pm-category">Mariage</div><div class="pm-title">Les mariés</div><div class="pm-location">📍 Thiès, Sénégal</div></div>
         <div class="pm-zoom">⤢</div>
       </div>
-
-      <!-- Block 3: full banner -->
       <div class="pm-item" data-cat="mariage">
         <img src="photo6.jpeg" alt="Mariage" loading="lazy">
-        <div class="pm-overlay">
-          <div class="pm-category">Mariage</div>
-          <div class="pm-title">Réception & grande fête</div>
-          <div class="pm-location">📍 Dakar, Sénégal</div>
-        </div>
+        <div class="pm-overlay"><div class="pm-category">Mariage</div><div class="pm-title">Réception & grande fête</div><div class="pm-location">📍 Dakar, Sénégal</div></div>
         <div class="pm-zoom">⤢</div>
       </div>
-
-      <!-- Block 4: portrait + landscape -->
       <div class="pm-item" data-cat="shooting">
         <img src="photo7.jpeg" alt="Shooting" loading="lazy">
-        <div class="pm-overlay">
-          <div class="pm-category">Shooting</div>
-          <div class="pm-title">Mode & portrait</div>
-          <div class="pm-location">📍 Dakar, Sénégal</div>
-        </div>
+        <div class="pm-overlay"><div class="pm-category">Shooting</div><div class="pm-title">Mode & portrait</div><div class="pm-location">📍 Dakar, Sénégal</div></div>
         <div class="pm-zoom">⤢</div>
       </div>
       <div class="pm-item" data-cat="anniversaire">
         <img src="photo8.jpeg" alt="Anniversaire" loading="lazy">
-        <div class="pm-overlay">
-          <div class="pm-category">Anniversaire</div>
-          <div class="pm-title">Ambiance festive</div>
-          <div class="pm-location">📍 Dakar, Sénégal</div>
-        </div>
+        <div class="pm-overlay"><div class="pm-category">Anniversaire</div><div class="pm-title">Ambiance festive</div><div class="pm-location">📍 Dakar, Sénégal</div></div>
         <div class="pm-zoom">⤢</div>
       </div>
       <div class="pm-item" data-cat="bapteme">
         <img src="photo9.jpeg" alt="Baptême" loading="lazy">
-        <div class="pm-overlay">
-          <div class="pm-category">Baptême</div>
-          <div class="pm-title">Baptême en famille</div>
-          <div class="pm-location">📍 Thiès, Sénégal</div>
-        </div>
+        <div class="pm-overlay"><div class="pm-category">Baptême</div><div class="pm-title">Baptême en famille</div><div class="pm-location">📍 Thiès, Sénégal</div></div>
         <div class="pm-zoom">⤢</div>
       </div>
-
-      <!-- Block 5: 3 standard -->
       <div class="pm-item" data-cat="mariage">
         <img src="photo10.jpeg" alt="Mariage" loading="lazy">
-        <div class="pm-overlay">
-          <div class="pm-category">Mariage</div>
-          <div class="pm-title">Instant complice</div>
-          <div class="pm-location">📍 Dakar, Sénégal</div>
-        </div>
+        <div class="pm-overlay"><div class="pm-category">Mariage</div><div class="pm-title">Instant complice</div><div class="pm-location">📍 Dakar, Sénégal</div></div>
         <div class="pm-zoom">⤢</div>
       </div>
       <div class="pm-item" data-cat="shooting">
         <img src="photo11.jpeg" alt="Shooting" loading="lazy">
-        <div class="pm-overlay">
-          <div class="pm-category">Shooting</div>
-          <div class="pm-title">Séance créative</div>
-          <div class="pm-location">📍 Dakar, Sénégal</div>
-        </div>
+        <div class="pm-overlay"><div class="pm-category">Shooting</div><div class="pm-title">Séance créative</div><div class="pm-location">📍 Dakar, Sénégal</div></div>
         <div class="pm-zoom">⤢</div>
       </div>
       <div class="pm-item" data-cat="anniversaire">
         <img src="photo12.jpeg" alt="Anniversaire" loading="lazy">
-        <div class="pm-overlay">
-          <div class="pm-category">Anniversaire</div>
-          <div class="pm-title">Moments de joie</div>
-          <div class="pm-location">📍 Dakar, Sénégal</div>
-        </div>
+        <div class="pm-overlay"><div class="pm-category">Anniversaire</div><div class="pm-title">Moments de joie</div><div class="pm-location">📍 Dakar, Sénégal</div></div>
         <div class="pm-zoom">⤢</div>
       </div>
-
-      <!-- Block 6: hero inversé -->
       <div class="pm-item" data-cat="mariage">
         <img src="photo13.jpeg" alt="Mariage" loading="lazy">
-        <div class="pm-overlay">
-          <div class="pm-category">Mariage</div>
-          <div class="pm-title">Échange des vœux</div>
-          <div class="pm-location">📍 Dakar, Sénégal</div>
-        </div>
+        <div class="pm-overlay"><div class="pm-category">Mariage</div><div class="pm-title">Échange des vœux</div><div class="pm-location">📍 Dakar, Sénégal</div></div>
         <div class="pm-zoom">⤢</div>
       </div>
       <div class="pm-item" data-cat="bapteme">
         <img src="photo14.jpeg" alt="Baptême" loading="lazy">
-        <div class="pm-overlay">
-          <div class="pm-category">Baptême</div>
-          <div class="pm-title">Jour de baptême</div>
-          <div class="pm-location">📍 Dakar, Sénégal</div>
-        </div>
+        <div class="pm-overlay"><div class="pm-category">Baptême</div><div class="pm-title">Jour de baptême</div><div class="pm-location">📍 Dakar, Sénégal</div></div>
         <div class="pm-zoom">⤢</div>
       </div>
-
-      <!-- Block 7: 3 standard -->
       <div class="pm-item" data-cat="shooting">
         <img src="photo15.jpeg" alt="Shooting" loading="lazy">
-        <div class="pm-overlay">
-          <div class="pm-category">Shooting</div>
-          <div class="pm-title">Lumière naturelle</div>
-          <div class="pm-location">📍 Dakar, Sénégal</div>
-        </div>
+        <div class="pm-overlay"><div class="pm-category">Shooting</div><div class="pm-title">Lumière naturelle</div><div class="pm-location">📍 Dakar, Sénégal</div></div>
         <div class="pm-zoom">⤢</div>
       </div>
       <div class="pm-item" data-cat="mariage">
         <img src="photo16.jpeg" alt="Mariage" loading="lazy">
-        <div class="pm-overlay">
-          <div class="pm-category">Mariage</div>
-          <div class="pm-title">La grande fête</div>
-          <div class="pm-location">📍 Dakar, Sénégal</div>
-        </div>
+        <div class="pm-overlay"><div class="pm-category">Mariage</div><div class="pm-title">La grande fête</div><div class="pm-location">📍 Dakar, Sénégal</div></div>
         <div class="pm-zoom">⤢</div>
       </div>
       <div class="pm-item" data-cat="anniversaire">
         <img src="photo17.jpeg" alt="Anniversaire" loading="lazy">
-        <div class="pm-overlay">
-          <div class="pm-category">Anniversaire</div>
-          <div class="pm-title">Gâteau & célébration</div>
-          <div class="pm-location">📍 Thiès, Sénégal</div>
-        </div>
+        <div class="pm-overlay"><div class="pm-category">Anniversaire</div><div class="pm-title">Gâteau & célébration</div><div class="pm-location">📍 Thiès, Sénégal</div></div>
         <div class="pm-zoom">⤢</div>
       </div>
-
-      <!-- Block 8: full banner final -->
       <div class="pm-item" data-cat="shooting">
         <img src="photo18.jpeg" alt="Shooting" loading="lazy">
-        <div class="pm-overlay">
-          <div class="pm-category">Shooting</div>
-          <div class="pm-title">Lumière & composition</div>
-          <div class="pm-location">📍 Dakar, Sénégal</div>
-        </div>
+        <div class="pm-overlay"><div class="pm-category">Shooting</div><div class="pm-title">Lumière & composition</div><div class="pm-location">📍 Dakar, Sénégal</div></div>
         <div class="pm-zoom">⤢</div>
       </div>
-
     </div>
   </div>
 </section>
@@ -836,7 +645,7 @@
           <label for="message">Message (optionnel)</label>
           <textarea id="message" rows="3" placeholder="Détails supplémentaires..."></textarea>
         </div>
-        <button type="button" onclick="envoyerReservation()" class="btn btn-primary form-submit">
+        <button type="button" id="btnReserver" onclick="envoyerReservation()" class="btn btn-primary form-submit">
           Confirmer la réservation
         </button>
       </div>
@@ -947,18 +756,17 @@
     <div class="confirm-details" id="confirmText"></div>
     <div class="confirm-buttons">
       <button onclick="fermerConfirm()" class="btn btn-gray">Annuler</button>
-      <button onclick="confirmerEnvoi()" class="btn btn-primary">Confirmer ✓</button>
+      <button id="btnConfirmer" onclick="confirmerEnvoi()" class="btn btn-primary">Confirmer ✓</button>
     </div>
   </div>
 </div>
 
-<!-- FIREBASE -->
+<!-- ===== FIREBASE ===== -->
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 
 <script>
-document.addEventListener("DOMContentLoaded", () => {
-
+  /* ---- INITIALISATION FIREBASE (globale, hors DOMContentLoaded) ---- */
   const firebaseConfig = {
     apiKey: "AIzaSyCP3ruoYjCeRTUBhRVsbRzi-R2UtNmrxGs",
     authDomain: "teopicture-ca10f.firebaseapp.com",
@@ -967,38 +775,63 @@ document.addEventListener("DOMContentLoaded", () => {
     messagingSenderId: "205836454272",
     appId: "1:205836454272:web:e7c4b001049d03972bd965"
   };
-  firebase.initializeApp(firebaseConfig);
+
+  /* Evite le crash "Firebase App named '[DEFAULT]' already exists" */
+  if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+  }
+
   const db = firebase.firestore();
   let datesIndisponibles = [];
 
-  const dateInput = document.getElementById("date");
-  if (dateInput) dateInput.setAttribute("min", new Date().toISOString().split("T")[0]);
-
+  /* ---- Chargement des dates réservées ---- */
   function chargerDates() {
-    db.collection("reservations").get().then(snapshot => {
-      datesIndisponibles = [];
-      snapshot.forEach(doc => datesIndisponibles.push(doc.data().dateComplete));
-    });
+    db.collection("reservations").get()
+      .then(snapshot => {
+        datesIndisponibles = [];
+        snapshot.forEach(doc => {
+          const d = doc.data();
+          if (d.dateComplete) datesIndisponibles.push(d.dateComplete);
+        });
+      })
+      .catch(err => console.error("Erreur chargement dates :", err));
   }
   chargerDates();
 
-  if (dateInput) {
-    dateInput.addEventListener("change", function () {
-      let heure = document.getElementById("heure").value;
-      if (datesIndisponibles.includes(this.value + " " + heure)) {
-        alert("❌ Ce créneau est déjà réservé !");
-        this.value = "";
-      }
-    });
-  }
+  /* ---- Validation créneau en temps réel ---- */
+  document.addEventListener("DOMContentLoaded", () => {
+    const dateInput = document.getElementById("date");
+    if (dateInput) {
+      dateInput.setAttribute("min", new Date().toISOString().split("T")[0]);
+      dateInput.addEventListener("change", function () {
+        const heure = document.getElementById("heure").value;
+        if (heure && datesIndisponibles.includes(this.value + " " + heure)) {
+          alert("❌ Ce créneau est déjà réservé !");
+          this.value = "";
+        }
+      });
+    }
 
-  window.envoyerReservation = function () {
-    let nom = document.getElementById("nom").value;
-    let tel = document.getElementById("telephone").value;
-    let evenement = document.getElementById("evenement").value;
-    let date = document.getElementById("date").value;
-    let heure = document.getElementById("heure").value;
-    let lieu = document.getElementById("lieu").value;
+    const heureInput = document.getElementById("heure");
+    if (heureInput) {
+      heureInput.addEventListener("change", function () {
+        const date = document.getElementById("date").value;
+        if (date && datesIndisponibles.includes(date + " " + this.value)) {
+          alert("❌ Ce créneau est déjà réservé !");
+          this.value = "";
+        }
+      });
+    }
+  });
+
+  /* ---- ÉTAPE 1 : afficher le popup de confirmation ---- */
+  function envoyerReservation() {
+    const nom      = document.getElementById("nom").value.trim();
+    const tel      = document.getElementById("telephone").value.trim();
+    const evenement= document.getElementById("evenement").value;
+    const date     = document.getElementById("date").value;
+    const heure    = document.getElementById("heure").value;
+    const lieu     = document.getElementById("lieu").value.trim();
 
     if (!nom || !tel || !date || !heure) {
       alert("⚠️ Veuillez remplir tous les champs obligatoires !");
@@ -1016,138 +849,176 @@ document.addEventListener("DOMContentLoaded", () => {
       "\nÉvénement : " + evenement +
       "\nDate : " + date +
       "\nHeure : " + heure +
-      "\nLieu : " + lieu;
+      "\nLieu : " + (lieu || "Non précisé");
 
     document.getElementById("confirmBox").style.display = "flex";
-  };
+  }
 
-  window.confirmerEnvoi = function () {
-    let nom = document.getElementById("nom").value;
-    let tel = document.getElementById("telephone").value;
-    let evenement = document.getElementById("evenement").value;
-    let date = document.getElementById("date").value;
-    let heure = document.getElementById("heure").value;
-    let lieu = document.getElementById("lieu").value;
-    let msg = document.getElementById("message").value;
-    let dateComplete = date + " " + heure;
+  /* ---- ÉTAPE 2 : enregistrer dans Firestore puis rediriger vers WhatsApp ---- */
+  function confirmerEnvoi() {
+    const btnConfirmer = document.getElementById("btnConfirmer");
+    btnConfirmer.disabled = true;
+    btnConfirmer.textContent = "Envoi en cours...";
 
-    let data = { nom, telephone: tel, evenement, date, heure, dateComplete, lieu, message: msg, createdAt: new Date() };
+    const nom       = document.getElementById("nom").value.trim();
+    const tel       = document.getElementById("telephone").value.trim();
+    const evenement = document.getElementById("evenement").value;
+    const date      = document.getElementById("date").value;
+    const heure     = document.getElementById("heure").value;
+    const lieu      = document.getElementById("lieu").value.trim();
+    const msg       = document.getElementById("message").value.trim();
+    const dateComplete = date + " " + heure;
 
-    let texteWA = "📸 *NOUVELLE RÉSERVATION* %0A%0A*Nom* : " + nom + "%0A*Téléphone* : " + tel + "%0A*Événement* : " + evenement + "%0A*Date* : " + date + "%0A*Heure* : " + heure + "%0A*Lieu* : " + lieu + "%0A*Message* : " + msg;
+    const data = {
+      nom,
+      telephone: tel,
+      evenement,
+      date,
+      heure,
+      dateComplete,
+      lieu,
+      message: msg,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    };
 
-    db.collection("reservations").add(data).then(() => {
-      window.location.href = "https://wa.me/221775781956?text=" + texteWA;
-      fermerConfirm();
-      chargerDates();
-    }).catch(err => {
-      console.error(err);
-      alert("❌ Erreur lors de l'enregistrement !");
-    });
-  };
+    const texteWA =
+      "📸 *NOUVELLE RÉSERVATION*%0A%0A" +
+      "*Nom* : " + encodeURIComponent(nom) +
+      "%0A*Téléphone* : " + encodeURIComponent(tel) +
+      "%0A*Événement* : " + encodeURIComponent(evenement) +
+      "%0A*Date* : " + encodeURIComponent(date) +
+      "%0A*Heure* : " + encodeURIComponent(heure) +
+      "%0A*Lieu* : " + encodeURIComponent(lieu || "Non précisé") +
+      "%0A*Message* : " + encodeURIComponent(msg || "—");
 
-  window.fermerConfirm = function () {
+    db.collection("reservations").add(data)
+      .then(() => {
+        fermerConfirm();
+        chargerDates();
+        /* Réinitialiser le formulaire */
+        ["nom","telephone","date","heure","lieu","message"].forEach(id => {
+          document.getElementById(id).value = "";
+        });
+        /* Ouvrir WhatsApp */
+        window.open("https://wa.me/221775781956?text=" + texteWA, "_blank");
+      })
+      .catch(err => {
+        console.error("Erreur Firestore :", err);
+        alert("❌ Erreur lors de l'enregistrement : " + err.message);
+      })
+      .finally(() => {
+        btnConfirmer.disabled = false;
+        btnConfirmer.textContent = "Confirmer ✓";
+      });
+  }
+
+  function fermerConfirm() {
     document.getElementById("confirmBox").style.display = "none";
-  };
-});
+  }
 </script>
 
 <script>
-// Navbar scroll
-window.addEventListener("scroll", () => {
-  document.getElementById("mainHeader").classList.toggle("scrolled", window.scrollY > 50);
-});
-
-// Reveal animations
-const reveals = document.querySelectorAll(".reveal");
-function checkReveal() {
-  reveals.forEach(el => {
-    if (el.getBoundingClientRect().top < window.innerHeight - 80) el.classList.add("visible");
+  /* ===== NAVBAR SCROLL ===== */
+  window.addEventListener("scroll", () => {
+    document.getElementById("mainHeader").classList.toggle("scrolled", window.scrollY > 50);
   });
-}
-window.addEventListener("scroll", checkReveal);
-window.addEventListener("load", checkReveal);
 
-// Services toggle
-function toggleDetails(service) {
-  const el = document.getElementById("details-" + service);
-  el.style.display = el.style.display === "block" ? "none" : "block";
-}
-
-// Mobile menu
-document.getElementById("menuToggle").addEventListener("click", () => {
-  document.getElementById("navLinks").classList.toggle("active");
-});
-
-document.querySelectorAll(".nav-links a").forEach(a => {
-  a.addEventListener("click", () => document.getElementById("navLinks").classList.remove("active"));
-});
-
-// Contact WhatsApp
-function envoyerContact() {
-  let nom = document.getElementById("contactNom").value;
-  let tel = document.getElementById("contactTel").value;
-  let msg = document.getElementById("contactMsg").value;
-  window.open("https://wa.me/221775781956?text=Bonjour, je vous contacte depuis TEOPICTURE.%0A%0ANom : " + nom + "%0ATéléphone : " + tel + "%0AMessage : " + msg);
-}
-
-// ===== LIGHTBOX =====
-const galleryItems = document.querySelectorAll(".pm-item img");
-const lightbox = document.getElementById("lightbox");
-const lbImg = document.getElementById("lbImg");
-const lbCounter = document.getElementById("lbCounter");
-let currentIdx = 0;
-let visibleItems = [];
-
-function getVisibleItems() {
-  return Array.from(document.querySelectorAll(".pm-item:not(.hidden) img"));
-}
-
-function showLb(idx) {
-  visibleItems = getVisibleItems();
-  lbImg.src = visibleItems[idx].src;
-  lbCounter.textContent = (idx + 1) + " / " + visibleItems.length;
-}
-
-document.querySelectorAll(".pm-item").forEach((item) => {
-  item.addEventListener("click", () => {
-    visibleItems = getVisibleItems();
-    const img = item.querySelector("img");
-    currentIdx = visibleItems.indexOf(img);
-    showLb(currentIdx);
-    lightbox.style.display = "flex";
-  });
-});
-
-document.querySelector(".lb-close").addEventListener("click", () => lightbox.style.display = "none");
-document.querySelector(".lb-next").addEventListener("click", () => {
-  visibleItems = getVisibleItems();
-  currentIdx = (currentIdx + 1) % visibleItems.length;
-  showLb(currentIdx);
-});
-document.querySelector(".lb-prev").addEventListener("click", () => {
-  visibleItems = getVisibleItems();
-  currentIdx = (currentIdx - 1 + visibleItems.length) % visibleItems.length;
-  showLb(currentIdx);
-});
-
-lightbox.addEventListener("click", e => { if (e.target === lightbox) lightbox.style.display = "none"; });
-
-document.addEventListener("keydown", e => {
-  if (lightbox.style.display === "flex") {
-    if (e.key === "ArrowRight") { visibleItems = getVisibleItems(); currentIdx = (currentIdx + 1) % visibleItems.length; showLb(currentIdx); }
-    if (e.key === "ArrowLeft") { visibleItems = getVisibleItems(); currentIdx = (currentIdx - 1 + visibleItems.length) % visibleItems.length; showLb(currentIdx); }
-    if (e.key === "Escape") lightbox.style.display = "none";
+  /* ===== REVEAL ANIMATIONS ===== */
+  const reveals = document.querySelectorAll(".reveal");
+  function checkReveal() {
+    reveals.forEach(el => {
+      if (el.getBoundingClientRect().top < window.innerHeight - 80) el.classList.add("visible");
+    });
   }
-});
+  window.addEventListener("scroll", checkReveal);
+  window.addEventListener("load", checkReveal);
 
-let touchStartX = 0;
-lightbox.addEventListener("touchstart", e => touchStartX = e.touches[0].clientX);
-lightbox.addEventListener("touchend", e => {
-  let diff = touchStartX - e.changedTouches[0].clientX;
-  visibleItems = getVisibleItems();
-  if (diff > 50) { currentIdx = (currentIdx + 1) % visibleItems.length; showLb(currentIdx); }
-  if (diff < -50) { currentIdx = (currentIdx - 1 + visibleItems.length) % visibleItems.length; showLb(currentIdx); }
-});
+  /* ===== SERVICES TOGGLE ===== */
+  function toggleDetails(service) {
+    const el = document.getElementById("details-" + service);
+    el.style.display = el.style.display === "block" ? "none" : "block";
+  }
+
+  /* ===== MOBILE MENU ===== */
+  document.getElementById("menuToggle").addEventListener("click", () => {
+    document.getElementById("navLinks").classList.toggle("active");
+  });
+  document.querySelectorAll(".nav-links a").forEach(a => {
+    a.addEventListener("click", () => document.getElementById("navLinks").classList.remove("active"));
+  });
+
+  /* ===== CONTACT WHATSAPP ===== */
+  function envoyerContact() {
+    const nom = document.getElementById("contactNom").value.trim();
+    const tel = document.getElementById("contactTel").value.trim();
+    const msg = document.getElementById("contactMsg").value.trim();
+    if (!nom || !msg) { alert("⚠️ Veuillez remplir votre nom et votre message."); return; }
+    window.open(
+      "https://wa.me/221775781956?text=" +
+      "Bonjour, je vous contacte depuis TEOPICTURE.%0A%0A" +
+      "Nom : " + encodeURIComponent(nom) +
+      "%0ATéléphone : " + encodeURIComponent(tel) +
+      "%0AMessage : " + encodeURIComponent(msg),
+      "_blank"
+    );
+  }
+
+  /* ===== LIGHTBOX ===== */
+  const lightbox   = document.getElementById("lightbox");
+  const lbImg      = document.getElementById("lbImg");
+  const lbCounter  = document.getElementById("lbCounter");
+  let currentIdx   = 0;
+  let visibleItems = [];
+
+  function getVisibleItems() {
+    return Array.from(document.querySelectorAll(".pm-item:not(.hidden) img"));
+  }
+  function showLb(idx) {
+    visibleItems = getVisibleItems();
+    lbImg.src = visibleItems[idx].src;
+    lbCounter.textContent = (idx + 1) + " / " + visibleItems.length;
+  }
+
+  document.querySelectorAll(".pm-item").forEach(item => {
+    item.addEventListener("click", () => {
+      visibleItems = getVisibleItems();
+      const img = item.querySelector("img");
+      currentIdx = visibleItems.indexOf(img);
+      showLb(currentIdx);
+      lightbox.style.display = "flex";
+    });
+  });
+
+  document.querySelector(".lb-close").addEventListener("click", () => lightbox.style.display = "none");
+  document.querySelector(".lb-next").addEventListener("click", () => {
+    visibleItems = getVisibleItems();
+    currentIdx = (currentIdx + 1) % visibleItems.length;
+    showLb(currentIdx);
+  });
+  document.querySelector(".lb-prev").addEventListener("click", () => {
+    visibleItems = getVisibleItems();
+    currentIdx = (currentIdx - 1 + visibleItems.length) % visibleItems.length;
+    showLb(currentIdx);
+  });
+  lightbox.addEventListener("click", e => { if (e.target === lightbox) lightbox.style.display = "none"; });
+
+  document.addEventListener("keydown", e => {
+    if (lightbox.style.display === "flex") {
+      visibleItems = getVisibleItems();
+      if (e.key === "ArrowRight") { currentIdx = (currentIdx + 1) % visibleItems.length; showLb(currentIdx); }
+      if (e.key === "ArrowLeft")  { currentIdx = (currentIdx - 1 + visibleItems.length) % visibleItems.length; showLb(currentIdx); }
+      if (e.key === "Escape") lightbox.style.display = "none";
+    }
+  });
+
+  let touchStartX = 0;
+  lightbox.addEventListener("touchstart", e => touchStartX = e.touches[0].clientX);
+  lightbox.addEventListener("touchend", e => {
+    const diff = touchStartX - e.changedTouches[0].clientX;
+    visibleItems = getVisibleItems();
+    if (diff > 50)  { currentIdx = (currentIdx + 1) % visibleItems.length; showLb(currentIdx); }
+    if (diff < -50) { currentIdx = (currentIdx - 1 + visibleItems.length) % visibleItems.length; showLb(currentIdx); }
+  });
 </script>
 </body>
 </html>
