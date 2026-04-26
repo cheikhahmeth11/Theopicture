@@ -132,6 +132,7 @@
 
     .btn-primary { background: var(--orange); color: var(--black); width: 100%; }
     .btn-primary:hover { background: var(--orange-light); }
+    .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
     .btn-danger { background: rgba(244,67,54,0.12); color: var(--red); border: 1px solid rgba(244,67,54,0.2); }
     .btn-danger:hover { background: rgba(244,67,54,0.2); }
     .btn-success { background: rgba(76,175,80,0.12); color: var(--green); border: 1px solid rgba(76,175,80,0.2); }
@@ -410,7 +411,6 @@
     }
 
     tr:last-child td { border-bottom: none; }
-
     tr:hover td { background: rgba(255,255,255,0.02); }
 
     .td-name { font-weight: 500; color: var(--white); }
@@ -444,18 +444,6 @@
     .badge-autre { background: rgba(120,120,120,0.12); color: #aaa; }
     .badge-autre::before { background: #aaa; }
 
-    .status-badge {
-      display: inline-block;
-      padding: 3px 10px;
-      border-radius: 20px;
-      font-size: 11px;
-      font-weight: 600;
-    }
-
-    .status-nouveau { background: rgba(33,150,243,0.12); color: #64b5f6; }
-    .status-confirme { background: rgba(76,175,80,0.12); color: #81c784; }
-    .status-annule { background: rgba(244,67,54,0.12); color: #ef9a9a; }
-
     /* ===== ACTION BUTTONS ===== */
     .actions { display: flex; gap: 8px; align-items: center; }
 
@@ -478,8 +466,6 @@
     .icon-btn-sm.whatsapp:hover { background: rgba(37,211,102,0.1); }
     .icon-btn-sm.delete { border-color: rgba(244,67,54,0.2); }
     .icon-btn-sm.delete:hover { background: rgba(244,67,54,0.1); }
-    .icon-btn-sm.confirm { border-color: rgba(76,175,80,0.2); }
-    .icon-btn-sm.confirm:hover { background: rgba(76,175,80,0.1); }
 
     /* ===== EMPTY STATE ===== */
     .empty-state {
@@ -555,7 +541,6 @@
       color: var(--text-muted);
       background: none;
       border: none;
-      color: var(--text-muted);
       transition: color 0.2s;
     }
 
@@ -609,262 +594,76 @@
       opacity: 0;
       transition: all 0.3s ease;
       z-index: 9999;
-      white-space: nowrap;
     }
 
     .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
     .toast.success { border-color: rgba(76,175,80,0.3); color: #81c784; }
     .toast.error { border-color: rgba(244,67,54,0.3); color: #ef9a9a; }
 
-    /* ===== CALENDAR TAB ===== */
-    .calendar-grid {
-      display: grid;
-      grid-template-columns: repeat(7, 1fr);
-      gap: 6px;
-    }
-
-    .cal-header {
-      text-align: center;
-      font-size: 11px;
-      font-weight: 600;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      padding: 8px 0;
-    }
-
-    .cal-day {
-      min-height: 70px;
-      background: var(--dark2);
-      border: 1px solid rgba(255,255,255,0.05);
-      border-radius: 10px;
-      padding: 8px;
-      font-size: 12px;
-    }
-
-    .cal-day.other-month { opacity: 0.3; }
-    .cal-day.today { border-color: var(--orange); }
-
-    .cal-day-num {
-      font-weight: 600;
-      font-size: 13px;
-      margin-bottom: 4px;
-    }
-
-    .cal-event {
-      font-size: 10px;
-      background: rgba(255,152,0,0.15);
-      color: var(--orange);
-      border-radius: 4px;
-      padding: 2px 5px;
-      margin-top: 2px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-    .cal-nav {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      margin-bottom: 20px;
-    }
-
-    .cal-nav-btn {
-      background: var(--dark2);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 8px;
-      padding: 7px 12px;
-      color: var(--white);
-      cursor: pointer;
-      font-family: 'Poppins', sans-serif;
-      font-size: 16px;
-      transition: all 0.2s;
-    }
-
-    .cal-nav-btn:hover { border-color: var(--orange); color: var(--orange); }
-    .cal-month-label { font-size: 17px; font-weight: 600; flex: 1; }
-
     /* ===== RESPONSIVE ===== */
     @media (max-width: 768px) {
-      .sidebar { display: none; }
-      .main-content { margin-left: 0; padding: 20px 16px; }
-      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .admin-header { padding: 0 16px; height: 56px; }
+      .admin-logo-text { font-size: 15px; }
+      .admin-user { display: none; }
+      
+      .sidebar {
+        display: flex;
+        position: fixed;
+        bottom: 0;
+        top: auto;
+        left: 0;
+        width: 100%;
+        height: 60px;
+        padding: 0;
+        border-top: 1px solid var(--border);
+        border-right: none;
+      }
+
+      .sidebar-section { display: none; }
+
+      .nav-item {
+        flex: 1;
+        flex-direction: column;
+        justify-content: center;
+        font-size: 10px;
+        gap: 2px;
+        padding: 6px 0;
+      }
+
+      .nav-item .icon { font-size: 18px; }
+
+      .badge-count {
+        position: absolute;
+        top: 4px;
+        right: 20%;
+        font-size: 9px;
+      }
+
+      .main-content {
+        margin-left: 0;
+        padding: 16px;
+        padding-bottom: 80px;
+      }
+
+      .page-title { font-size: 18px; }
+      .page-desc { font-size: 12px; }
+
+      .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+      .stat-card { padding: 14px; }
+      .stat-card-value { font-size: 22px; }
+
+      .filters-bar { flex-direction: column; align-items: stretch; }
+      .search-input, .filter-select { width: 100%; }
+
       table thead { display: none; }
       table tr { display: block; background: var(--dark2); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 12px; padding: 14px; }
       table td { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border: none; font-size: 13px; }
-      table td::before { content: attr(data-label); font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; }
+      table td::before { content: attr(data-label); font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; }
+      
       .table-wrap { background: transparent; border: none; }
+      .modal { padding: 20px; border-radius: 16px; }
+      .modal-actions { flex-direction: column; }
     }
-
-    @media (max-width: 768px) {
-
-  /* HEADER */
-  .admin-header {
-    padding: 0 16px;
-    height: 56px;
-  }
-
-  .admin-logo-text {
-    font-size: 15px;
-  }
-
-  .admin-user {
-    display: none; /* gain de place */
-  }
-
-  /* SIDEBAR → transformée en menu bottom */
-  .sidebar {
-    display: flex;
-    position: fixed;
-    bottom: 0;
-    top: auto;
-    left: 0;
-    width: 100%;
-    height: 60px;
-    padding: 0;
-    border-top: 1px solid var(--border);
-    border-right: none;
-    background: var(--dark);
-    z-index: 200;
-  }
-
-  .sidebar-section {
-    display: none;
-  }
-
-  .nav-item {
-    flex: 1;
-    flex-direction: column;
-    justify-content: center;
-    font-size: 10px;
-    gap: 2px;
-    padding: 6px 0;
-  }
-
-  .nav-item .icon {
-    font-size: 18px;
-  }
-
-  .badge-count {
-    position: absolute;
-    top: 4px;
-    right: 20%;
-    font-size: 9px;
-  }
-
-  /* MAIN CONTENT */
-  .main-content {
-    margin-left: 0;
-    padding: 16px;
-    padding-bottom: 80px; /* espace pour menu bas */
-  }
-
-  /* TITRES */
-  .page-title {
-    font-size: 18px;
-  }
-
-  .page-desc {
-    font-size: 12px;
-  }
-
-  /* STATS */
-  .stats-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-  }
-
-  .stat-card {
-    padding: 14px;
-  }
-
-  .stat-card-value {
-    font-size: 22px;
-  }
-
-  /* FILTERS */
-  .filters-bar {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .search-input,
-  .filter-select {
-    width: 100%;
-  }
-
-  /* TABLE → CARDS */
-  table thead {
-    display: none;
-  }
-
-  table {
-    border-spacing: 0 10px;
-  }
-
-  table tr {
-    display: block;
-    background: var(--dark2);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 14px;
-  }
-
-  table td {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 6px 0;
-    border: none;
-    font-size: 13px;
-  }
-
-  table td::before {
-    content: attr(data-label);
-    font-size: 10px;
-    color: var(--text-muted);
-    text-transform: uppercase;
-  }
-
-  .actions {
-    justify-content: flex-end;
-  }
-
-  /* MODAL */
-  .modal {
-    padding: 20px;
-    border-radius: 16px;
-  }
-
-  .modal-actions {
-    flex-direction: column;
-  }
-
-  /* CALENDAR */
-  .calendar-grid {
-    gap: 4px;
-  }
-
-  .cal-day {
-    min-height: 60px;
-    padding: 6px;
-    font-size: 10px;
-  }
-
-  .cal-day-num {
-    font-size: 11px;
-  }
-
-  .cal-event {
-    font-size: 9px;
-  }
-
-  /* TOAST */
-  .toast {
-    width: 90%;
-    text-align: center;
-  }
-}
   </style>
 </head>
 <body>
@@ -877,14 +676,14 @@
     <h2>Connexion</h2>
     <div class="form-group">
       <label>Identifiant</label>
-      <input type="text" id="loginUser" placeholder="admin" autocomplete="username">
+      <input type="text" id="loginUser" placeholder="teopicture" autocomplete="username">
     </div>
     <div class="form-group">
       <label>Mot de passe</label>
       <input type="password" id="loginPass" placeholder="••••••••" autocomplete="current-password">
     </div>
     <div class="login-error" id="loginError">Identifiant ou mot de passe incorrect</div>
-    <button class="btn btn-primary" onclick="doLogin()">Se connecter</button>
+    <button class="btn btn-primary" id="btnLogin" onclick="doLogin()">Se connecter</button>
   </div>
 </div>
 
@@ -910,18 +709,15 @@
     <div class="sidebar">
       <div class="sidebar-section">Navigation</div>
       <button class="nav-item active" onclick="switchTab('dashboard', this)">
-        <span class="icon">📊</span> Tableau de bord
+        <span class="icon">📊</span> <span>Tableau de bord</span>
       </button>
       <button class="nav-item" onclick="switchTab('reservations', this)">
-        <span class="icon">📅</span> Réservations
+        <span class="icon">📅</span> <span>Réservations</span>
         <span class="badge-count" id="sidebarCount">0</span>
-      </button>
-      <button class="nav-item" onclick="switchTab('calendar', this)">
-        <span class="icon">🗓️</span> Calendrier
       </button>
       <div class="sidebar-section">Actions</div>
       <button class="nav-item" onclick="window.open('index.html', '_blank')">
-        <span class="icon">🌐</span> Voir le site
+        <span class="icon">🌐</span> <span>Voir le site</span>
       </button>
     </div>
 
@@ -961,7 +757,7 @@
           </div>
         </div>
 
-        <div class="page-header" style="margin-top:8px;">
+        <div class="page-header" style="margin-top:32px;">
           <div>
             <div class="page-title" style="font-size:18px;">Prochaines réservations</div>
           </div>
@@ -995,14 +791,14 @@
             <div class="page-title">Réservations</div>
             <div class="page-desc">Toutes les demandes reçues</div>
           </div>
-          <div style="display:flex;gap:10px;">
+          <div style="display:flex;gap:10px;flex-wrap:wrap;">
             <button class="btn btn-success" onclick="exportCSV()" style="padding:9px 16px;font-size:13px;">⬇ Exporter CSV</button>
             <button class="btn btn-ghost" onclick="loadAll()" style="padding:9px 16px;font-size:13px;">↺ Actualiser</button>
           </div>
         </div>
 
         <div class="filters-bar">
-          <input type="text" class="search-input" id="searchInput" placeholder="🔍  Rechercher nom, téléphone, lieu...">
+          <input type="text" class="search-input" id="searchInput" placeholder="🔍 Rechercher nom, téléphone, lieu...">
           <select class="filter-select" id="filterEvent">
             <option value="">Tous les événements</option>
             <option>Mariage</option>
@@ -1011,6 +807,7 @@
             <option>Shooting</option>
             <option>Korite</option>
             <option>Tabaski</option>
+            <option>Autre</option>
           </select>
           <select class="filter-select" id="filterSort">
             <option value="desc">Plus récent</option>
@@ -1030,7 +827,6 @@
                 <th>Événement</th>
                 <th>Date & Heure</th>
                 <th>Lieu</th>
-                <th>Enregistré le</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -1041,22 +837,6 @@
             <p>Aucune réservation trouvée</p>
           </div>
         </div>
-      </div>
-
-      <!-- CALENDAR TAB -->
-      <div class="tab-panel" id="tab-calendar">
-        <div class="page-header">
-          <div>
-            <div class="page-title">Calendrier</div>
-            <div class="page-desc">Visualisez vos événements</div>
-          </div>
-        </div>
-        <div class="cal-nav">
-          <button class="cal-nav-btn" onclick="calPrev()">‹</button>
-          <div class="cal-month-label" id="calLabel"></div>
-          <button class="cal-nav-btn" onclick="calNext()">›</button>
-        </div>
-        <div class="calendar-grid" id="calGrid"></div>
       </div>
 
     </div>
@@ -1079,34 +859,39 @@
 <div class="toast" id="toast"></div>
 
 <!-- FIREBASE -->
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script type="module">
+  // ===== FIREBASE CONFIG (THEOPICTURE-V2) =====
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getFirestore, collection, getDocs, query, where, deleteDoc, doc, orderBy } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyBgr9_DOrwpoz2o-ntxtPE6xz7AZKD7qlY",
+    authDomain: "theopicture-v2.firebaseapp.com",
+    projectId: "theopicture-v2",
+    storageBucket: "theopicture-v2.firebasestorage.app",
+    messagingSenderId: "992470045107",
+    appId: "1:992470045107:web:d7e5e42e83dc218845fbc6",
+    measurementId: "G-CE7B9HTDGG"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  // Expose Firebase globally
+  window.firebase_modules = { db, collection, getDocs, query, where, deleteDoc, doc, orderBy };
+  console.log("✅ Firebase initialisé - theopicture-v2");
+</script>
 
 <script>
   // ===========================
-  // CONFIG — CHANGEZ CES VALEURS
+  // CONFIG ADMIN (À MODIFIER)
   // ===========================
   const ADMIN_CREDENTIALS = [
     { user: "teopicture", pass: "Teo@2025!" },
-    { user: "admin", pass: "Admin123#" }
+    { user: "admin", pass: "Admin@2025!" }
   ];
-  // ===========================
-
-  const firebaseConfig = {
-    apiKey: "AIzaSyCP3ruoYjCeRTUBhRVsbRzi-R2UtNmrxGs",
-    authDomain: "teopicture-ca10f.firebaseapp.com",
-    projectId: "teopicture-ca10f",
-    storageBucket: "teopicture-ca10f.firebasestorage.app",
-    messagingSenderId: "205836454272",
-    appId: "1:205836454272:web:e7c4b001049d03972bd965"
-  };
-
-  firebase.initializeApp(firebaseConfig);
-  const db = firebase.firestore();
 
   let allReservations = [];
-  let calYear = new Date().getFullYear();
-  let calMonth = new Date().getMonth();
   let currentUser = "";
 
   // ===========================
@@ -1119,7 +904,13 @@
   function doLogin() {
     const user = document.getElementById("loginUser").value.trim();
     const pass = document.getElementById("loginPass").value;
+    const btnLogin = document.getElementById("btnLogin");
+    
+    btnLogin.disabled = true;
+    btnLogin.textContent = "Vérification...";
+
     const match = ADMIN_CREDENTIALS.find(c => c.user === user && c.pass === pass);
+    
     if (match) {
       currentUser = user;
       sessionStorage.setItem("teoAdmin", user);
@@ -1129,7 +920,13 @@
       loadAll();
     } else {
       document.getElementById("loginError").style.display = "block";
+      setTimeout(() => {
+        document.getElementById("loginError").style.display = "none";
+      }, 3000);
     }
+    
+    btnLogin.disabled = false;
+    btnLogin.textContent = "Se connecter";
   }
 
   function doLogout() {
@@ -1138,17 +935,21 @@
     document.getElementById("loginPage").style.display = "flex";
     document.getElementById("loginUser").value = "";
     document.getElementById("loginPass").value = "";
+    allReservations = [];
+    showToast("Déconnecté", "success");
   }
 
   // Auto-login check
-  const saved = sessionStorage.getItem("teoAdmin");
-  if (saved) {
-    currentUser = saved;
-    document.getElementById("loginPage").style.display = "none";
-    document.getElementById("adminPage").style.display = "block";
-    document.getElementById("adminUserLabel").textContent = saved;
-    loadAll();
-  }
+  window.addEventListener("load", () => {
+    const saved = sessionStorage.getItem("teoAdmin");
+    if (saved) {
+      currentUser = saved;
+      document.getElementById("loginPage").style.display = "none";
+      document.getElementById("adminPage").style.display = "block";
+      document.getElementById("adminUserLabel").textContent = saved;
+      loadAll();
+    }
+  });
 
   // ===========================
   // TABS
@@ -1158,26 +959,32 @@
     document.querySelectorAll(".nav-item").forEach(b => b.classList.remove("active"));
     document.getElementById("tab-" + name).classList.add("active");
     btn.classList.add("active");
-    if (name === "calendar") renderCalendar();
   }
 
   // ===========================
   // LOAD DATA
   // ===========================
-  function loadAll() {
-    db.collection("reservations").orderBy("createdAt", "desc").get().then(snapshot => {
+  async function loadAll() {
+    try {
+      const { db, collection, getDocs, orderBy, query } = window.firebase_modules;
+      
+      const q = query(collection(db, "reservations"), orderBy("createdAt", "desc"));
+      const snapshot = await getDocs(q);
+      
       allReservations = [];
       snapshot.forEach(doc => {
         allReservations.push({ id: doc.id, ...doc.data() });
       });
+
       renderStats();
       renderDashTable();
       renderResTable();
       document.getElementById("sidebarCount").textContent = allReservations.length;
-    }).catch(err => {
-      console.error(err);
+      showToast("Données actualisées", "success");
+    } catch (err) {
+      console.error("Erreur chargement:", err);
       showToast("Erreur de chargement", "error");
-    });
+    }
   }
 
   // ===========================
@@ -1205,7 +1012,9 @@
     document.getElementById("statSemaine").textContent = semaine;
 
     const counts = {};
-    allReservations.forEach(r => { counts[r.evenement] = (counts[r.evenement] || 0) + 1; });
+    allReservations.forEach(r => { 
+      counts[r.evenement] = (counts[r.evenement] || 0) + 1; 
+    });
     const top = Object.entries(counts).sort((a, b) => b[1] - a[1])[0];
     document.getElementById("statTop").textContent = top ? top[0] : "—";
   }
@@ -1234,7 +1043,7 @@
       <tr>
         <td data-label="Client" class="td-name">${esc(r.nom)}</td>
         <td data-label="Événement">${badgeEvent(r.evenement)}</td>
-        <td data-label="Date">${formatDate(r.date)} ${r.heure || ""}</td>
+        <td data-label="Date">${formatDate(r.date)} <span class="td-muted">${r.heure || ""}</span></td>
         <td data-label="Lieu" class="td-muted">${esc(r.lieu) || "—"}</td>
         <td data-label="Actions">
           <div class="actions">
@@ -1252,7 +1061,6 @@
   function renderResTable(data) {
     let list = data || allReservations;
 
-    // Search
     const q = document.getElementById("searchInput").value.toLowerCase();
     if (q) {
       list = list.filter(r =>
@@ -1262,14 +1070,12 @@
       );
     }
 
-    // Filter event
     const fe = document.getElementById("filterEvent").value;
     if (fe) list = list.filter(r => r.evenement === fe);
 
-    // Sort
     const fs = document.getElementById("filterSort").value;
     if (fs === "asc") list = [...list].sort((a, b) => (a.createdAt?.seconds || 0) - (b.createdAt?.seconds || 0));
-    else if (fs === "date") list = [...list].sort((a, b) => new Date(a.date) - new Date(b.date));
+    else if (fs === "date") list = [...list].sort((a, b) => new Date(a.date || 0) - new Date(b.date || 0));
 
     document.getElementById("resLoading").style.display = "none";
 
@@ -1286,17 +1092,16 @@
       const created = r.createdAt?.toDate ? r.createdAt.toDate() : (r.createdAt ? new Date(r.createdAt) : null);
       return `
         <tr>
-          <td data-label="#" class="td-muted">${i + 1}</td>
+          <td data-label="#">${i + 1}</td>
           <td data-label="Client" class="td-name">${esc(r.nom)}</td>
           <td data-label="Téléphone"><a href="tel:${esc(r.telephone)}" style="color:var(--orange);">${esc(r.telephone)}</a></td>
           <td data-label="Événement">${badgeEvent(r.evenement)}</td>
-          <td data-label="Date">${formatDate(r.date)} <span style="color:var(--text-muted)">${r.heure || ""}</span></td>
+          <td data-label="Date">${formatDate(r.date)} <span class="td-muted">${r.heure || ""}</span></td>
           <td data-label="Lieu" class="td-muted">${esc(r.lieu) || "—"}</td>
-          <td data-label="Enregistré" class="td-muted">${created ? created.toLocaleDateString("fr-FR") : "—"}</td>
           <td data-label="Actions">
             <div class="actions">
-              <button class="icon-btn-sm whatsapp" title="Contacter via WhatsApp" onclick="waContact('${esc(r.telephone)}','${esc(r.nom)}')">💬</button>
-              <button class="icon-btn-sm" title="Voir les détails" onclick="openModal('${r.id}')">👁</button>
+              <button class="icon-btn-sm whatsapp" title="WhatsApp" onclick="waContact('${esc(r.telephone)}','${esc(r.nom)}')">💬</button>
+              <button class="icon-btn-sm" title="Détails" onclick="openModal('${r.id}')">👁</button>
               <button class="icon-btn-sm delete" title="Supprimer" onclick="deleteRes('${r.id}')">🗑</button>
             </div>
           </td>
@@ -1305,7 +1110,6 @@
     }).join("");
   }
 
-  // Filters live
   document.getElementById("searchInput").addEventListener("input", () => renderResTable());
   document.getElementById("filterEvent").addEventListener("change", () => renderResTable());
   document.getElementById("filterSort").addEventListener("change", () => renderResTable());
@@ -1326,7 +1130,7 @@
       <div class="detail-row"><div class="detail-label">Date</div><div class="detail-value">${formatDate(r.date)}</div></div>
       <div class="detail-row"><div class="detail-label">Heure</div><div class="detail-value">${r.heure || "—"}</div></div>
       <div class="detail-row"><div class="detail-label">Lieu</div><div class="detail-value">${esc(r.lieu) || "—"}</div></div>
-      ${r.message ? `<div class="detail-row"><div class="detail-label">Message</div><div class="detail-value" style="text-align:right;max-width:260px;">${esc(r.message)}</div></div>` : ""}
+      ${r.message ? `<div class="detail-row"><div class="detail-label">Message</div><div class="detail-value">${esc(r.message)}</div></div>` : ""}
       ${created ? `<div class="detail-row"><div class="detail-label">Enregistré</div><div class="detail-value">${created.toLocaleDateString("fr-FR")} à ${created.toLocaleTimeString("fr-FR", {hour:"2-digit",minute:"2-digit"})}</div></div>` : ""}
     `;
 
@@ -1350,98 +1154,77 @@
   // ===========================
   // DELETE
   // ===========================
-  function deleteRes(id) {
+  async function deleteRes(id) {
     if (!confirm("Supprimer cette réservation ?")) return;
-    db.collection("reservations").doc(id).delete().then(() => {
+    
+    try {
+      const { db, doc, deleteDoc } = window.firebase_modules;
+      await deleteDoc(doc(db, "reservations", id));
       showToast("Réservation supprimée", "success");
       loadAll();
-    }).catch(() => showToast("Erreur lors de la suppression", "error"));
+    } catch (err) {
+      console.error("Erreur suppression:", err);
+      showToast("Erreur lors de la suppression", "error");
+    }
   }
 
   // ===========================
   // WHATSAPP
   // ===========================
   function waContact(tel, nom) {
-    const msg = "Bonjour " + nom + ", je suis TEOPICTURE. Votre réservation a bien été prise en compte. Merci !";
-    window.open("https://wa.me/221" + tel.replace(/\s/g, "") + "?text=" + encodeURIComponent(msg), "_blank");
+    const msg = `Bonjour ${nom}, je suis TEOPICTURE. Votre réservation a bien été prise en compte. Merci !`;
+    const cleanTel = tel.replace(/\s/g, "");
+    window.open(`https://wa.me/221${cleanTel}?text=${encodeURIComponent(msg)}`, "_blank");
   }
 
   // ===========================
   // EXPORT CSV
   // ===========================
   function exportCSV() {
-    const headers = ["Nom", "Téléphone", "Événement", "Date", "Heure", "Lieu", "Message", "Enregistré le"];
+    const headers = ["Nom", "Téléphone", "Événement", "Date", "Heure", "Lieu", "Message"];
     const rows = allReservations.map(r => {
-      const created = r.createdAt?.toDate ? r.createdAt.toDate().toLocaleDateString("fr-FR") : "";
-      return [r.nom, r.telephone, r.evenement, r.date, r.heure, r.lieu, r.message, created].map(v => `"${(v||"").replace(/"/g,'""')}"`).join(",");
+      return [
+        r.nom,
+        r.telephone,
+        r.evenement,
+        r.date,
+        r.heure,
+        r.lieu,
+        r.message
+      ].map(v => `"${(v||"").replace(/"/g,'""')}"`).join(",");
     });
+    
     const csv = [headers.join(","), ...rows].join("\n");
     const blob = new Blob(["\uFEFF" + csv], { type: "text/csv;charset=utf-8;" });
     const a = document.createElement("a");
     a.href = URL.createObjectURL(blob);
-    a.download = "reservations_teopicture_" + new Date().toISOString().split("T")[0] + ".csv";
+    a.download = `reservations_teopicture_${new Date().toISOString().split("T")[0]}.csv`;
     a.click();
     showToast("CSV exporté avec succès", "success");
   }
 
   // ===========================
-  // CALENDAR
-  // ===========================
-  function renderCalendar() {
-    const months = ["Janvier","Février","Mars","Avril","Mai","Juin","Juillet","Août","Septembre","Octobre","Novembre","Décembre"];
-    document.getElementById("calLabel").textContent = months[calMonth] + " " + calYear;
-
-    const grid = document.getElementById("calGrid");
-    const days = ["Lun","Mar","Mer","Jeu","Ven","Sam","Dim"];
-    const headers = days.map(d => `<div class="cal-header">${d}</div>`).join("");
-
-    const first = new Date(calYear, calMonth, 1);
-    let startDay = first.getDay() - 1;
-    if (startDay < 0) startDay = 6;
-
-    const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
-    const today = new Date();
-
-    const resByDate = {};
-    allReservations.forEach(r => {
-      if (r.date) {
-        if (!resByDate[r.date]) resByDate[r.date] = [];
-        resByDate[r.date].push(r);
-      }
-    });
-
-    let cells = "";
-    for (let i = 0; i < startDay; i++) {
-      cells += `<div class="cal-day other-month"></div>`;
-    }
-
-    for (let d = 1; d <= daysInMonth; d++) {
-      const dateStr = calYear + "-" + String(calMonth + 1).padStart(2, "0") + "-" + String(d).padStart(2, "0");
-      const isToday = today.getDate() === d && today.getMonth() === calMonth && today.getFullYear() === calYear;
-      const events = resByDate[dateStr] || [];
-      const eventsHtml = events.slice(0, 2).map(r => `<div class="cal-event">${esc(r.nom)}</div>`).join("");
-      const more = events.length > 2 ? `<div class="cal-event">+${events.length - 2}</div>` : "";
-      cells += `<div class="cal-day ${isToday ? "today" : ""}"><div class="cal-day-num">${d}</div>${eventsHtml}${more}</div>`;
-    }
-
-    grid.innerHTML = headers + cells;
-  }
-
-  function calPrev() { calMonth--; if (calMonth < 0) { calMonth = 11; calYear--; } renderCalendar(); }
-  function calNext() { calMonth++; if (calMonth > 11) { calMonth = 0; calYear++; } renderCalendar(); }
-
-  // ===========================
   // HELPERS
   // ===========================
   function esc(str) {
-    return String(str || "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+    return String(str || "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
   }
 
   function formatDate(dateStr) {
     if (!dateStr) return "—";
     try {
-      return new Date(dateStr).toLocaleDateString("fr-FR", { day: "2-digit", month: "short", year: "numeric" });
-    } catch { return dateStr; }
+      return new Date(dateStr).toLocaleDateString("fr-FR", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric"
+      });
+    } catch {
+      return dateStr;
+    }
   }
 
   function badgeEvent(ev) {
@@ -1460,9 +1243,11 @@
   function showToast(msg, type = "success") {
     const t = document.getElementById("toast");
     t.textContent = msg;
-    t.className = "toast " + type + " show";
+    t.className = "toast " + type;
+    t.classList.add("show");
     setTimeout(() => t.classList.remove("show"), 3000);
   }
 </script>
+
 </body>
 </html>
