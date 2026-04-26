@@ -131,6 +131,7 @@
     .btn { display: inline-flex; align-items: center; gap: 8px; padding: 13px 28px; border-radius: 10px; font-weight: 600; font-size: 14px; cursor: pointer; transition: all 0.25s ease; border: none; font-family: 'Poppins', sans-serif; letter-spacing: 0.02em; }
     .btn-primary { background: var(--orange); color: var(--black); }
     .btn-primary:hover { background: var(--orange-light); transform: translateY(-2px); }
+    .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; transform: none !important; }
     .btn-outline { background: transparent; color: var(--white); border: 1px solid rgba(255,255,255,0.25); }
     .btn-outline:hover { border-color: var(--orange); color: var(--orange); transform: translateY(-2px); }
 
@@ -351,8 +352,9 @@
     .admin-link { margin-left: 20px; padding: 9px 18px; background: linear-gradient(135deg, var(--orange), var(--orange-light)); color: var(--black); font-size: 13px; font-weight: 700; border-radius: 20px; box-shadow: 0 4px 10px rgba(255,152,0,0.3); transition: all 0.3s ease; }
     .admin-link:hover { transform: scale(1.05); box-shadow: 0 6px 15px rgba(255,152,0,0.5); }
 
-    /* Bouton désactivé pendant envoi */
-    .btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none !important; }
+    .toast-message { position: fixed; bottom: 30px; left: 20px; background: rgba(0,0,0,0.95); color: #fff; padding: 16px 24px; border-radius: 8px; font-size: 14px; z-index: 10000; max-width: 300px; word-wrap: break-word; border-left: 4px solid #ff9800; }
+    .toast-message.success { border-left-color: #4caf50; }
+    .toast-message.error { border-left-color: #f44336; }
   </style>
 </head>
 <body>
@@ -625,6 +627,7 @@
             <option>Shooting</option>
             <option>Korite</option>
             <option>Tabaski</option>
+            <option>Autre</option>
           </select>
         </div>
         <div class="form-row">
@@ -761,222 +764,287 @@
   </div>
 </div>
 
-<!-- ===== FIREBASE ===== -->
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<!-- ===== FIREBASE V2 (avec SDK modular) ===== -->
+<script type="module">
+  // Import Firebase SDK
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getFirestore, collection, addDoc, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-<script>
-  /* ---- INITIALISATION FIREBASE (globale, hors DOMContentLoaded) ---- */
+  // Configuration Firebase - THEOPICTURE V2
   const firebaseConfig = {
-    apiKey: "AIzaSyCP3ruoYjCeRTUBhRVsbRzi-R2UtNmrxGs",
-    authDomain: "teopicture-ca10f.firebaseapp.com",
-    projectId: "teopicture-ca10f",
-    storageBucket: "teopicture-ca10f.firebasestorage.app",
-    messagingSenderId: "205836454272",
-    appId: "1:205836454272:web:e7c4b001049d03972bd965"
+    apiKey: "AIzaSyBgr9_DOrwpoz2o-ntxtPE6xz7AZKD7qlY",
+    authDomain: "theopicture-v2.firebaseapp.com",
+    projectId: "theopicture-v2",
+    storageBucket: "theopicture-v2.firebasestorage.app",
+    messagingSenderId: "992470045107",
+    appId: "1:992470045107:web:d7e5e42e83dc218845fbc6",
+    measurementId: "G-CE7B9HTDGG"
   };
 
-  /* Evite le crash "Firebase App named '[DEFAULT]' already exists" */
-  if (!firebase.apps.length) {
-    firebase.initializeApp(firebaseConfig);
+  // Initialiser Firebase
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  // Exposer les fonctions Firebase globalement
+  window.firebaseDB = {
+    db,
+    collection,
+    addDoc,
+    getDocs,
+    query,
+    where
+  };
+
+  console.log("✅ Firebase initialisé avec succès - theopicture-v2");
+</script>
+
+<script>
+  // ========== TOAST NOTIFICATIONS ==========
+  function showToast(message, type = 'success') {
+    const toast = document.createElement('div');
+    toast.className = `toast-message ${type}`;
+    toast.textContent = message;
+    document.body.appendChild(toast);
+    
+    setTimeout(() => {
+      toast.style.opacity = '0';
+      toast.style.transition = 'opacity 0.3s ease';
+      setTimeout(() => toast.remove(), 300);
+    }, 3500);
   }
 
-  const db = firebase.firestore();
+  // ========== GESTION DATES RÉSERVÉES ==========
   let datesIndisponibles = [];
 
-  /* ---- Chargement des dates réservées ---- */
-  function chargerDates() {
-    db.collection("reservations").get()
-      .then(snapshot => {
-        datesIndisponibles = [];
-        snapshot.forEach(doc => {
-          const d = doc.data();
-          if (d.dateComplete) datesIndisponibles.push(d.dateComplete);
-        });
-      })
-      .catch(err => console.error("Erreur chargement dates :", err));
+  async function chargerDates() {
+    try {
+      const { db, collection, getDocs, query, where } = window.firebaseDB;
+      
+      const q = query(
+        collection(db, "reservations"),
+        where("status", "==", "confirmée")
+      );
+      
+      const snapshot = await getDocs(q);
+      datesIndisponibles = [];
+      
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        if (data.date && data.heure) {
+          datesIndisponibles.push(`${data.date}|${data.heure}`);
+        }
+      });
+      
+      console.log("📅 Dates indisponibles chargées:", datesIndisponibles);
+    } catch (error) {
+      console.error("Erreur chargement dates :", error);
+    }
   }
+
+  // Charger les dates au démarrage
   chargerDates();
 
-  /* ---- Validation créneau en temps réel ---- */
+  function estCreneauDisponible(date, heure) {
+    return !datesIndisponibles.includes(`${date}|${heure}`);
+  }
+
+  // ========== VALIDATION FORMULAIRE ==========
   document.addEventListener("DOMContentLoaded", () => {
     const dateInput = document.getElementById("date");
     if (dateInput) {
       dateInput.setAttribute("min", new Date().toISOString().split("T")[0]);
-      dateInput.addEventListener("change", function () {
-        const heure = document.getElementById("heure").value;
-        if (heure && datesIndisponibles.includes(this.value + " " + heure)) {
-          alert("❌ Ce créneau est déjà réservé !");
-          this.value = "";
-        }
-      });
+      dateInput.addEventListener("change", validerCreneau);
     }
 
     const heureInput = document.getElementById("heure");
     if (heureInput) {
-      heureInput.addEventListener("change", function () {
-        const date = document.getElementById("date").value;
-        if (date && datesIndisponibles.includes(date + " " + this.value)) {
-          alert("❌ Ce créneau est déjà réservé !");
-          this.value = "";
-        }
-      });
+      heureInput.addEventListener("change", validerCreneau);
     }
   });
 
-  /* ---- ÉTAPE 1 : afficher le popup de confirmation ---- */
+  function validerCreneau() {
+    const date = document.getElementById("date").value;
+    const heure = document.getElementById("heure").value;
+
+    if (date && heure) {
+      if (!estCreneauDisponible(date, heure)) {
+        showToast("❌ Ce créneau est déjà réservé !", "error");
+        document.getElementById("heure").value = "";
+      }
+    }
+  }
+
+  // ========== ÉTAPE 1 : AFFICHER LE POPUP ==========
   function envoyerReservation() {
-    const nom      = document.getElementById("nom").value.trim();
-    const tel      = document.getElementById("telephone").value.trim();
-    const evenement= document.getElementById("evenement").value;
-    const date     = document.getElementById("date").value;
-    const heure    = document.getElementById("heure").value;
-    const lieu     = document.getElementById("lieu").value.trim();
+    const nom = document.getElementById("nom").value.trim();
+    const tel = document.getElementById("telephone").value.trim();
+    const evenement = document.getElementById("evenement").value;
+    const date = document.getElementById("date").value;
+    const heure = document.getElementById("heure").value;
+    const lieu = document.getElementById("lieu").value.trim();
 
+    // Validation
     if (!nom || !tel || !date || !heure) {
-      alert("⚠️ Veuillez remplir tous les champs obligatoires !");
+      showToast("⚠️ Remplissez tous les champs obligatoires !", "error");
       return;
     }
 
-    if (datesIndisponibles.includes(date + " " + heure)) {
-      alert("❌ Ce créneau est déjà réservé !");
+    if (!estCreneauDisponible(date, heure)) {
+      showToast("❌ Ce créneau vient d'être réservé !", "error");
       return;
     }
 
+    // Afficher le popup
     document.getElementById("confirmText").innerText =
-      "Nom : " + nom +
-      "\nTéléphone : " + tel +
-      "\nÉvénement : " + evenement +
-      "\nDate : " + date +
-      "\nHeure : " + heure +
-      "\nLieu : " + (lieu || "Non précisé");
+      `Nom : ${nom}\nTéléphone : ${tel}\nÉvénement : ${evenement}\nDate : ${date}\nHeure : ${heure}\nLieu : ${lieu || "Non précisé"}`;
 
     document.getElementById("confirmBox").style.display = "flex";
   }
 
-  /* ---- ÉTAPE 2 : enregistrer dans Firestore puis rediriger vers WhatsApp ---- */
-  function confirmerEnvoi() {
+  // ========== ÉTAPE 2 : ENREGISTRER ET ENVOYER ==========
+  async function confirmerEnvoi() {
     const btnConfirmer = document.getElementById("btnConfirmer");
     btnConfirmer.disabled = true;
     btnConfirmer.textContent = "Envoi en cours...";
 
-    const nom       = document.getElementById("nom").value.trim();
-    const tel       = document.getElementById("telephone").value.trim();
+    const nom = document.getElementById("nom").value.trim();
+    const tel = document.getElementById("telephone").value.trim();
     const evenement = document.getElementById("evenement").value;
-    const date      = document.getElementById("date").value;
-    const heure     = document.getElementById("heure").value;
-    const lieu      = document.getElementById("lieu").value.trim();
-    const msg       = document.getElementById("message").value.trim();
-    const dateComplete = date + " " + heure;
+    const date = document.getElementById("date").value;
+    const heure = document.getElementById("heure").value;
+    const lieu = document.getElementById("lieu").value.trim();
+    const msg = document.getElementById("message").value.trim();
 
-    const data = {
-      nom,
-      telephone: tel,
-      evenement,
-      date,
-      heure,
-      dateComplete,
-      lieu,
-      message: msg,
-      createdAt: firebase.firestore.FieldValue.serverTimestamp()
-    };
+    try {
+      const { db, collection, addDoc } = window.firebaseDB;
 
-    const texteWA =
-      "📸 *NOUVELLE RÉSERVATION*%0A%0A" +
-      "*Nom* : " + encodeURIComponent(nom) +
-      "%0A*Téléphone* : " + encodeURIComponent(tel) +
-      "%0A*Événement* : " + encodeURIComponent(evenement) +
-      "%0A*Date* : " + encodeURIComponent(date) +
-      "%0A*Heure* : " + encodeURIComponent(heure) +
-      "%0A*Lieu* : " + encodeURIComponent(lieu || "Non précisé") +
-      "%0A*Message* : " + encodeURIComponent(msg || "—");
+      // Préparer les données
+      const data = {
+        nom,
+        telephone: tel,
+        evenement,
+        date,
+        heure,
+        lieu: lieu || "Non précisé",
+        message: msg || "",
+        status: "confirmée",
+        createdAt: new Date(),
+        updatedAt: new Date()
+      };
 
-    db.collection("reservations").add(data)
-      .then(() => {
-        fermerConfirm();
-        chargerDates();
-        /* Réinitialiser le formulaire */
-        ["nom","telephone","date","heure","lieu","message"].forEach(id => {
-          document.getElementById(id).value = "";
-        });
-        /* Ouvrir WhatsApp */
-        window.open("https://wa.me/221775781956?text=" + texteWA, "_blank");
-      })
-      .catch(err => {
-        console.error("Erreur Firestore :", err);
-        alert("❌ Erreur lors de l'enregistrement : " + err.message);
-      })
-      .finally(() => {
-        btnConfirmer.disabled = false;
-        btnConfirmer.textContent = "Confirmer ✓";
+      // Enregistrer dans Firestore
+      const docRef = await addDoc(collection(db, "reservations"), data);
+      
+      // Réinitialiser le formulaire
+      fermerConfirm();
+      ["nom", "telephone", "date", "heure", "lieu", "message"].forEach(id => {
+        document.getElementById(id).value = "";
       });
+
+      showToast("✅ Réservation confirmée ! WhatsApp s'ouvre...", "success");
+      chargerDates();
+
+      // Ouvrir WhatsApp après 1 sec
+      setTimeout(() => {
+        const texteWA =
+          "📸 *NOUVELLE RÉSERVATION TEOPICTURE*%0A%0A" +
+          "*Nom* : " + encodeURIComponent(nom) +
+          "%0A*Téléphone* : " + encodeURIComponent(tel) +
+          "%0A*Événement* : " + encodeURIComponent(evenement) +
+          "%0A*Date* : " + encodeURIComponent(date) +
+          "%0A*Heure* : " + encodeURIComponent(heure) +
+          "%0A*Lieu* : " + encodeURIComponent(lieu || "Non précisé") +
+          "%0A*Message* : " + encodeURIComponent(msg || "—");
+
+        window.open("https://wa.me/221775781956?text=" + texteWA, "_blank");
+      }, 800);
+
+    } catch (error) {
+      console.error("❌ Erreur Firestore :", error);
+      showToast(`Erreur : ${error.message}`, "error");
+    } finally {
+      btnConfirmer.disabled = false;
+      btnConfirmer.textContent = "Confirmer ✓";
+    }
   }
 
   function fermerConfirm() {
     document.getElementById("confirmBox").style.display = "none";
   }
+
+  // ========== CONTACT VIA WHATSAPP ==========
+  function envoyerContact() {
+    const nom = document.getElementById("contactNom").value.trim();
+    const tel = document.getElementById("contactTel").value.trim();
+    const msg = document.getElementById("contactMsg").value.trim();
+
+    if (!nom || !msg) {
+      showToast("⚠️ Remplissez votre nom et message.", "error");
+      return;
+    }
+
+    const texteWA =
+      "Bonjour TEOPICTURE,%0A%0A" +
+      "Nom : " + encodeURIComponent(nom) +
+      "%0ATéléphone : " + encodeURIComponent(tel) +
+      "%0AMessage : " + encodeURIComponent(msg);
+
+    window.open("https://wa.me/221775781956?text=" + texteWA, "_blank");
+  }
 </script>
 
 <script>
-  /* ===== NAVBAR SCROLL ===== */
+  // ===== NAVBAR SCROLL =====
   window.addEventListener("scroll", () => {
     document.getElementById("mainHeader").classList.toggle("scrolled", window.scrollY > 50);
   });
 
-  /* ===== REVEAL ANIMATIONS ===== */
+  // ===== REVEAL ANIMATIONS =====
   const reveals = document.querySelectorAll(".reveal");
   function checkReveal() {
     reveals.forEach(el => {
-      if (el.getBoundingClientRect().top < window.innerHeight - 80) el.classList.add("visible");
+      if (el.getBoundingClientRect().top < window.innerHeight - 80) {
+        el.classList.add("visible");
+      }
     });
   }
   window.addEventListener("scroll", checkReveal);
   window.addEventListener("load", checkReveal);
 
-  /* ===== SERVICES TOGGLE ===== */
+  // ===== SERVICES TOGGLE =====
   function toggleDetails(service) {
     const el = document.getElementById("details-" + service);
     el.style.display = el.style.display === "block" ? "none" : "block";
   }
 
-  /* ===== MOBILE MENU ===== */
+  // ===== MOBILE MENU =====
   document.getElementById("menuToggle").addEventListener("click", () => {
     document.getElementById("navLinks").classList.toggle("active");
   });
+
   document.querySelectorAll(".nav-links a").forEach(a => {
-    a.addEventListener("click", () => document.getElementById("navLinks").classList.remove("active"));
+    a.addEventListener("click", () => {
+      document.getElementById("navLinks").classList.remove("active");
+    });
   });
 
-  /* ===== CONTACT WHATSAPP ===== */
-  function envoyerContact() {
-    const nom = document.getElementById("contactNom").value.trim();
-    const tel = document.getElementById("contactTel").value.trim();
-    const msg = document.getElementById("contactMsg").value.trim();
-    if (!nom || !msg) { alert("⚠️ Veuillez remplir votre nom et votre message."); return; }
-    window.open(
-      "https://wa.me/221775781956?text=" +
-      "Bonjour, je vous contacte depuis TEOPICTURE.%0A%0A" +
-      "Nom : " + encodeURIComponent(nom) +
-      "%0ATéléphone : " + encodeURIComponent(tel) +
-      "%0AMessage : " + encodeURIComponent(msg),
-      "_blank"
-    );
-  }
-
-  /* ===== LIGHTBOX ===== */
-  const lightbox   = document.getElementById("lightbox");
-  const lbImg      = document.getElementById("lbImg");
-  const lbCounter  = document.getElementById("lbCounter");
-  let currentIdx   = 0;
+  // ===== LIGHTBOX =====
+  const lightbox = document.getElementById("lightbox");
+  const lbImg = document.getElementById("lbImg");
+  const lbCounter = document.getElementById("lbCounter");
+  let currentIdx = 0;
   let visibleItems = [];
 
   function getVisibleItems() {
     return Array.from(document.querySelectorAll(".pm-item:not(.hidden) img"));
   }
+
   function showLb(idx) {
     visibleItems = getVisibleItems();
-    lbImg.src = visibleItems[idx].src;
-    lbCounter.textContent = (idx + 1) + " / " + visibleItems.length;
+    if (visibleItems.length > 0) {
+      lbImg.src = visibleItems[idx].src;
+      lbCounter.textContent = (idx + 1) + " / " + visibleItems.length;
+    }
   }
 
   document.querySelectorAll(".pm-item").forEach(item => {
@@ -989,36 +1057,59 @@
     });
   });
 
-  document.querySelector(".lb-close").addEventListener("click", () => lightbox.style.display = "none");
+  document.querySelector(".lb-close").addEventListener("click", () => {
+    lightbox.style.display = "none";
+  });
+
   document.querySelector(".lb-next").addEventListener("click", () => {
     visibleItems = getVisibleItems();
     currentIdx = (currentIdx + 1) % visibleItems.length;
     showLb(currentIdx);
   });
+
   document.querySelector(".lb-prev").addEventListener("click", () => {
     visibleItems = getVisibleItems();
     currentIdx = (currentIdx - 1 + visibleItems.length) % visibleItems.length;
     showLb(currentIdx);
   });
-  lightbox.addEventListener("click", e => { if (e.target === lightbox) lightbox.style.display = "none"; });
+
+  lightbox.addEventListener("click", e => {
+    if (e.target === lightbox) lightbox.style.display = "none";
+  });
 
   document.addEventListener("keydown", e => {
     if (lightbox.style.display === "flex") {
       visibleItems = getVisibleItems();
-      if (e.key === "ArrowRight") { currentIdx = (currentIdx + 1) % visibleItems.length; showLb(currentIdx); }
-      if (e.key === "ArrowLeft")  { currentIdx = (currentIdx - 1 + visibleItems.length) % visibleItems.length; showLb(currentIdx); }
+      if (e.key === "ArrowRight") {
+        currentIdx = (currentIdx + 1) % visibleItems.length;
+        showLb(currentIdx);
+      }
+      if (e.key === "ArrowLeft") {
+        currentIdx = (currentIdx - 1 + visibleItems.length) % visibleItems.length;
+        showLb(currentIdx);
+      }
       if (e.key === "Escape") lightbox.style.display = "none";
     }
   });
 
   let touchStartX = 0;
-  lightbox.addEventListener("touchstart", e => touchStartX = e.touches[0].clientX);
+  lightbox.addEventListener("touchstart", e => {
+    touchStartX = e.touches[0].clientX;
+  });
+
   lightbox.addEventListener("touchend", e => {
     const diff = touchStartX - e.changedTouches[0].clientX;
     visibleItems = getVisibleItems();
-    if (diff > 50)  { currentIdx = (currentIdx + 1) % visibleItems.length; showLb(currentIdx); }
-    if (diff < -50) { currentIdx = (currentIdx - 1 + visibleItems.length) % visibleItems.length; showLb(currentIdx); }
+    if (diff > 50) {
+      currentIdx = (currentIdx + 1) % visibleItems.length;
+      showLb(currentIdx);
+    }
+    if (diff < -50) {
+      currentIdx = (currentIdx - 1 + visibleItems.length) % visibleItems.length;
+      showLb(currentIdx);
+    }
   });
 </script>
+
 </body>
 </html>
