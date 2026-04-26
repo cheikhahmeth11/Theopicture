@@ -8,7 +8,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
     :root {
       --orange: #ff9800;
       --orange-dark: #e68900;
@@ -23,9 +22,7 @@
       --white: #ffffff;
       --border: rgba(255, 152, 0, 0.2);
     }
-
     html { scroll-behavior: smooth; }
-
     body {
       font-family: 'Poppins', sans-serif;
       background: var(--black);
@@ -33,14 +30,10 @@
       line-height: 1.6;
       overflow-x: hidden;
     }
-
     a { text-decoration: none; color: inherit; }
-
     ::-webkit-scrollbar { width: 4px; }
     ::-webkit-scrollbar-track { background: var(--black); }
     ::-webkit-scrollbar-thumb { background: var(--orange); border-radius: 2px; }
-
-    /* ===== NAVBAR ===== */
     header {
       position: fixed;
       top: 0;
@@ -56,25 +49,20 @@
       border-bottom: 1px solid rgba(255, 152, 0, 0.08);
       transition: all 0.3s ease;
     }
-
     header.scrolled {
       height: 60px;
       background: rgba(10, 10, 10, 0.98);
       border-bottom-color: rgba(255, 152, 0, 0.15);
     }
-
     .logo { display: flex; align-items: center; gap: 12px; }
     .logo-img { height: 38px; width: 38px; border-radius: 50%; object-fit: cover; border: 1.5px solid var(--orange); }
     .logo-text { font-size: 20px; font-weight: 700; letter-spacing: 0.08em; color: var(--orange); }
-
     nav ul { list-style: none; display: flex; gap: 8px; align-items: center; }
     nav ul li a { font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.6); padding: 6px 14px; border-radius: 6px; transition: all 0.2s; letter-spacing: 0.03em; }
     nav ul li a:hover { color: var(--white); background: rgba(255,152,0,0.08); }
     nav ul li:last-child a { color: var(--black); background: var(--orange); padding: 8px 20px; border-radius: 8px; font-weight: 600; }
     nav ul li:last-child a:hover { background: var(--orange-light); }
-
     .menu-toggle { display: none; font-size: 24px; cursor: pointer; color: var(--orange); background: none; border: none; }
-
     @media (max-width: 768px) {
       header { padding: 0 24px; }
       nav ul { position: fixed; top: 70px; left: 0; width: 100%; flex-direction: column; background: rgba(10,10,10,0.98); backdrop-filter: blur(20px); padding: 20px 0 28px; gap: 4px; display: none; border-bottom: 1px solid var(--border); }
@@ -83,8 +71,6 @@
       nav ul li:last-child a { margin: 8px 24px 0; width: auto; border-radius: 8px; text-align: center; }
       .menu-toggle { display: block; }
     }
-
-    /* ===== HERO ===== */
     .hero {
       height: 100vh;
       min-height: 600px;
@@ -95,15 +81,12 @@
       text-align: center;
       position: relative;
     }
-
     .hero-overlay {
       position: absolute;
       inset: 0;
       background: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.6) 60%, rgba(10,10,10,1) 100%);
     }
-
     .hero-content { position: relative; z-index: 1; max-width: 700px; padding: 0 24px; }
-
     .hero-eyebrow {
       display: inline-flex;
       align-items: center;
@@ -119,22 +102,17 @@
       border-radius: 20px;
       background: rgba(255,152,0,0.08);
     }
-
     .hero-eyebrow::before { content: ''; width: 6px; height: 6px; background: var(--orange); border-radius: 50%; }
-
     .hero h1 { font-size: clamp(36px, 6vw, 68px); font-weight: 700; line-height: 1.08; letter-spacing: -0.02em; margin-bottom: 20px; }
     .hero h1 span { color: var(--orange); display: block; }
     .hero p { font-size: 17px; color: rgba(255,255,255,0.6); margin-bottom: 36px; font-weight: 300; }
-
     .hero-cta-group { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
-
     .btn { display: inline-flex; align-items: center; gap: 8px; padding: 13px 28px; border-radius: 10px; font-weight: 600; font-size: 14px; cursor: pointer; transition: all 0.25s ease; border: none; font-family: 'Poppins', sans-serif; letter-spacing: 0.02em; }
     .btn-primary { background: var(--orange); color: var(--black); }
     .btn-primary:hover { background: var(--orange-light); transform: translateY(-2px); }
     .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; transform: none !important; }
     .btn-outline { background: transparent; color: var(--white); border: 1px solid rgba(255,255,255,0.25); }
     .btn-outline:hover { border-color: var(--orange); color: var(--orange); transform: translateY(-2px); }
-
     .hero-scroll { position: absolute; bottom: 36px; left: 50%; transform: translateX(-50%); z-index: 1; display: flex; flex-direction: column; align-items: center; gap: 8px; color: rgba(255,255,255,0.35); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; }
     .scroll-line { width: 1px; height: 40px; background: linear-gradient(to bottom, rgba(255,152,0,0.6), transparent); animation: scrollAnim 2s infinite; }
     @keyframes scrollAnim {
@@ -143,93 +121,44 @@
       51% { transform: scaleY(1); transform-origin: bottom; }
       100% { transform: scaleY(0); transform-origin: bottom; }
     }
-
-    /* ===== STATS BAR ===== */
     .stats-bar { background: var(--dark2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 32px 50px; }
     .stats-inner { max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; text-align: center; }
     .stat-item { padding: 16px; }
     .stat-num { font-size: 34px; font-weight: 700; color: var(--orange); line-height: 1; margin-bottom: 6px; }
     .stat-label { font-size: 12px; color: var(--text-muted); letter-spacing: 0.05em; text-transform: uppercase; }
     @media (max-width: 640px) { .stats-inner { grid-template-columns: repeat(2, 1fr); } .stats-bar { padding: 24px 20px; } }
-
-    /* ===== SECTIONS ===== */
     section { padding: 100px 50px; }
     .section-inner { max-width: 1200px; margin: 0 auto; }
     .section-header { text-align: center; margin-bottom: 56px; }
     .section-tag { display: inline-block; font-size: 11px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--orange); margin-bottom: 14px; }
     .section-title { font-size: clamp(28px, 4vw, 44px); font-weight: 700; letter-spacing: -0.02em; line-height: 1.15; margin-bottom: 14px; }
     .section-subtitle { font-size: 16px; color: var(--text-muted); max-width: 500px; margin: 0 auto; }
-
-    /* ===== PORTFOLIO — MASONRY ===== */
     #portfolio { background: var(--black); padding: 120px 60px; }
-
     .portfolio-filters { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 64px; }
-
-    .pf-btn {
-      background: transparent;
-      border: 1px solid rgba(255,255,255,0.12);
-      color: rgba(255,255,255,0.45);
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      padding: 10px 28px;
-      border-radius: 2px;
-      cursor: pointer;
-      transition: all 0.25s ease;
-      font-family: 'Poppins', sans-serif;
-    }
-
+    .pf-btn { background: transparent; border: 1px solid rgba(255,255,255,0.12); color: rgba(255,255,255,0.45); font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; padding: 10px 28px; border-radius: 2px; cursor: pointer; transition: all 0.25s ease; font-family: 'Poppins', sans-serif; }
     .pf-btn:hover { color: var(--white); border-color: rgba(255,255,255,0.4); }
     .pf-btn.active { background: var(--orange); border-color: var(--orange); color: var(--black); font-weight: 700; }
-
     .masonry-grid { columns: 3; column-gap: 14px; }
-
-    .pm-item {
-      break-inside: avoid;
-      margin-bottom: 14px;
-      position: relative;
-      overflow: hidden;
-      border-radius: 8px;
-      cursor: pointer;
-      display: block;
-      background: var(--dark2);
-    }
-
+    .pm-item { break-inside: avoid; margin-bottom: 14px; position: relative; overflow: hidden; border-radius: 8px; cursor: pointer; display: block; background: var(--dark2); }
     .pm-item img { width: 100%; height: auto; display: block; border-radius: 8px; transition: transform 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94), filter 0.4s ease; filter: brightness(0.85); }
     .pm-item:hover img { transform: scale(1.04); filter: brightness(1); }
-
-    .pm-overlay {
-      position: absolute; inset: 0;
-      background: linear-gradient(to top, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.1) 50%, transparent 75%);
-      display: flex; flex-direction: column; justify-content: flex-end;
-      padding: 22px 20px; opacity: 0; transition: opacity 0.32s ease; border-radius: 8px;
-    }
+    .pm-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.1) 50%, transparent 75%); display: flex; flex-direction: column; justify-content: flex-end; padding: 22px 20px; opacity: 0; transition: opacity 0.32s ease; border-radius: 8px; }
     .pm-item:hover .pm-overlay { opacity: 1; }
-
     .pm-category { font-size: 9px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: var(--orange); margin-bottom: 5px; }
     .pm-title { font-size: 15px; font-weight: 600; color: var(--white); line-height: 1.3; }
     .pm-location { font-size: 12px; color: rgba(255,255,255,0.5); margin-top: 4px; }
-
     .pm-item::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: var(--orange); transform: scaleX(0); transform-origin: left; transition: transform 0.35s ease; border-radius: 0 0 8px 8px; }
     .pm-item:hover::after { transform: scaleX(1); }
-
     .pm-zoom { position: absolute; top: 14px; right: 14px; width: 36px; height: 36px; background: rgba(0,0,0,0.55); border: 1px solid rgba(255,255,255,0.18); border-radius: 50%; display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.25s ease, transform 0.2s; font-size: 15px; color: #fff; }
     .pm-item:hover .pm-zoom { opacity: 1; }
     .pm-zoom:hover { transform: scale(1.15); }
-
     .pm-item.hidden { display: none; }
     .pm-item { animation: fadeInUp 0.45s ease both; }
     @keyframes fadeInUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
-
     @media (max-width: 900px) { .masonry-grid { columns: 2; column-gap: 12px; } .pm-item { margin-bottom: 12px; } }
     @media (max-width: 520px) { #portfolio { padding: 80px 18px; } .masonry-grid { columns: 2; column-gap: 8px; } .pm-item { margin-bottom: 8px; border-radius: 6px; } .portfolio-filters { margin-bottom: 36px; } .pf-btn { padding: 8px 16px; font-size: 10px; } }
-
-    /* ===== SERVICES ===== */
     #services { background: var(--dark); }
-
     .cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
-
     .card { background: var(--dark2); border: 1px solid var(--border); border-radius: 16px; padding: 32px 28px; transition: all 0.3s ease; position: relative; overflow: hidden; }
     .card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--orange), var(--orange-light)); opacity: 0; transition: opacity 0.3s; }
     .card:hover { border-color: rgba(255,152,0,0.4); transform: translateY(-4px); }
@@ -239,27 +168,20 @@
     .card > p { font-size: 14px; color: var(--text-muted); margin-bottom: 16px; }
     .card .price { font-size: 22px; font-weight: 700; color: var(--orange); margin-bottom: 20px; }
     .card .price span { font-size: 13px; font-weight: 400; color: var(--text-muted); }
-
     .btn-ghost { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 500; color: var(--orange); cursor: pointer; background: none; border: none; font-family: 'Poppins', sans-serif; padding: 0; transition: gap 0.2s; }
     .btn-ghost:hover { gap: 10px; }
-
     .details-list { display: none; margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border); }
     .details-list ul { list-style: none; }
     .details-list ul li { font-size: 13px; color: rgba(255,255,255,0.7); padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center; }
     .details-list ul li:last-child { border-bottom: none; }
-
-    /* ===== RESERVATION ===== */
     #reservation { background: var(--black); }
-
     .reservation-grid { display: grid; grid-template-columns: 1fr 1.3fr; gap: 48px; align-items: start; }
     .reservation-info { padding-top: 12px; }
     .reservation-info h3 { font-size: 24px; font-weight: 600; margin-bottom: 16px; }
     .reservation-info p { font-size: 14px; color: var(--text-muted); margin-bottom: 32px; line-height: 1.7; }
-
     .info-list { list-style: none; display: flex; flex-direction: column; gap: 16px; }
     .info-list li { display: flex; align-items: flex-start; gap: 14px; font-size: 14px; color: rgba(255,255,255,0.75); }
     .info-list li .icon-circle { width: 36px; height: 36px; min-width: 36px; border-radius: 50%; background: rgba(255,152,0,0.1); border: 1px solid rgba(255,152,0,0.2); display: flex; align-items: center; justify-content: center; font-size: 15px; }
-
     .form-card { background: var(--dark2); border: 1px solid var(--border); border-radius: 20px; padding: 36px 32px; }
     .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
     .form-group { margin-bottom: 18px; }
@@ -269,36 +191,26 @@
     .form-group select option { background: var(--dark2); }
     .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--orange); }
     .form-submit { width: 100%; margin-top: 6px; }
-
     @media (max-width: 900px) { .reservation-grid { grid-template-columns: 1fr; } .reservation-info { display: none; } .form-row { grid-template-columns: 1fr; } }
-
-    /* ===== CONTACT ===== */
     #contact { background: var(--dark); }
-
     .contact-grid { display: grid; grid-template-columns: 1fr 1.4fr; gap: 48px; align-items: start; }
     .contact-info-card { background: var(--dark2); border: 1px solid var(--border); border-radius: 20px; padding: 36px 32px; }
     .contact-info-card h3 { font-size: 22px; font-weight: 600; margin-bottom: 8px; }
     .contact-info-card .tagline { font-size: 14px; color: var(--text-muted); margin-bottom: 32px; }
-
     .contact-item { display: flex; align-items: center; gap: 14px; padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.06); }
     .contact-item:last-of-type { border-bottom: none; }
     .contact-item-icon { width: 40px; height: 40px; min-width: 40px; border-radius: 10px; background: rgba(255,152,0,0.1); display: flex; align-items: center; justify-content: center; font-size: 17px; }
     .contact-item-text { flex: 1; }
     .contact-item-label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 2px; }
     .contact-item-value { font-size: 14px; font-weight: 500; }
-
     .icon-btn { display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px; border-radius: 6px; font-size: 12px; font-weight: 500; text-decoration: none; transition: all 0.2s; margin-right: 6px; }
     .icon-btn img { width: 14px; height: 14px; }
     .icon-btn.phone { background: rgba(40,167,69,0.15); color: #4caf50; border: 1px solid rgba(40,167,69,0.2); }
     .icon-btn.whatsapp { background: rgba(37,211,102,0.1); color: #25d366; border: 1px solid rgba(37,211,102,0.2); }
     .icon-btn:hover { opacity: 0.8; }
-
     .contact-form-card { background: var(--dark2); border: 1px solid var(--border); border-radius: 20px; padding: 36px 32px; }
     .contact-form-card h3 { font-size: 20px; font-weight: 600; margin-bottom: 24px; }
-
     @media (max-width: 900px) { .contact-grid { grid-template-columns: 1fr; } }
-
-    /* ===== LIGHTBOX ===== */
     #lightbox { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.97); display: none; justify-content: center; align-items: center; z-index: 2000; }
     #lightbox img { max-width: 88%; max-height: 82%; border-radius: 8px; animation: lbZoom 0.25s ease; }
     @keyframes lbZoom { from { transform: scale(0.85); opacity: 0; } to { transform: scale(1); opacity: 1; } }
@@ -308,8 +220,6 @@
     #lightbox .lb-prev { left: 24px; top: 50%; transform: translateY(-50%); }
     #lightbox .lb-next { right: 24px; top: 50%; transform: translateY(-50%); }
     .lb-counter { position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%); font-size: 13px; color: var(--text-muted); letter-spacing: 0.05em; }
-
-    /* ===== POPUP CONFIRM ===== */
     #confirmBox { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: center; z-index: 3000; padding: 20px; }
     .confirm-content { background: var(--dark2); border: 1px solid rgba(255,152,0,0.3); border-radius: 20px; padding: 36px 32px; max-width: 440px; width: 100%; text-align: center; animation: popIn 0.25s ease; }
     @keyframes popIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
@@ -321,8 +231,6 @@
     .confirm-buttons .btn { flex: 1; justify-content: center; }
     .btn-gray { background: var(--dark3); color: var(--text-muted); border: 1px solid rgba(255,255,255,0.1); }
     .btn-gray:hover { background: var(--gray); color: var(--white); }
-
-    /* ===== SOCIAL FLOAT ===== */
     .social-float { position: fixed; bottom: 24px; right: 20px; display: flex; flex-direction: column; gap: 10px; z-index: 999; }
     .social-float a { width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: all 0.25s; box-shadow: 0 4px 12px rgba(0,0,0,0.4); }
     .social-float img { width: 20px; height: 20px; }
@@ -330,8 +238,6 @@
     .social-float .tiktok { background: #111; border: 1px solid #333; }
     .social-float .snap { background: #FFFC00; }
     .social-float a:hover { transform: scale(1.12) translateY(-2px); }
-
-    /* ===== FOOTER ===== */
     footer { background: var(--dark); border-top: 1px solid var(--border); padding: 40px 50px; }
     .footer-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
     .footer-logo { font-size: 18px; font-weight: 700; color: var(--orange); }
@@ -339,19 +245,14 @@
     .footer-links a { font-size: 13px; color: var(--text-muted); transition: color 0.2s; }
     .footer-links a:hover { color: var(--white); }
     .footer-copy { font-size: 12px; color: var(--text-muted); text-align: right; }
-
     @media (max-width: 640px) { footer { padding: 32px 24px; } .footer-inner { flex-direction: column; text-align: center; } .footer-copy { text-align: center; } section { padding: 70px 24px; } }
-
-    /* ===== ANIMATIONS ===== */
     .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
     .reveal.visible { opacity: 1; transform: translateY(0); }
     .reveal-delay-1 { transition-delay: 0.1s; }
     .reveal-delay-2 { transition-delay: 0.2s; }
     .reveal-delay-3 { transition-delay: 0.3s; }
-
     .admin-link { margin-left: 20px; padding: 9px 18px; background: linear-gradient(135deg, var(--orange), var(--orange-light)); color: var(--black); font-size: 13px; font-weight: 700; border-radius: 20px; box-shadow: 0 4px 10px rgba(255,152,0,0.3); transition: all 0.3s ease; }
     .admin-link:hover { transform: scale(1.05); box-shadow: 0 6px 15px rgba(255,152,0,0.5); }
-
     .toast-message { position: fixed; bottom: 30px; left: 20px; background: rgba(0,0,0,0.95); color: #fff; padding: 16px 24px; border-radius: 8px; font-size: 14px; z-index: 10000; max-width: 300px; word-wrap: break-word; border-left: 4px solid #ff9800; }
     .toast-message.success { border-left-color: #4caf50; }
     .toast-message.error { border-left-color: #f44336; }
@@ -415,7 +316,6 @@
       <h2 class="section-title">Moments capturés</h2>
       <p class="section-subtitle">Chaque image raconte une histoire unique</p>
     </div>
-
     <div class="masonry-grid reveal" id="portfolioGrid">
       <div class="pm-item" data-cat="mariage">
         <img src="photo1.jpeg" alt="Mariage" loading="lazy">
@@ -764,13 +664,12 @@
   </div>
 </div>
 
-<!-- ===== FIREBASE V2 (avec SDK modular) ===== -->
-<script type="module">
-  // Import Firebase SDK
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-  import { getFirestore, collection, addDoc, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+<!-- FIREBASE INITIALIZATION -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 
-  // Configuration Firebase - THEOPICTURE V2
+<script>
+  // ===== FIREBASE CONFIGURATION =====
   const firebaseConfig = {
     apiKey: "AIzaSyBgr9_DOrwpoz2o-ntxtPE6xz7AZKD7qlY",
     authDomain: "theopicture-v2.firebaseapp.com",
@@ -781,25 +680,18 @@
     measurementId: "G-CE7B9HTDGG"
   };
 
-  // Initialiser Firebase
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
+  // Initialize Firebase
+  if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+  }
 
-  // Exposer les fonctions Firebase globalement
-  window.firebaseDB = {
-    db,
-    collection,
-    addDoc,
-    getDocs,
-    query,
-    where
-  };
+  const db = firebase.firestore();
+  console.log("✅ Firebase initialisé - theopicture-v2");
 
-  console.log("✅ Firebase initialisé avec succès - theopicture-v2");
-</script>
+  // ===== VARIABLES GLOBALES =====
+  let datesIndisponibles = [];
 
-<script>
-  // ========== TOAST NOTIFICATIONS ==========
+  // ===== TOAST NOTIFICATIONS =====
   function showToast(message, type = 'success') {
     const toast = document.createElement('div');
     toast.className = `toast-message ${type}`;
@@ -813,46 +705,39 @@
     }, 3500);
   }
 
-  // ========== GESTION DATES RÉSERVÉES ==========
-  let datesIndisponibles = [];
-
-  async function chargerDates() {
-    try {
-      const { db, collection, getDocs, query, where } = window.firebaseDB;
-      
-      const q = query(
-        collection(db, "reservations"),
-        where("status", "==", "confirmée")
-      );
-      
-      const snapshot = await getDocs(q);
-      datesIndisponibles = [];
-      
-      snapshot.forEach(doc => {
-        const data = doc.data();
-        if (data.date && data.heure) {
-          datesIndisponibles.push(`${data.date}|${data.heure}`);
-        }
+  // ===== CHARGER DATES RÉSERVÉES =====
+  function chargerDates() {
+    db.collection("reservations")
+      .where("status", "==", "confirmée")
+      .get()
+      .then(snapshot => {
+        datesIndisponibles = [];
+        snapshot.forEach(doc => {
+          const data = doc.data();
+          if (data.date && data.heure) {
+            datesIndisponibles.push(`${data.date}|${data.heure}`);
+          }
+        });
+        console.log("📅 Dates chargées:", datesIndisponibles);
+      })
+      .catch(err => {
+        console.error("Erreur chargement dates:", err);
       });
-      
-      console.log("📅 Dates indisponibles chargées:", datesIndisponibles);
-    } catch (error) {
-      console.error("Erreur chargement dates :", error);
-    }
   }
 
   // Charger les dates au démarrage
-  chargerDates();
+  window.addEventListener("load", chargerDates);
 
   function estCreneauDisponible(date, heure) {
     return !datesIndisponibles.includes(`${date}|${heure}`);
   }
 
-  // ========== VALIDATION FORMULAIRE ==========
+  // ===== VALIDATION FORMULAIRE =====
   document.addEventListener("DOMContentLoaded", () => {
     const dateInput = document.getElementById("date");
     if (dateInput) {
-      dateInput.setAttribute("min", new Date().toISOString().split("T")[0]);
+      const today = new Date().toISOString().split("T")[0];
+      dateInput.setAttribute("min", today);
       dateInput.addEventListener("change", validerCreneau);
     }
 
@@ -868,13 +753,13 @@
 
     if (date && heure) {
       if (!estCreneauDisponible(date, heure)) {
-        showToast("❌ Ce créneau est déjà réservé !", "error");
+        showToast("❌ Ce créneau est déjà réservé!", "error");
         document.getElementById("heure").value = "";
       }
     }
   }
 
-  // ========== ÉTAPE 1 : AFFICHER LE POPUP ==========
+  // ===== ÉTAPE 1 : AFFICHER POPUP =====
   function envoyerReservation() {
     const nom = document.getElementById("nom").value.trim();
     const tel = document.getElementById("telephone").value.trim();
@@ -883,25 +768,23 @@
     const heure = document.getElementById("heure").value;
     const lieu = document.getElementById("lieu").value.trim();
 
-    // Validation
     if (!nom || !tel || !date || !heure) {
-      showToast("⚠️ Remplissez tous les champs obligatoires !", "error");
+      showToast("⚠️ Remplissez tous les champs obligatoires!", "error");
       return;
     }
 
     if (!estCreneauDisponible(date, heure)) {
-      showToast("❌ Ce créneau vient d'être réservé !", "error");
+      showToast("❌ Ce créneau vient d'être réservé!", "error");
       return;
     }
 
-    // Afficher le popup
     document.getElementById("confirmText").innerText =
       `Nom : ${nom}\nTéléphone : ${tel}\nÉvénement : ${evenement}\nDate : ${date}\nHeure : ${heure}\nLieu : ${lieu || "Non précisé"}`;
 
     document.getElementById("confirmBox").style.display = "flex";
   }
 
-  // ========== ÉTAPE 2 : ENREGISTRER ET ENVOYER ==========
+  // ===== ÉTAPE 2 : ENREGISTRER ET ENVOYER =====
   async function confirmerEnvoi() {
     const btnConfirmer = document.getElementById("btnConfirmer");
     btnConfirmer.disabled = true;
@@ -916,10 +799,8 @@
     const msg = document.getElementById("message").value.trim();
 
     try {
-      const { db, collection, addDoc } = window.firebaseDB;
-
-      // Préparer les données
-      const data = {
+      // Enregistrer dans Firestore
+      await db.collection("reservations").add({
         nom,
         telephone: tel,
         evenement,
@@ -928,23 +809,19 @@
         lieu: lieu || "Non précisé",
         message: msg || "",
         status: "confirmée",
-        createdAt: new Date(),
-        updatedAt: new Date()
-      };
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
 
-      // Enregistrer dans Firestore
-      const docRef = await addDoc(collection(db, "reservations"), data);
-      
       // Réinitialiser le formulaire
       fermerConfirm();
       ["nom", "telephone", "date", "heure", "lieu", "message"].forEach(id => {
         document.getElementById(id).value = "";
       });
 
-      showToast("✅ Réservation confirmée ! WhatsApp s'ouvre...", "success");
+      showToast("✅ Réservation confirmée! WhatsApp s'ouvre...", "success");
       chargerDates();
 
-      // Ouvrir WhatsApp après 1 sec
+      // Ouvrir WhatsApp après 800ms
       setTimeout(() => {
         const texteWA =
           "📸 *NOUVELLE RÉSERVATION TEOPICTURE*%0A%0A" +
@@ -960,8 +837,8 @@
       }, 800);
 
     } catch (error) {
-      console.error("❌ Erreur Firestore :", error);
-      showToast(`Erreur : ${error.message}`, "error");
+      console.error("❌ Erreur:", error);
+      showToast(`Erreur: ${error.message}`, "error");
     } finally {
       btnConfirmer.disabled = false;
       btnConfirmer.textContent = "Confirmer ✓";
@@ -972,7 +849,7 @@
     document.getElementById("confirmBox").style.display = "none";
   }
 
-  // ========== CONTACT VIA WHATSAPP ==========
+  // ===== CONTACT WHATSAPP =====
   function envoyerContact() {
     const nom = document.getElementById("contactNom").value.trim();
     const tel = document.getElementById("contactTel").value.trim();
