@@ -1,708 +1,779 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <link rel="icon" type="image/png" href="image1.jpeg">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TEOPICTURE | Photographe Événementiel</title>
+  <title>TEOPICTURE | Admin</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
     :root {
       --orange: #ff9800; --orange-dark: #e68900; --orange-light: #ffb74d;
       --black: #0a0a0a; --dark: #111111; --dark2: #1a1a1a; --dark3: #222222;
-      --gray: #333333; --gray2: #555555; --text-muted: #aaaaaa;
-      --white: #ffffff; --border: rgba(255,152,0,0.2);
+      --gray: #333333; --text-muted: #888888; --white: #ffffff;
+      --border: rgba(255,152,0,0.15); --green: #4caf50; --red: #f44336; --blue: #2196f3;
     }
     html { scroll-behavior: smooth; }
-    body { font-family: 'Poppins', sans-serif; background: var(--black); color: var(--white); line-height: 1.6; overflow-x: hidden; }
-    a { text-decoration: none; color: inherit; }
+    body { font-family: 'Poppins', sans-serif; background: var(--black); color: var(--white); min-height: 100vh; }
     ::-webkit-scrollbar { width: 4px; }
     ::-webkit-scrollbar-track { background: var(--black); }
     ::-webkit-scrollbar-thumb { background: var(--orange); border-radius: 2px; }
 
-    /* NAVBAR */
-    header { position: fixed; top: 0; width: 100%; z-index: 1000; padding: 0 50px; height: 70px; display: flex; align-items: center; justify-content: space-between; background: rgba(10,10,10,0.92); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255,152,0,0.08); transition: all 0.3s ease; }
-    header.scrolled { height: 60px; background: rgba(10,10,10,0.98); border-bottom-color: rgba(255,152,0,0.15); }
-    .logo { display: flex; align-items: center; gap: 12px; }
-    .logo-img { height: 38px; width: 38px; border-radius: 50%; object-fit: cover; border: 1.5px solid var(--orange); }
-    .logo-text { font-size: 20px; font-weight: 700; letter-spacing: 0.08em; color: var(--orange); }
-    nav ul { list-style: none; display: flex; gap: 8px; align-items: center; }
-    nav ul li a { font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.6); padding: 6px 14px; border-radius: 6px; transition: all 0.2s; letter-spacing: 0.03em; }
-    nav ul li a:hover { color: var(--white); background: rgba(255,152,0,0.08); }
-    nav ul li:last-child a { color: var(--black); background: var(--orange); padding: 8px 20px; border-radius: 8px; font-weight: 600; }
-    nav ul li:last-child a:hover { background: var(--orange-light); }
-    .menu-toggle { display: none; font-size: 24px; cursor: pointer; color: var(--orange); background: none; border: none; }
-    @media (max-width: 768px) {
-      header { padding: 0 24px; }
-      nav ul { position: fixed; top: 70px; left: 0; width: 100%; flex-direction: column; background: rgba(10,10,10,0.98); backdrop-filter: blur(20px); padding: 20px 0 28px; gap: 4px; display: none; border-bottom: 1px solid var(--border); }
-      nav ul.active { display: flex; }
-      nav ul li a { padding: 10px 24px; border-radius: 0; width: 100%; display: block; }
-      nav ul li:last-child a { margin: 8px 24px 0; width: auto; border-radius: 8px; text-align: center; }
-      .menu-toggle { display: block; }
+    /* ===== LOGIN ===== */
+    #loginPage { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: var(--black); padding: 20px; }
+    .login-card { background: var(--dark2); border: 1px solid var(--border); border-radius: 20px; padding: 48px 40px; width: 100%; max-width: 400px; text-align: center; }
+    .login-logo { font-size: 22px; font-weight: 700; color: var(--orange); letter-spacing: 0.08em; margin-bottom: 6px; }
+    .login-sub { font-size: 13px; color: var(--text-muted); margin-bottom: 36px; }
+    .login-card h2 { font-size: 20px; font-weight: 600; margin-bottom: 28px; }
+    .form-group { margin-bottom: 16px; text-align: left; }
+    .form-group label { display: block; font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 8px; }
+    .form-group input, .form-group textarea, .form-group select {
+      width: 100%; padding: 12px 14px; background: var(--dark3); border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 10px; color: var(--white); font-size: 14px; font-family: 'Poppins', sans-serif;
+      outline: none; transition: border-color 0.2s; appearance: none;
     }
-
-    /* HERO */
-    .hero { height: 100vh; min-height: 600px; background: url('image1.jpeg') center/cover no-repeat; display: flex; align-items: center; justify-content: center; text-align: center; position: relative; }
-    .hero-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.6) 60%, rgba(10,10,10,1) 100%); }
-    .hero-content { position: relative; z-index: 1; max-width: 700px; padding: 0 24px; }
-    .hero-eyebrow { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--orange); margin-bottom: 24px; padding: 6px 16px; border: 1px solid rgba(255,152,0,0.3); border-radius: 20px; background: rgba(255,152,0,0.08); }
-    .hero-eyebrow::before { content: ''; width: 6px; height: 6px; background: var(--orange); border-radius: 50%; }
-    .hero h1 { font-size: clamp(36px,6vw,68px); font-weight: 700; line-height: 1.08; letter-spacing: -0.02em; margin-bottom: 20px; }
-    .hero h1 span { color: var(--orange); display: block; }
-    .hero p { font-size: 17px; color: rgba(255,255,255,0.6); margin-bottom: 36px; font-weight: 300; }
-    .hero-cta-group { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
-    .btn { display: inline-flex; align-items: center; gap: 8px; padding: 13px 28px; border-radius: 10px; font-weight: 600; font-size: 14px; cursor: pointer; transition: all 0.25s ease; border: none; font-family: 'Poppins', sans-serif; letter-spacing: 0.02em; }
-    .btn-primary { background: var(--orange); color: var(--black); }
-    .btn-primary:hover { background: var(--orange-light); transform: translateY(-2px); }
-    .btn-outline { background: transparent; color: var(--white); border: 1px solid rgba(255,255,255,0.25); }
-    .btn-outline:hover { border-color: var(--orange); color: var(--orange); transform: translateY(-2px); }
-    .hero-scroll { position: absolute; bottom: 36px; left: 50%; transform: translateX(-50%); z-index: 1; display: flex; flex-direction: column; align-items: center; gap: 8px; color: rgba(255,255,255,0.35); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; }
-    .scroll-line { width: 1px; height: 40px; background: linear-gradient(to bottom, rgba(255,152,0,0.6), transparent); animation: scrollAnim 2s infinite; }
-    @keyframes scrollAnim { 0% { transform: scaleY(0); transform-origin: top; } 50% { transform: scaleY(1); transform-origin: top; } 51% { transform: scaleY(1); transform-origin: bottom; } 100% { transform: scaleY(0); transform-origin: bottom; } }
-
-    /* STATS */
-    .stats-bar { background: var(--dark2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 32px 50px; }
-    .stats-inner { max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: repeat(4,1fr); gap: 24px; text-align: center; }
-    .stat-item { padding: 16px; }
-    .stat-num { font-size: 34px; font-weight: 700; color: var(--orange); line-height: 1; margin-bottom: 6px; }
-    .stat-label { font-size: 12px; color: var(--text-muted); letter-spacing: 0.05em; text-transform: uppercase; }
-    @media (max-width: 640px) { .stats-inner { grid-template-columns: repeat(2,1fr); } .stats-bar { padding: 24px 20px; } }
-
-    /* SECTIONS */
-    section { padding: 100px 50px; }
-    .section-inner { max-width: 1200px; margin: 0 auto; }
-    .section-header { text-align: center; margin-bottom: 56px; }
-    .section-tag { display: inline-block; font-size: 11px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--orange); margin-bottom: 14px; }
-    .section-title { font-size: clamp(28px,4vw,44px); font-weight: 700; letter-spacing: -0.02em; line-height: 1.15; margin-bottom: 14px; }
-    .section-subtitle { font-size: 16px; color: var(--text-muted); max-width: 500px; margin: 0 auto; }
-
-    /* PORTFOLIO */
-    #portfolio { background: var(--black); padding: 120px 60px; }
-    .portfolio-filters { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 64px; }
-    .pf-btn { background: transparent; border: 1px solid rgba(255,255,255,0.12); color: rgba(255,255,255,0.45); font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; padding: 10px 28px; border-radius: 2px; cursor: pointer; transition: all 0.25s ease; font-family: 'Poppins', sans-serif; }
-    .pf-btn:hover { color: var(--white); border-color: rgba(255,255,255,0.4); }
-    .pf-btn.active { background: var(--orange); border-color: var(--orange); color: var(--black); font-weight: 700; }
-    .masonry-grid { columns: 3; column-gap: 14px; }
-    .pm-item { break-inside: avoid; margin-bottom: 14px; position: relative; overflow: hidden; border-radius: 8px; cursor: pointer; display: block; background: var(--dark2); animation: fadeInUp 0.45s ease both; }
-    .pm-item img { width: 100%; height: auto; display: block; border-radius: 8px; transition: transform 0.55s cubic-bezier(0.25,0.46,0.45,0.94), filter 0.4s ease; filter: brightness(0.85); }
-    .pm-item:hover img { transform: scale(1.04); filter: brightness(1); }
-    .pm-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.1) 50%, transparent 75%); display: flex; flex-direction: column; justify-content: flex-end; padding: 22px 20px; opacity: 0; transition: opacity 0.32s ease; border-radius: 8px; }
-    .pm-item:hover .pm-overlay { opacity: 1; }
-    .pm-category { font-size: 9px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: var(--orange); margin-bottom: 5px; }
-    .pm-title { font-size: 15px; font-weight: 600; color: var(--white); line-height: 1.3; }
-    .pm-location { font-size: 12px; color: rgba(255,255,255,0.5); margin-top: 4px; }
-    .pm-item::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: var(--orange); transform: scaleX(0); transform-origin: left; transition: transform 0.35s ease; border-radius: 0 0 8px 8px; }
-    .pm-item:hover::after { transform: scaleX(1); }
-    .pm-zoom { position: absolute; top: 14px; right: 14px; width: 36px; height: 36px; background: rgba(0,0,0,0.55); border: 1px solid rgba(255,255,255,0.18); border-radius: 50%; display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.25s ease, transform 0.2s; font-size: 15px; color: #fff; }
-    .pm-item:hover .pm-zoom { opacity: 1; }
-    .pm-zoom:hover { transform: scale(1.15); }
-    .pm-item.hidden { display: none; }
-    @keyframes fadeInUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
-    @media (max-width: 900px) { .masonry-grid { columns: 2; column-gap: 12px; } .pm-item { margin-bottom: 12px; } }
-    @media (max-width: 520px) { #portfolio { padding: 80px 18px; } .masonry-grid { columns: 2; column-gap: 8px; } .pm-item { margin-bottom: 8px; border-radius: 6px; } .portfolio-filters { margin-bottom: 36px; } .pf-btn { padding: 8px 16px; font-size: 10px; } }
-
-    /* SERVICES */
-    #services { background: var(--dark); }
-    .cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); gap: 20px; }
-    .card { background: var(--dark2); border: 1px solid var(--border); border-radius: 16px; padding: 32px 28px; transition: all 0.3s ease; position: relative; overflow: hidden; }
-    .card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--orange), var(--orange-light)); opacity: 0; transition: opacity 0.3s; }
-    .card:hover { border-color: rgba(255,152,0,0.4); transform: translateY(-4px); }
-    .card:hover::before { opacity: 1; }
-    .card-icon { width: 48px; height: 48px; background: rgba(255,152,0,0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; margin-bottom: 20px; }
-    .card h3 { font-size: 20px; font-weight: 600; margin-bottom: 10px; }
-    .card > p { font-size: 14px; color: var(--text-muted); margin-bottom: 16px; }
-    .card .price { font-size: 22px; font-weight: 700; color: var(--orange); margin-bottom: 20px; }
-    .card .price span { font-size: 13px; font-weight: 400; color: var(--text-muted); }
-    .btn-ghost { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 500; color: var(--orange); cursor: pointer; background: none; border: none; font-family: 'Poppins', sans-serif; padding: 0; transition: gap 0.2s; }
-    .btn-ghost:hover { gap: 10px; }
-    .details-list { display: none; margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border); }
-    .details-list ul { list-style: none; }
-    .details-list ul li { font-size: 13px; color: rgba(255,255,255,0.7); padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center; }
-    .details-list ul li:last-child { border-bottom: none; }
-
-    /* RESERVATION */
-    #reservation { background: var(--black); }
-    .reservation-grid { display: grid; grid-template-columns: 1fr 1.3fr; gap: 48px; align-items: start; }
-    .reservation-info { padding-top: 12px; }
-    .reservation-info h3 { font-size: 24px; font-weight: 600; margin-bottom: 16px; }
-    .reservation-info p { font-size: 14px; color: var(--text-muted); margin-bottom: 32px; line-height: 1.7; }
-    .info-list { list-style: none; display: flex; flex-direction: column; gap: 16px; }
-    .info-list li { display: flex; align-items: flex-start; gap: 14px; font-size: 14px; color: rgba(255,255,255,0.75); }
-    .info-list li .icon-circle { width: 36px; height: 36px; min-width: 36px; border-radius: 50%; background: rgba(255,152,0,0.1); border: 1px solid rgba(255,152,0,0.2); display: flex; align-items: center; justify-content: center; font-size: 15px; }
-    .form-card { background: var(--dark2); border: 1px solid var(--border); border-radius: 20px; padding: 36px 32px; }
-    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-    .form-group { margin-bottom: 18px; }
-    .form-group label { display: block; font-size: 12px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 8px; }
-    .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 11px 14px; background: var(--dark3); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; color: var(--white); font-size: 14px; font-family: 'Poppins', sans-serif; outline: none; transition: border-color 0.2s; appearance: none; }
-    .form-group input::placeholder, .form-group textarea::placeholder { color: var(--gray2); }
+    .form-group input:focus, .form-group textarea:focus, .form-group select:focus { border-color: var(--orange); }
     .form-group select option { background: var(--dark2); }
-    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--orange); }
-    .form-submit { width: 100%; margin-top: 6px; }
-    @media (max-width: 900px) { .reservation-grid { grid-template-columns: 1fr; } .reservation-info { display: none; } .form-row { grid-template-columns: 1fr; } }
+    .login-error { font-size: 13px; color: var(--red); margin-bottom: 14px; display: none; }
 
-    /* CONTACT */
-    #contact { background: var(--dark); }
-    .contact-grid { display: grid; grid-template-columns: 1fr 1.4fr; gap: 48px; align-items: start; }
-    .contact-info-card { background: var(--dark2); border: 1px solid var(--border); border-radius: 20px; padding: 36px 32px; }
-    .contact-info-card h3 { font-size: 22px; font-weight: 600; margin-bottom: 8px; }
-    .contact-info-card .tagline { font-size: 14px; color: var(--text-muted); margin-bottom: 32px; }
-    .contact-item { display: flex; align-items: center; gap: 14px; padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.06); }
-    .contact-item:last-of-type { border-bottom: none; }
-    .contact-item-icon { width: 40px; height: 40px; min-width: 40px; border-radius: 10px; background: rgba(255,152,0,0.1); display: flex; align-items: center; justify-content: center; font-size: 17px; }
-    .contact-item-text { flex: 1; }
-    .contact-item-label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 2px; }
-    .contact-item-value { font-size: 14px; font-weight: 500; }
-    .icon-btn { display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px; border-radius: 6px; font-size: 12px; font-weight: 500; text-decoration: none; transition: all 0.2s; margin-right: 6px; }
-    .icon-btn img { width: 14px; height: 14px; }
-    .icon-btn.phone { background: rgba(40,167,69,0.15); color: #4caf50; border: 1px solid rgba(40,167,69,0.2); }
-    .icon-btn.whatsapp { background: rgba(37,211,102,0.1); color: #25d366; border: 1px solid rgba(37,211,102,0.2); }
-    .icon-btn:hover { opacity: 0.8; }
-    .contact-form-card { background: var(--dark2); border: 1px solid var(--border); border-radius: 20px; padding: 36px 32px; }
-    .contact-form-card h3 { font-size: 20px; font-weight: 600; margin-bottom: 24px; }
-    @media (max-width: 900px) { .contact-grid { grid-template-columns: 1fr; } }
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 13px 24px; border-radius: 10px; font-weight: 600; font-size: 14px; cursor: pointer; transition: all 0.2s ease; border: none; font-family: 'Poppins', sans-serif; }
+    .btn-primary { background: var(--orange); color: var(--black); width: 100%; }
+    .btn-primary:hover { background: var(--orange-light); }
+    .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
+    .btn-danger { background: rgba(244,67,54,0.12); color: var(--red); border: 1px solid rgba(244,67,54,0.2); }
+    .btn-danger:hover { background: rgba(244,67,54,0.2); }
+    .btn-success { background: rgba(76,175,80,0.12); color: var(--green); border: 1px solid rgba(76,175,80,0.2); }
+    .btn-success:hover { background: rgba(76,175,80,0.22); }
+    .btn-ghost { background: transparent; color: var(--text-muted); border: 1px solid rgba(255,255,255,0.08); }
+    .btn-ghost:hover { border-color: rgba(255,255,255,0.2); color: var(--white); }
+    .btn-warning { background: rgba(255,152,0,0.12); color: var(--orange); border: 1px solid rgba(255,152,0,0.2); }
+    .btn-warning:hover { background: rgba(255,152,0,0.22); }
 
-    /* LIGHTBOX */
-    #lightbox { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.97); display: none; justify-content: center; align-items: center; z-index: 2000; }
-    #lightbox img { max-width: 88%; max-height: 82%; border-radius: 8px; animation: lbZoom 0.25s ease; }
-    @keyframes lbZoom { from { transform: scale(0.85); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-    #lightbox .lb-close, #lightbox .lb-prev, #lightbox .lb-next { position: absolute; color: rgba(255,255,255,0.6); font-size: 36px; cursor: pointer; user-select: none; transition: color 0.2s; }
-    #lightbox .lb-close:hover, #lightbox .lb-prev:hover, #lightbox .lb-next:hover { color: var(--orange); }
-    #lightbox .lb-close { top: 20px; right: 28px; font-size: 28px; }
-    #lightbox .lb-prev { left: 24px; top: 50%; transform: translateY(-50%); }
-    #lightbox .lb-next { right: 24px; top: 50%; transform: translateY(-50%); }
-    .lb-counter { position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%); font-size: 13px; color: var(--text-muted); letter-spacing: 0.05em; }
+    /* ===== ADMIN LAYOUT ===== */
+    #adminPage { display: none; }
+    .admin-header { position: fixed; top: 0; left: 0; width: 100%; height: 64px; background: rgba(17,17,17,0.95); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 28px; z-index: 100; }
+    .admin-logo { display: flex; align-items: center; gap: 10px; }
+    .admin-logo-text { font-size: 17px; font-weight: 700; color: var(--orange); }
+    .admin-badge { font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--black); background: var(--orange); padding: 3px 8px; border-radius: 4px; }
+    .admin-header-right { display: flex; align-items: center; gap: 12px; }
+    .admin-user { font-size: 13px; color: var(--text-muted); }
+    .btn-logout { font-size: 12px; font-weight: 500; color: var(--text-muted); background: none; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 6px 14px; cursor: pointer; font-family: 'Poppins', sans-serif; transition: all 0.2s; }
+    .btn-logout:hover { border-color: var(--red); color: var(--red); }
 
-    /* POPUP CONFIRMATION */
-    #confirmBox { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: center; z-index: 3000; padding: 20px; }
-    .confirm-content { background: var(--dark2); border: 1px solid rgba(255,152,0,0.3); border-radius: 20px; padding: 36px 32px; max-width: 440px; width: 100%; text-align: center; animation: popIn 0.25s ease; }
-    @keyframes popIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-    .confirm-icon { width: 56px; height: 56px; background: rgba(255,152,0,0.1); border: 1px solid rgba(255,152,0,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; margin: 0 auto 20px; }
-    .confirm-content h3 { font-size: 20px; font-weight: 600; margin-bottom: 6px; color: var(--orange); }
-    .confirm-content .confirm-sub { font-size: 13px; color: var(--text-muted); margin-bottom: 20px; }
-    .confirm-details { background: var(--dark3); border-radius: 12px; padding: 16px 20px; text-align: left; margin-bottom: 24px; font-size: 13px; color: rgba(255,255,255,0.75); white-space: pre-line; line-height: 1.9; }
-    .confirm-buttons { display: flex; gap: 12px; }
-    .confirm-buttons .btn { flex: 1; justify-content: center; }
-    .btn-gray { background: var(--dark3); color: var(--text-muted); border: 1px solid rgba(255,255,255,0.1); }
-    .btn-gray:hover { background: var(--gray); color: var(--white); }
+    /* ===== SIDEBAR ===== */
+    .admin-layout { display: flex; padding-top: 64px; min-height: 100vh; }
+    .sidebar { width: 220px; min-width: 220px; background: var(--dark); border-right: 1px solid var(--border); padding: 24px 12px; position: fixed; top: 64px; left: 0; height: calc(100vh - 64px); overflow-y: auto; }
+    .sidebar-section { font-size: 10px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); padding: 0 12px; margin-bottom: 8px; margin-top: 20px; }
+    .sidebar-section:first-child { margin-top: 0; }
+    .nav-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 8px; font-size: 14px; font-weight: 500; color: rgba(255,255,255,0.55); cursor: pointer; transition: all 0.2s; margin-bottom: 2px; border: none; background: none; width: 100%; text-align: left; font-family: 'Poppins', sans-serif; }
+    .nav-item:hover { background: rgba(255,255,255,0.05); color: var(--white); }
+    .nav-item.active { background: rgba(255,152,0,0.1); color: var(--orange); }
+    .nav-item .icon { font-size: 16px; width: 20px; text-align: center; }
+    .badge-count { margin-left: auto; background: var(--orange); color: var(--black); font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 10px; min-width: 20px; text-align: center; }
 
-    /* SOCIAL FLOAT */
-    .social-float { position: fixed; bottom: 24px; right: 20px; display: flex; flex-direction: column; gap: 10px; z-index: 999; }
-    .social-float a { width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: all 0.25s; box-shadow: 0 4px 12px rgba(0,0,0,0.4); }
-    .social-float img { width: 20px; height: 20px; }
-    .social-float .insta { background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
-    .social-float .tiktok { background: #111; border: 1px solid #333; }
-    .social-float .snap { background: #FFFC00; }
-    .social-float a:hover { transform: scale(1.12) translateY(-2px); }
+    /* ===== MAIN ===== */
+    .main-content { flex: 1; margin-left: 220px; padding: 32px; max-width: 100%; }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+    .page-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 28px; flex-wrap: wrap; gap: 16px; }
+    .page-title { font-size: 24px; font-weight: 700; margin-bottom: 4px; }
+    .page-desc { font-size: 13px; color: var(--text-muted); }
 
-    /* FOOTER */
-    footer { background: var(--dark); border-top: 1px solid var(--border); padding: 40px 50px; }
-    .footer-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
-    .footer-logo { font-size: 18px; font-weight: 700; color: var(--orange); }
-    .footer-links { display: flex; gap: 24px; }
-    .footer-links a { font-size: 13px; color: var(--text-muted); transition: color 0.2s; }
-    .footer-links a:hover { color: var(--white); }
-    .footer-copy { font-size: 12px; color: var(--text-muted); text-align: right; }
-    @media (max-width: 640px) { footer { padding: 32px 24px; } .footer-inner { flex-direction: column; text-align: center; } .footer-copy { text-align: center; } section { padding: 70px 24px; } }
+    /* ===== STATS ===== */
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px,1fr)); gap: 14px; margin-bottom: 28px; }
+    .stat-card { background: var(--dark2); border: 1px solid var(--border); border-radius: 14px; padding: 20px; }
+    .stat-card-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); margin-bottom: 10px; }
+    .stat-card-value { font-size: 30px; font-weight: 700; color: var(--orange); line-height: 1; margin-bottom: 4px; }
+    .stat-card-sub { font-size: 12px; color: var(--text-muted); }
 
-    /* ANIMATIONS */
-    .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
-    .reveal.visible { opacity: 1; transform: translateY(0); }
-    .reveal-delay-1 { transition-delay: 0.1s; }
-    .reveal-delay-2 { transition-delay: 0.2s; }
-    .reveal-delay-3 { transition-delay: 0.3s; }
-    .admin-link { margin-left: 20px; padding: 9px 18px; background: linear-gradient(135deg, var(--orange), var(--orange-light)); color: var(--black); font-size: 13px; font-weight: 700; border-radius: 20px; box-shadow: 0 4px 10px rgba(255,152,0,0.3); transition: all 0.3s ease; }
-    .admin-link:hover { transform: scale(1.05); box-shadow: 0 6px 15px rgba(255,152,0,0.5); }
+    /* ===== FILTERS ===== */
+    .filters-bar { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+    .search-input { flex: 1; min-width: 200px; padding: 9px 14px; background: var(--dark2); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; color: var(--white); font-size: 13px; font-family: 'Poppins', sans-serif; outline: none; transition: border-color 0.2s; }
+    .search-input:focus { border-color: var(--orange); }
+    .search-input::placeholder { color: var(--text-muted); }
+    .filter-select { padding: 9px 14px; background: var(--dark2); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; color: var(--white); font-size: 13px; font-family: 'Poppins', sans-serif; outline: none; cursor: pointer; appearance: none; padding-right: 28px; }
+    .filter-select option { background: var(--dark2); }
+
+    /* ===== TABLE ===== */
+    .table-wrap { background: var(--dark2); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; }
+    table { width: 100%; border-collapse: collapse; }
+    thead tr { background: rgba(255,152,0,0.05); border-bottom: 1px solid var(--border); }
+    th { padding: 13px 16px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); text-align: left; white-space: nowrap; }
+    td { padding: 13px 16px; font-size: 13px; border-bottom: 1px solid rgba(255,255,255,0.04); vertical-align: middle; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: rgba(255,255,255,0.02); }
+    .td-name { font-weight: 500; color: var(--white); }
+    .td-muted { color: var(--text-muted); }
+
+    /* ===== BADGES ===== */
+    .badge { display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+    .badge::before { content: ''; width: 5px; height: 5px; border-radius: 50%; }
+    .badge-mariage { background: rgba(255,152,0,0.12); color: var(--orange); }
+    .badge-mariage::before { background: var(--orange); }
+    .badge-anniversaire { background: rgba(33,150,243,0.12); color: #64b5f6; }
+    .badge-anniversaire::before { background: #64b5f6; }
+    .badge-shooting { background: rgba(156,39,176,0.12); color: #ce93d8; }
+    .badge-shooting::before { background: #ce93d8; }
+    .badge-bapteme, .badge-bap { background: rgba(0,188,212,0.12); color: #4dd0e1; }
+    .badge-bapteme::before, .badge-bap::before { background: #4dd0e1; }
+    .badge-korite { background: rgba(76,175,80,0.12); color: #81c784; }
+    .badge-korite::before { background: #81c784; }
+    .badge-tabaski { background: rgba(255,235,59,0.1); color: #fff176; }
+    .badge-tabaski::before { background: #fff176; }
+    .badge-autre { background: rgba(120,120,120,0.12); color: #aaa; }
+    .badge-autre::before { background: #aaa; }
+
+    /* Statut */
+    .statut-badge { display: inline-flex; align-items: center; gap: 4px; padding: 3px 9px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+    .statut-attente { background: rgba(255,152,0,0.12); color: var(--orange); }
+    .statut-confirme { background: rgba(76,175,80,0.12); color: #81c784; }
+    .statut-annule { background: rgba(244,67,54,0.12); color: #ef9a9a; }
+
+    /* ===== ACTIONS ===== */
+    .actions { display: flex; gap: 8px; align-items: center; }
+    .icon-btn-sm { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; cursor: pointer; border: 1px solid rgba(255,255,255,0.08); background: transparent; transition: all 0.2s; }
+    .icon-btn-sm:hover { transform: scale(1.1); }
+    .icon-btn-sm.whatsapp { border-color: rgba(37,211,102,0.2); }
+    .icon-btn-sm.whatsapp:hover { background: rgba(37,211,102,0.1); }
+    .icon-btn-sm.delete { border-color: rgba(244,67,54,0.2); }
+    .icon-btn-sm.delete:hover { background: rgba(244,67,54,0.1); }
+    .icon-btn-sm.confirm { border-color: rgba(76,175,80,0.2); }
+    .icon-btn-sm.confirm:hover { background: rgba(76,175,80,0.1); }
+
+    /* ===== EMPTY / LOADING ===== */
+    .empty-state { text-align: center; padding: 60px 20px; color: var(--text-muted); }
+    .empty-state .empty-icon { font-size: 40px; margin-bottom: 14px; }
+    .empty-state p { font-size: 14px; }
+    .loading { text-align: center; padding: 40px; color: var(--text-muted); font-size: 14px; }
+    .spinner { width: 28px; height: 28px; border: 2px solid rgba(255,152,0,0.2); border-top-color: var(--orange); border-radius: 50%; animation: spin 0.7s linear infinite; margin: 0 auto 14px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ===== MODAL ===== */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); display: none; align-items: center; justify-content: center; z-index: 500; padding: 20px; }
+    .modal-overlay.open { display: flex; }
+    .modal { background: var(--dark2); border: 1px solid var(--border); border-radius: 20px; padding: 32px; width: 100%; max-width: 480px; animation: modalIn 0.2s ease; }
+    @keyframes modalIn { from { transform: scale(0.92); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+    .modal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+    .modal-title { font-size: 18px; font-weight: 600; }
+    .modal-close { font-size: 22px; cursor: pointer; color: var(--text-muted); background: none; border: none; transition: color 0.2s; }
+    .modal-close:hover { color: var(--white); }
+    .detail-row { display: flex; justify-content: space-between; align-items: flex-start; padding: 11px 0; border-bottom: 1px solid rgba(255,255,255,0.05); gap: 16px; }
+    .detail-row:last-child { border-bottom: none; }
+    .detail-label { font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; min-width: 100px; }
+    .detail-value { font-size: 14px; font-weight: 500; text-align: right; }
+    .modal-actions { display: flex; gap: 10px; margin-top: 24px; flex-wrap: wrap; }
+    .modal-actions .btn { flex: 1; min-width: 120px; }
+
+    /* ===== TOAST ===== */
+    .toast { position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--dark2); border: 1px solid var(--border); border-radius: 10px; padding: 12px 20px; font-size: 13px; font-weight: 500; opacity: 0; transition: all 0.3s ease; z-index: 9999; white-space: nowrap; }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+    .toast.success { border-color: rgba(76,175,80,0.3); color: #81c784; }
+    .toast.error { border-color: rgba(244,67,54,0.3); color: #ef9a9a; }
+    .toast.info { border-color: rgba(33,150,243,0.3); color: #64b5f6; }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 768px) {
+      .admin-header { padding: 0 16px; height: 56px; }
+      .admin-logo-text { font-size: 15px; }
+      .admin-user { display: none; }
+      .sidebar { display: flex; position: fixed; bottom: 0; top: auto; left: 0; width: 100%; height: 60px; padding: 0; border-top: 1px solid var(--border); border-right: none; overflow: visible; }
+      .sidebar-section { display: none; }
+      .nav-item { flex: 1; flex-direction: column; justify-content: center; font-size: 10px; gap: 2px; padding: 6px 0; }
+      .nav-item .icon { font-size: 18px; }
+      .badge-count { position: absolute; top: 4px; right: 20%; font-size: 9px; }
+      .main-content { margin-left: 0; padding: 16px; padding-bottom: 80px; }
+      .page-title { font-size: 18px; }
+      .stats-grid { grid-template-columns: repeat(2,1fr); gap: 10px; }
+      .stat-card { padding: 14px; }
+      .stat-card-value { font-size: 22px; }
+      .filters-bar { flex-direction: column; align-items: stretch; }
+      .search-input, .filter-select { width: 100%; }
+      table thead { display: none; }
+      table tr { display: block; background: var(--dark2); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 12px; padding: 14px; }
+      table td { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border: none; font-size: 13px; }
+      table td::before { content: attr(data-label); font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; }
+      .table-wrap { background: transparent; border: none; }
+      .modal { padding: 20px; border-radius: 16px; }
+      .modal-actions { flex-direction: column; }
+    }
   </style>
 </head>
 <body>
 
-<!-- HEADER -->
-<header id="mainHeader">
-  <div class="logo">
-    <img src="logo.jpeg" alt="TEOPICTURE" class="logo-img" onerror="this.style.display='none'">
-    <span class="logo-text">TEOPICTURE</span>
-  </div>
-  <button class="menu-toggle" id="menuToggle" aria-label="Menu">&#9776;</button>
-  <nav>
-    <ul class="nav-links" id="navLinks">
-      <li><a href="#home">Accueil</a></li>
-      <li><a href="#portfolio">Portfolio</a></li>
-      <li><a href="#services">Services</a></li>
-      <li><a href="#reservation">Réservation</a></li>
-      <li><a href="#contact">Contact</a></li>
-      <li><a href="#reservation" class="btn btn-primary">Réserver</a></li>
-    </ul>
-  </nav>
-  <a href="admin.html" class="admin-link">Admin</a>
-</header>
-
-<!-- HERO -->
-<section id="home" class="hero">
-  <div class="hero-overlay"></div>
-  <div class="hero-content">
-    <div class="hero-eyebrow">Photographe Événementiel</div>
-    <h1>Immortalisez<span>vos moments</span></h1>
-    <p>Mariages · Anniversaires · Baptêmes · Événements — Dakar & Thiès</p>
-    <div class="hero-cta-group">
-      <a href="#reservation" class="btn btn-primary">Réserver une séance</a>
-      <a href="#portfolio" class="btn btn-outline">Voir le portfolio</a>
+<!-- ===== LOGIN ===== -->
+<div id="loginPage">
+  <div class="login-card">
+    <div class="login-logo">TEOPICTURE</div>
+    <div class="login-sub">Espace administrateur</div>
+    <h2>Connexion</h2>
+    <div class="form-group">
+      <label>Identifiant</label>
+      <input type="text" id="loginUser" placeholder="admin" autocomplete="username">
     </div>
-  </div>
-  <div class="hero-scroll">
-    <div class="scroll-line"></div>
-    <span>Scroll</span>
-  </div>
-</section>
-
-<!-- STATS -->
-<div class="stats-bar reveal">
-  <div class="stats-inner">
-    <div class="stat-item"><div class="stat-num">200+</div><div class="stat-label">Événements couverts</div></div>
-    <div class="stat-item"><div class="stat-num">5★</div><div class="stat-label">Satisfaction client</div></div>
-    <div class="stat-item"><div class="stat-num">48h</div><div class="stat-label">Délai de livraison</div></div>
-    <div class="stat-item"><div class="stat-num">3+</div><div class="stat-label">Ans d'expérience</div></div>
+    <div class="form-group">
+      <label>Mot de passe</label>
+      <input type="password" id="loginPass" placeholder="••••••••" autocomplete="current-password">
+    </div>
+    <div class="login-error" id="loginError">Identifiant ou mot de passe incorrect</div>
+    <button class="btn btn-primary" id="btnLogin" onclick="doLogin()">Se connecter</button>
   </div>
 </div>
 
-<!-- PORTFOLIO -->
-<section id="portfolio">
-  <div class="section-inner">
-    <div class="section-header reveal">
-      <div class="section-tag">Portfolio</div>
-      <h2 class="section-title">Moments capturés</h2>
-      <p class="section-subtitle">Chaque image raconte une histoire unique</p>
+<!-- ===== ADMIN PAGE ===== -->
+<div id="adminPage">
+  <div class="admin-header">
+    <div class="admin-logo">
+      <span class="admin-logo-text">TEOPICTURE</span>
+      <span class="admin-badge">Admin</span>
     </div>
-    <div class="masonry-grid reveal" id="portfolioGrid">
-      <div class="pm-item" data-cat="mariage"><img src="photo1.jpeg" alt="Mariage" loading="lazy"><div class="pm-overlay"><div class="pm-category">Mariage</div><div class="pm-title">Cérémonie de mariage</div><div class="pm-location">📍 Dakar, Sénégal</div></div><div class="pm-zoom">⤢</div></div>
-      <div class="pm-item" data-cat="shooting"><img src="photo2.jpeg" alt="Shooting" loading="lazy"><div class="pm-overlay"><div class="pm-category">Shooting</div><div class="pm-title">Portrait élégant</div><div class="pm-location">📍 Thiès, Sénégal</div></div><div class="pm-zoom">⤢</div></div>
-      <div class="pm-item" data-cat="anniversaire"><img src="photo3.jpeg" alt="Anniversaire" loading="lazy"><div class="pm-overlay"><div class="pm-category">Anniversaire</div><div class="pm-title">Fête d'anniversaire</div><div class="pm-location">📍 Dakar, Sénégal</div></div><div class="pm-zoom">⤢</div></div>
-      <div class="pm-item" data-cat="bapteme"><img src="photo4.jpeg" alt="Baptême" loading="lazy"><div class="pm-overlay"><div class="pm-category">Baptême</div><div class="pm-title">Cérémonie baptême</div><div class="pm-location">📍 Dakar, Sénégal</div></div><div class="pm-zoom">⤢</div></div>
-      <div class="pm-item" data-cat="mariage"><img src="photo5.jpeg" alt="Mariage" loading="lazy"><div class="pm-overlay"><div class="pm-category">Mariage</div><div class="pm-title">Les mariés</div><div class="pm-location">📍 Thiès, Sénégal</div></div><div class="pm-zoom">⤢</div></div>
-      <div class="pm-item" data-cat="mariage"><img src="photo6.jpeg" alt="Mariage" loading="lazy"><div class="pm-overlay"><div class="pm-category">Mariage</div><div class="pm-title">Réception & grande fête</div><div class="pm-location">📍 Dakar, Sénégal</div></div><div class="pm-zoom">⤢</div></div>
-      <div class="pm-item" data-cat="shooting"><img src="photo7.jpeg" alt="Shooting" loading="lazy"><div class="pm-overlay"><div class="pm-category">Shooting</div><div class="pm-title">Mode & portrait</div><div class="pm-location">📍 Dakar, Sénégal</div></div><div class="pm-zoom">⤢</div></div>
-      <div class="pm-item" data-cat="anniversaire"><img src="photo8.jpeg" alt="Anniversaire" loading="lazy"><div class="pm-overlay"><div class="pm-category">Anniversaire</div><div class="pm-title">Ambiance festive</div><div class="pm-location">📍 Dakar, Sénégal</div></div><div class="pm-zoom">⤢</div></div>
-      <div class="pm-item" data-cat="bapteme"><img src="photo9.jpeg" alt="Baptême" loading="lazy"><div class="pm-overlay"><div class="pm-category">Baptême</div><div class="pm-title">Baptême en famille</div><div class="pm-location">📍 Thiès, Sénégal</div></div><div class="pm-zoom">⤢</div></div>
-      <div class="pm-item" data-cat="mariage"><img src="photo10.jpeg" alt="Mariage" loading="lazy"><div class="pm-overlay"><div class="pm-category">Mariage</div><div class="pm-title">Instant complice</div><div class="pm-location">📍 Dakar, Sénégal</div></div><div class="pm-zoom">⤢</div></div>
-      <div class="pm-item" data-cat="shooting"><img src="photo11.jpeg" alt="Shooting" loading="lazy"><div class="pm-overlay"><div class="pm-category">Shooting</div><div class="pm-title">Séance créative</div><div class="pm-location">📍 Dakar, Sénégal</div></div><div class="pm-zoom">⤢</div></div>
-      <div class="pm-item" data-cat="anniversaire"><img src="photo12.jpeg" alt="Anniversaire" loading="lazy"><div class="pm-overlay"><div class="pm-category">Anniversaire</div><div class="pm-title">Moments de joie</div><div class="pm-location">📍 Dakar, Sénégal</div></div><div class="pm-zoom">⤢</div></div>
-      <div class="pm-item" data-cat="mariage"><img src="photo13.jpeg" alt="Mariage" loading="lazy"><div class="pm-overlay"><div class="pm-category">Mariage</div><div class="pm-title">Échange des vœux</div><div class="pm-location">📍 Dakar, Sénégal</div></div><div class="pm-zoom">⤢</div></div>
-      <div class="pm-item" data-cat="bapteme"><img src="photo14.jpeg" alt="Baptême" loading="lazy"><div class="pm-overlay"><div class="pm-category">Baptême</div><div class="pm-title">Jour de baptême</div><div class="pm-location">📍 Dakar, Sénégal</div></div><div class="pm-zoom">⤢</div></div>
-      <div class="pm-item" data-cat="shooting"><img src="photo15.jpeg" alt="Shooting" loading="lazy"><div class="pm-overlay"><div class="pm-category">Shooting</div><div class="pm-title">Lumière naturelle</div><div class="pm-location">📍 Dakar, Sénégal</div></div><div class="pm-zoom">⤢</div></div>
-      <div class="pm-item" data-cat="mariage"><img src="photo16.jpeg" alt="Mariage" loading="lazy"><div class="pm-overlay"><div class="pm-category">Mariage</div><div class="pm-title">La grande fête</div><div class="pm-location">📍 Dakar, Sénégal</div></div><div class="pm-zoom">⤢</div></div>
-      <div class="pm-item" data-cat="anniversaire"><img src="photo17.jpeg" alt="Anniversaire" loading="lazy"><div class="pm-overlay"><div class="pm-category">Anniversaire</div><div class="pm-title">Gâteau & célébration</div><div class="pm-location">📍 Thiès, Sénégal</div></div><div class="pm-zoom">⤢</div></div>
-      <div class="pm-item" data-cat="shooting"><img src="photo18.jpeg" alt="Shooting" loading="lazy"><div class="pm-overlay"><div class="pm-category">Shooting</div><div class="pm-title">Lumière & composition</div><div class="pm-location">📍 Dakar, Sénégal</div></div><div class="pm-zoom">⤢</div></div>
+    <div class="admin-header-right">
+      <span class="admin-user" id="adminUserLabel"></span>
+      <button class="btn-logout" onclick="doLogout()">Déconnexion</button>
     </div>
   </div>
-</section>
 
-<!-- LIGHTBOX -->
-<div id="lightbox">
-  <span class="lb-close">&times;</span>
-  <span class="lb-prev">&#10094;</span>
-  <img id="lbImg" src="">
-  <span class="lb-next">&#10095;</span>
-  <div class="lb-counter" id="lbCounter"></div>
-</div>
+  <div class="admin-layout">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="sidebar-section">Navigation</div>
+      <button class="nav-item active" onclick="switchTab('dashboard', this)">
+        <span class="icon">📊</span> <span>Tableau de bord</span>
+      </button>
+      <button class="nav-item" onclick="switchTab('reservations', this)">
+        <span class="icon">📅</span> <span>Réservations</span>
+        <span class="badge-count" id="sidebarCount">0</span>
+      </button>
+      <div class="sidebar-section">Actions</div>
+      <button class="nav-item" onclick="window.open('index.html','_blank')">
+        <span class="icon">🌐</span> <span>Voir le site</span>
+      </button>
+    </div>
 
-<!-- SERVICES -->
-<section id="services">
-  <div class="section-inner">
-    <div class="section-header reveal">
-      <div class="section-tag">Tarifs & Services</div>
-      <h2 class="section-title">Nos prestations</h2>
-      <p class="section-subtitle">Des formules adaptées à chaque événement</p>
-    </div>
-    <div class="cards-grid">
-      <div class="card reveal reveal-delay-1">
-        <div class="card-icon">💍</div>
-        <h3>Mariage</h3>
-        <p>Couverture complète de votre jour le plus important</p>
-        <div class="price">100 000 FCFA <span>/ à partir de</span></div>
-        <button class="btn-ghost" onclick="toggleDetails('mariage')">Voir les formules →</button>
-        <div id="details-mariage" class="details-list"><ul>
-          <li><span>60 photos</span><span>100 000 FCFA</span></li>
-          <li><span>80 photos</span><span>120 000 FCFA</span></li>
-          <li><span>100 photos</span><span>140 000 FCFA</span></li>
-          <li><span>Option vidéo</span><span>Sur demande</span></li>
-        </ul></div>
-      </div>
-      <div class="card reveal reveal-delay-2">
-        <div class="card-icon">🎂</div>
-        <h3>Anniversaire</h3>
-        <p>Shooting anniversaire mémorable</p>
-        <div class="price">5 000 FCFA <span>/ à partir de</span></div>
-        <button class="btn-ghost" onclick="toggleDetails('anniversaire')">Voir les formules →</button>
-        <div id="details-anniversaire" class="details-list"><ul>
-          <li><span>3 photos</span><span>5 000 FCFA</span></li>
-          <li><span>6 photos</span><span>10 000 FCFA</span></li>
-          <li><span>9 photos</span><span>15 000 FCFA</span></li>
-        </ul></div>
-      </div>
-      <div class="card reveal reveal-delay-3">
-        <div class="card-icon">📸</div>
-        <h3>Shooting</h3>
-        <p>Séance photo personnalisée & créative</p>
-        <div class="price">10 000 FCFA <span>/ à partir de</span></div>
-        <button class="btn-ghost" onclick="toggleDetails('shooting')">Voir les formules →</button>
-        <div id="details-shooting" class="details-list"><ul>
-          <li><span>6 photos</span><span>10 000 FCFA</span></li>
-          <li><span>9 photos</span><span>15 000 FCFA</span></li>
-          <li><span>12 photos</span><span>20 000 FCFA</span></li>
-        </ul></div>
-      </div>
-    </div>
-  </div>
-</section>
+    <!-- Main -->
+    <div class="main-content">
 
-<!-- RÉSERVATION -->
-<section id="reservation">
-  <div class="section-inner">
-    <div class="section-header reveal">
-      <div class="section-tag">Réservation</div>
-      <h2 class="section-title">Réservez votre séance</h2>
-      <p class="section-subtitle">Complétez le formulaire, nous vous recontacterons rapidement</p>
-    </div>
-    <div class="reservation-grid">
-      <div class="reservation-info reveal">
-        <h3>Pourquoi choisir TEOPICTURE ?</h3>
-        <p>Chaque événement est unique. Nous nous adaptons à votre vision pour créer des souvenirs inoubliables.</p>
-        <ul class="info-list">
-          <li><div class="icon-circle">📅</div><div><strong>Disponibilité flexible</strong><br><span style="color:var(--text-muted);font-size:13px;">Semaine & week-end, jour et soirée</span></div></li>
-          <li><div class="icon-circle">⚡</div><div><strong>Livraison rapide</strong><br><span style="color:var(--text-muted);font-size:13px;">Photos retouchées livrées en 48h</span></div></li>
-          <li><div class="icon-circle">📍</div><div><strong>Dakar & Thiès</strong><br><span style="color:var(--text-muted);font-size:13px;">Déplacements possibles dans tout le Sénégal</span></div></li>
-          <li><div class="icon-circle">💬</div><div><strong>Accompagnement personnalisé</strong><br><span style="color:var(--text-muted);font-size:13px;">Échange avant et après la séance</span></div></li>
-        </ul>
-      </div>
-      <div class="form-card reveal">
-        <div class="form-row">
-          <div class="form-group">
-            <label for="nom">Nom complet</label>
-            <input type="text" id="nom" placeholder="Ex : Moussa Diallo" required>
+      <!-- DASHBOARD -->
+      <div class="tab-panel active" id="tab-dashboard">
+        <div class="page-header">
+          <div>
+            <div class="page-title">Tableau de bord</div>
+            <div class="page-desc">Vue d'ensemble des activités</div>
           </div>
-          <div class="form-group">
-            <label for="telephone">Téléphone</label>
-            <input type="tel" id="telephone" placeholder="77 000 00 00" required>
+          <button class="btn btn-ghost" onclick="loadAll()" style="padding:9px 18px;font-size:13px;">↺ Actualiser</button>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-card-label">Total réservations</div>
+            <div class="stat-card-value" id="statTotal">—</div>
+            <div class="stat-card-sub">Toutes périodes</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-label">Ce mois</div>
+            <div class="stat-card-value" id="statMois">—</div>
+            <div class="stat-card-sub" id="statMoisLabel">—</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-label">En attente</div>
+            <div class="stat-card-value" id="statAttente">—</div>
+            <div class="stat-card-sub">À confirmer</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-label">Événement phare</div>
+            <div class="stat-card-value" style="font-size:18px;" id="statTop">—</div>
+            <div class="stat-card-sub">Type le plus demandé</div>
           </div>
         </div>
-        <div class="form-group">
-          <label for="evenement">Type d'événement</label>
-          <select id="evenement">
-            <option>Mariage</option>
-            <option>Anniversaire</option>
-            <option>Baptême</option>
-            <option>Shooting</option>
-            <option>Korite</option>
-            <option>Tabaski</option>
-            <option>Autre</option>
+
+        <div class="page-header" style="margin-top:32px;">
+          <div>
+            <div class="page-title" style="font-size:18px;">Prochaines réservations</div>
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <div class="loading" id="dashLoading"><div class="spinner"></div>Chargement...</div>
+          <table id="dashTable" style="display:none;">
+            <thead>
+              <tr>
+                <th>Client</th>
+                <th>Événement</th>
+                <th>Date & Heure</th>
+                <th>Lieu</th>
+                <th>Statut</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="dashBody"></tbody>
+          </table>
+          <div class="empty-state" id="dashEmpty" style="display:none;">
+            <div class="empty-icon">📭</div>
+            <p>Aucune réservation à venir</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- RESERVATIONS -->
+      <div class="tab-panel" id="tab-reservations">
+        <div class="page-header">
+          <div>
+            <div class="page-title">Réservations</div>
+            <div class="page-desc">Toutes les demandes reçues</div>
+          </div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;">
+            <button class="btn btn-success" onclick="exportCSV()" style="padding:9px 16px;font-size:13px;">⬇ Exporter CSV</button>
+            <button class="btn btn-ghost" onclick="loadAll()" style="padding:9px 16px;font-size:13px;">↺ Actualiser</button>
+          </div>
+        </div>
+
+        <div class="filters-bar">
+          <input type="text" class="search-input" id="searchInput" placeholder="🔍 Rechercher nom, téléphone, lieu...">
+          <select class="filter-select" id="filterEvent">
+            <option value="">Tous les événements</option>
+            <option>Mariage</option><option>Anniversaire</option><option>Baptême</option>
+            <option>Shooting</option><option>Korite</option><option>Tabaski</option><option>Autre</option>
+          </select>
+          <select class="filter-select" id="filterStatut">
+            <option value="">Tous les statuts</option>
+            <option value="en attente">En attente</option>
+            <option value="confirmé">Confirmé</option>
+            <option value="annulé">Annulé</option>
+          </select>
+          <select class="filter-select" id="filterSort">
+            <option value="date_asc">Date ↑</option>
+            <option value="date_desc">Date ↓</option>
+            <option value="recent">Plus récent</option>
           </select>
         </div>
-        <div class="form-row">
-          <div class="form-group">
-            <label for="date">Date</label>
-            <input type="date" id="date" required>
+
+        <div class="table-wrap">
+          <div class="loading" id="resLoading"><div class="spinner"></div>Chargement...</div>
+          <table id="resTable" style="display:none;">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Client</th>
+                <th>Téléphone</th>
+                <th>Événement</th>
+                <th>Date & Heure</th>
+                <th>Lieu</th>
+                <th>Statut</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="resBody"></tbody>
+          </table>
+          <div class="empty-state" id="resEmpty" style="display:none;">
+            <div class="empty-icon">📭</div>
+            <p>Aucune réservation trouvée</p>
           </div>
-          <div class="form-group">
-            <label for="heure">Heure</label>
-            <input type="time" id="heure" required>
-          </div>
         </div>
-        <div class="form-group">
-          <label for="lieu">Lieu</label>
-          <input type="text" id="lieu" placeholder="Ex : Thiès, Sénégal">
-        </div>
-        <div class="form-group">
-          <label for="message">Message (optionnel)</label>
-          <textarea id="message" rows="3" placeholder="Détails supplémentaires..."></textarea>
-        </div>
-        <button type="button" onclick="envoyerReservation()" class="btn btn-primary form-submit">
-          Confirmer la réservation
-        </button>
       </div>
-    </div>
-  </div>
-</section>
 
-<!-- CONTACT -->
-<section id="contact">
-  <div class="section-inner">
-    <div class="section-header reveal">
-      <div class="section-tag">Contact</div>
-      <h2 class="section-title">Prenons contact</h2>
-      <p class="section-subtitle">Une question ? N'hésitez pas à nous écrire</p>
-    </div>
-    <div class="contact-grid">
-      <div class="contact-info-card reveal">
-        <h3>TEOPICTURE</h3>
-        <p class="tagline">Photographe événementiel professionnel</p>
-        <div class="contact-item">
-          <div class="contact-item-icon">📞</div>
-          <div class="contact-item-text">
-            <div class="contact-item-label">Téléphone</div>
-            <div class="contact-item-value">
-              <a href="tel:+221775781956" class="icon-btn phone">
-                <img src="https://cdn-icons-png.flaticon.com/512/724/724664.png" alt="">77 578 19 56
-              </a>
-            </div>
-          </div>
-        </div>
-        <div class="contact-item">
-          <div class="contact-item-icon">💬</div>
-          <div class="contact-item-text">
-            <div class="contact-item-label">WhatsApp</div>
-            <div class="contact-item-value">
-              <a href="https://wa.me/221775781956" target="_blank" class="icon-btn whatsapp">
-                <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" alt="">77 578 19 56
-              </a>
-            </div>
-          </div>
-        </div>
-        <div class="contact-item">
-          <div class="contact-item-icon">📍</div>
-          <div class="contact-item-text">
-            <div class="contact-item-label">Zone d'intervention</div>
-            <div class="contact-item-value" style="font-size:14px;">Dakar & Thiès, Sénégal</div>
-          </div>
-        </div>
-        <a href="#reservation" class="btn btn-primary" style="margin-top:24px;justify-content:center;">
-          Réserver une séance
-        </a>
-      </div>
-      <div class="contact-form-card reveal">
-        <h3>Envoyez un message</h3>
-        <div class="form-group">
-          <label>Nom</label>
-          <input type="text" id="contactNom" required placeholder="Votre nom">
-        </div>
-        <div class="form-group">
-          <label>Téléphone</label>
-          <input type="tel" id="contactTel" required placeholder="77 578 19 56">
-        </div>
-        <div class="form-group">
-          <label>Message</label>
-          <textarea id="contactMsg" rows="5" required placeholder="Votre message..."></textarea>
-        </div>
-        <button type="button" onclick="envoyerContact()" class="btn btn-primary" style="width:100%;justify-content:center;">
-          Envoyer via WhatsApp
-        </button>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- FOOTER -->
-<footer>
-  <div class="footer-inner">
-    <div class="footer-logo">TEOPICTURE</div>
-    <div class="footer-links">
-      <a href="#home">Accueil</a>
-      <a href="#portfolio">Portfolio</a>
-      <a href="#services">Services</a>
-      <a href="#contact">Contact</a>
-    </div>
-    <div class="footer-copy">© 2026 TEOPICTURE<br>Tous droits réservés</div>
-  </div>
-</footer>
-
-<!-- SOCIAL FLOAT -->
-<div class="social-float">
-  <a href="https://www.instagram.com/theo._.picture?igsh=MnhrZTlzZXN4Nzh2&utm_source=qr" target="_blank" class="insta" title="Instagram">
-    <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" alt="Instagram">
-  </a>
-  <a href="https://www.tiktok.com/@theopic0?_r=1&_t=ZS-94nAo7q3VBc" target="_blank" class="tiktok" title="TikTok">
-    <img src="https://cdn-icons-png.flaticon.com/512/3046/3046121.png" alt="TikTok">
-  </a>
-  <a href="https://snapchat.com/t/nbfODNLb" target="_blank" class="snap" title="Snapchat">
-    <img src="./snappp.jpg" alt="Snapchat">
-  </a>
-</div>
-
-<!-- POPUP CONFIRMATION -->
-<div id="confirmBox">
-  <div class="confirm-content">
-    <div class="confirm-icon">📸</div>
-    <h3>Confirmer la réservation</h3>
-    <p class="confirm-sub">Vérifiez vos informations avant d'envoyer</p>
-    <div class="confirm-details" id="confirmText"></div>
-    <div class="confirm-buttons">
-      <button onclick="fermerConfirm()" class="btn btn-gray">Annuler</button>
-      <button onclick="confirmerEnvoi()" class="btn btn-primary">Envoyer sur WhatsApp ✓</button>
     </div>
   </div>
 </div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Détail de la réservation</div>
+      <button class="modal-close" onclick="closeModal()">×</button>
+    </div>
+    <div id="modalBody"></div>
+    <div class="modal-actions" id="modalActions"></div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
 
 <script>
-  /* ===== DATE MIN ===== */
-  document.addEventListener("DOMContentLoaded", () => {
-    const dateInput = document.getElementById("date");
-    if (dateInput) dateInput.setAttribute("min", new Date().toISOString().split("T")[0]);
+  // ═══════════════════════════════════════════
+  //  CONFIG — Adaptez si besoin
+  // ═══════════════════════════════════════════
+  const API_URL = "http://localhost/teopicture/api.php";
+
+  // Identifiants admin (côté client, simple protection)
+  const ADMIN_CREDENTIALS = [
+    { user: "teopicture", pass: "Teo@2025!" },
+    { user: "admin",      pass: "admin123"  }
+  ];
+
+  let allReservations = [];
+  let currentUser = "";
+
+  // ═══════════════════════════════════════════
+  //  LOGIN
+  // ═══════════════════════════════════════════
+  document.getElementById("loginPass").addEventListener("keydown", e => {
+    if (e.key === "Enter") doLogin();
   });
 
-  /* ===== ÉTAPE 1 : afficher le popup de confirmation ===== */
-  function envoyerReservation() {
-    const nom      = document.getElementById("nom").value.trim();
-    const tel      = document.getElementById("telephone").value.trim();
-    const evenement = document.getElementById("evenement").value;
-    const date     = document.getElementById("date").value;
-    const heure    = document.getElementById("heure").value;
-    const lieu     = document.getElementById("lieu").value.trim();
+  function doLogin() {
+    const user = document.getElementById("loginUser").value.trim();
+    const pass = document.getElementById("loginPass").value;
+    const btn  = document.getElementById("btnLogin");
+    btn.disabled = true; btn.textContent = "Vérification...";
 
-    if (!nom || !tel || !date || !heure) {
-      alert("⚠️ Veuillez remplir tous les champs obligatoires !");
+    const match = ADMIN_CREDENTIALS.find(c => c.user === user && c.pass === pass);
+    if (match) {
+      currentUser = user;
+      sessionStorage.setItem("teoAdmin", user);
+      document.getElementById("loginPage").style.display  = "none";
+      document.getElementById("adminPage").style.display  = "block";
+      document.getElementById("adminUserLabel").textContent = user;
+      loadAll();
+    } else {
+      const err = document.getElementById("loginError");
+      err.style.display = "block";
+      setTimeout(() => err.style.display = "none", 3000);
+    }
+    btn.disabled = false; btn.textContent = "Se connecter";
+  }
+
+  function doLogout() {
+    sessionStorage.removeItem("teoAdmin");
+    document.getElementById("adminPage").style.display = "none";
+    document.getElementById("loginPage").style.display = "flex";
+    document.getElementById("loginUser").value = "";
+    document.getElementById("loginPass").value = "";
+    allReservations = [];
+    showToast("Déconnecté", "success");
+  }
+
+  window.addEventListener("load", () => {
+    const saved = sessionStorage.getItem("teoAdmin");
+    if (saved) {
+      currentUser = saved;
+      document.getElementById("loginPage").style.display  = "none";
+      document.getElementById("adminPage").style.display  = "block";
+      document.getElementById("adminUserLabel").textContent = saved;
+      loadAll();
+    }
+  });
+
+  // ═══════════════════════════════════════════
+  //  TABS
+  // ═══════════════════════════════════════════
+  function switchTab(name, btn) {
+    document.querySelectorAll(".tab-panel").forEach(p => p.classList.remove("active"));
+    document.querySelectorAll(".nav-item").forEach(b => b.classList.remove("active"));
+    document.getElementById("tab-" + name).classList.add("active");
+    btn.classList.add("active");
+  }
+
+  // ═══════════════════════════════════════════
+  //  CHARGEMENT DONNÉES DEPUIS PHP
+  // ═══════════════════════════════════════════
+  async function loadAll() {
+    showLoading(true);
+    try {
+      const res  = await fetch(API_URL + "?action=reservations");
+      const json = await res.json();
+
+      if (!json.success) throw new Error(json.message || "Erreur API");
+
+      allReservations = json.data || [];
+      renderStats();
+      renderDashTable();
+      renderResTable();
+      document.getElementById("sidebarCount").textContent = allReservations.length;
+      showToast("Données actualisées (" + allReservations.length + ")", "success");
+
+    } catch (err) {
+      console.error(err);
+      showToast("❌ Impossible de contacter l'API PHP. Vérifiez que WAMP est démarré.", "error");
+    } finally {
+      showLoading(false);
+    }
+  }
+
+  function showLoading(on) {
+    document.getElementById("dashLoading").style.display = on ? "block" : "none";
+    document.getElementById("resLoading").style.display  = on ? "block" : "none";
+    if (on) {
+      document.getElementById("dashTable").style.display = "none";
+      document.getElementById("resTable").style.display  = "none";
+      document.getElementById("dashEmpty").style.display = "none";
+      document.getElementById("resEmpty").style.display  = "none";
+    }
+  }
+
+  // ═══════════════════════════════════════════
+  //  STATS
+  // ═══════════════════════════════════════════
+  function renderStats() {
+    document.getElementById("statTotal").textContent = allReservations.length;
+
+    const now = new Date();
+    const moisNom = now.toLocaleDateString("fr-FR", { month: "long", year: "numeric" });
+    document.getElementById("statMoisLabel").textContent = moisNom;
+
+    const mois = allReservations.filter(r => {
+      if (!r.date_event) return false;
+      const d = new Date(r.date_event);
+      return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
+    }).length;
+    document.getElementById("statMois").textContent = mois;
+
+    const attente = allReservations.filter(r => r.statut === "en attente").length;
+    document.getElementById("statAttente").textContent = attente;
+
+    const counts = {};
+    allReservations.forEach(r => { counts[r.evenement] = (counts[r.evenement] || 0) + 1; });
+    const top = Object.entries(counts).sort((a, b) => b[1] - a[1])[0];
+    document.getElementById("statTop").textContent = top ? top[0] : "—";
+  }
+
+  // ═══════════════════════════════════════════
+  //  DASHBOARD TABLE (prochaines)
+  // ═══════════════════════════════════════════
+  function renderDashTable() {
+    const now = new Date();
+    now.setHours(0,0,0,0);
+
+    const upcoming = allReservations
+      .filter(r => r.date_event && new Date(r.date_event) >= now && r.statut !== "annulé")
+      .sort((a, b) => new Date(a.date_event) - new Date(b.date_event))
+      .slice(0, 8);
+
+    document.getElementById("dashLoading").style.display = "none";
+
+    if (upcoming.length === 0) {
+      document.getElementById("dashTable").style.display = "none";
+      document.getElementById("dashEmpty").style.display = "block";
       return;
     }
 
-    /* Formatage de la date pour l'affichage */
-    const [y, m, d] = date.split("-").map(Number);
-    const dateAff = new Date(y, m-1, d).toLocaleDateString("fr-FR", { day:"2-digit", month:"long", year:"numeric" });
+    document.getElementById("dashTable").style.display  = "table";
+    document.getElementById("dashEmpty").style.display  = "none";
 
-    document.getElementById("confirmText").innerText =
-      "Nom       : " + nom +
-      "\nTéléphone : " + tel +
-      "\nÉvénement : " + evenement +
-      "\nDate      : " + dateAff +
-      "\nHeure     : " + heure +
-      "\nLieu      : " + (lieu || "Non précisé");
-
-    document.getElementById("confirmBox").style.display = "flex";
+    document.getElementById("dashBody").innerHTML = upcoming.map(r => `
+      <tr>
+        <td data-label="Client" class="td-name">${esc(r.nom)}</td>
+        <td data-label="Événement">${badgeEvent(r.evenement)}</td>
+        <td data-label="Date">${formatDate(r.date_event)} <span class="td-muted">${r.heure || ""}</span></td>
+        <td data-label="Lieu" class="td-muted">${esc(r.lieu) || "—"}</td>
+        <td data-label="Statut">${badgeStatut(r.statut)}</td>
+        <td data-label="Actions">
+          <div class="actions">
+            <button class="icon-btn-sm whatsapp" title="WhatsApp" onclick="waContact('${esc(r.telephone)}','${esc(r.nom)}')">💬</button>
+            <button class="icon-btn-sm confirm" title="Confirmer" onclick="changerStatut(${r.id},'confirmé')">✅</button>
+            <button class="icon-btn-sm" title="Détails" onclick="openModal(${r.id})">👁</button>
+          </div>
+        </td>
+      </tr>
+    `).join("");
   }
 
-  /* ===== ÉTAPE 2 : envoyer directement sur WhatsApp ===== */
-  function confirmerEnvoi() {
-    const nom       = document.getElementById("nom").value.trim();
-    const tel       = document.getElementById("telephone").value.trim();
-    const evenement = document.getElementById("evenement").value;
-    const date      = document.getElementById("date").value;
-    const heure     = document.getElementById("heure").value;
-    const lieu      = document.getElementById("lieu").value.trim();
-    const msg       = document.getElementById("message").value.trim();
+  // ═══════════════════════════════════════════
+  //  RESERVATIONS TABLE (toutes)
+  // ═══════════════════════════════════════════
+  function renderResTable() {
+    let list = [...allReservations];
 
-    const texteWA =
-      "📸 *NOUVELLE RÉSERVATION TEOPICTURE*%0A%0A" +
-      "*Nom* : "        + encodeURIComponent(nom)               + "%0A" +
-      "*Téléphone* : "  + encodeURIComponent(tel)               + "%0A" +
-      "*Événement* : "  + encodeURIComponent(evenement)         + "%0A" +
-      "*Date* : "       + encodeURIComponent(date)              + "%0A" +
-      "*Heure* : "      + encodeURIComponent(heure)             + "%0A" +
-      "*Lieu* : "       + encodeURIComponent(lieu || "Non précisé") + "%0A" +
-      "*Message* : "    + encodeURIComponent(msg  || "—");
-
-    /* Réinitialiser le formulaire */
-    ["nom","telephone","date","heure","lieu","message"].forEach(id => {
-      document.getElementById(id).value = "";
-    });
-
-    fermerConfirm();
-
-    /* Ouvrir WhatsApp */
-    window.open("https://wa.me/221775781956?text=" + texteWA, "_blank");
-  }
-
-  function fermerConfirm() {
-    document.getElementById("confirmBox").style.display = "none";
-  }
-
-  /* ===== CONTACT WHATSAPP ===== */
-  function envoyerContact() {
-    const nom = document.getElementById("contactNom").value.trim();
-    const tel = document.getElementById("contactTel").value.trim();
-    const msg = document.getElementById("contactMsg").value.trim();
-    if (!nom || !msg) { alert("⚠️ Remplissez votre nom et votre message."); return; }
-    window.open(
-      "https://wa.me/221775781956?text=" +
-      "Bonjour TEOPICTURE,%0A%0A" +
-      "Nom : "       + encodeURIComponent(nom) + "%0A" +
-      "Téléphone : " + encodeURIComponent(tel) + "%0A" +
-      "Message : "   + encodeURIComponent(msg),
-      "_blank"
-    );
-  }
-
-  /* ===== NAVBAR SCROLL ===== */
-  window.addEventListener("scroll", () => {
-    document.getElementById("mainHeader").classList.toggle("scrolled", window.scrollY > 50);
-  });
-
-  /* ===== REVEAL ANIMATIONS ===== */
-  const reveals = document.querySelectorAll(".reveal");
-  function checkReveal() {
-    reveals.forEach(el => {
-      if (el.getBoundingClientRect().top < window.innerHeight - 80) el.classList.add("visible");
-    });
-  }
-  window.addEventListener("scroll", checkReveal);
-  window.addEventListener("load", checkReveal);
-
-  /* ===== SERVICES TOGGLE ===== */
-  function toggleDetails(service) {
-    const el = document.getElementById("details-" + service);
-    el.style.display = el.style.display === "block" ? "none" : "block";
-  }
-
-  /* ===== MOBILE MENU ===== */
-  document.getElementById("menuToggle").addEventListener("click", () => {
-    document.getElementById("navLinks").classList.toggle("active");
-  });
-  document.querySelectorAll(".nav-links a").forEach(a => {
-    a.addEventListener("click", () => document.getElementById("navLinks").classList.remove("active"));
-  });
-
-  /* ===== LIGHTBOX ===== */
-  const lightbox   = document.getElementById("lightbox");
-  const lbImg      = document.getElementById("lbImg");
-  const lbCounter  = document.getElementById("lbCounter");
-  let currentIdx   = 0;
-  let visibleItems = [];
-
-  function getVisibleItems() {
-    return Array.from(document.querySelectorAll(".pm-item:not(.hidden) img"));
-  }
-  function showLb(idx) {
-    visibleItems = getVisibleItems();
-    lbImg.src = visibleItems[idx].src;
-    lbCounter.textContent = (idx + 1) + " / " + visibleItems.length;
-  }
-
-  document.querySelectorAll(".pm-item").forEach(item => {
-    item.addEventListener("click", () => {
-      visibleItems = getVisibleItems();
-      currentIdx = visibleItems.indexOf(item.querySelector("img"));
-      showLb(currentIdx);
-      lightbox.style.display = "flex";
-    });
-  });
-
-  document.querySelector(".lb-close").addEventListener("click", () => lightbox.style.display = "none");
-  document.querySelector(".lb-next").addEventListener("click", () => {
-    visibleItems = getVisibleItems();
-    currentIdx = (currentIdx + 1) % visibleItems.length;
-    showLb(currentIdx);
-  });
-  document.querySelector(".lb-prev").addEventListener("click", () => {
-    visibleItems = getVisibleItems();
-    currentIdx = (currentIdx - 1 + visibleItems.length) % visibleItems.length;
-    showLb(currentIdx);
-  });
-  lightbox.addEventListener("click", e => { if (e.target === lightbox) lightbox.style.display = "none"; });
-
-  document.addEventListener("keydown", e => {
-    if (lightbox.style.display === "flex") {
-      visibleItems = getVisibleItems();
-      if (e.key === "ArrowRight") { currentIdx = (currentIdx + 1) % visibleItems.length; showLb(currentIdx); }
-      if (e.key === "ArrowLeft")  { currentIdx = (currentIdx - 1 + visibleItems.length) % visibleItems.length; showLb(currentIdx); }
-      if (e.key === "Escape") lightbox.style.display = "none";
+    // Recherche texte
+    const q = document.getElementById("searchInput").value.toLowerCase();
+    if (q) {
+      list = list.filter(r =>
+        (r.nom || "").toLowerCase().includes(q) ||
+        (r.telephone || "").includes(q) ||
+        (r.lieu || "").toLowerCase().includes(q) ||
+        (r.evenement || "").toLowerCase().includes(q)
+      );
     }
+
+    // Filtre événement
+    const fe = document.getElementById("filterEvent").value;
+    if (fe) list = list.filter(r => r.evenement === fe);
+
+    // Filtre statut
+    const fs = document.getElementById("filterStatut").value;
+    if (fs) list = list.filter(r => r.statut === fs);
+
+    // Tri
+    const sort = document.getElementById("filterSort").value;
+    if (sort === "date_asc")  list.sort((a,b) => new Date(a.date_event) - new Date(b.date_event));
+    if (sort === "date_desc") list.sort((a,b) => new Date(b.date_event) - new Date(a.date_event));
+    if (sort === "recent")    list.sort((a,b) => b.id - a.id);
+
+    document.getElementById("resLoading").style.display = "none";
+
+    if (list.length === 0) {
+      document.getElementById("resTable").style.display = "none";
+      document.getElementById("resEmpty").style.display = "block";
+      return;
+    }
+
+    document.getElementById("resTable").style.display = "table";
+    document.getElementById("resEmpty").style.display = "none";
+
+    document.getElementById("resBody").innerHTML = list.map((r, i) => `
+      <tr>
+        <td data-label="#">${i + 1}</td>
+        <td data-label="Client" class="td-name">${esc(r.nom)}</td>
+        <td data-label="Téléphone"><a href="tel:${esc(r.telephone)}" style="color:var(--orange);">${esc(r.telephone)}</a></td>
+        <td data-label="Événement">${badgeEvent(r.evenement)}</td>
+        <td data-label="Date">${formatDate(r.date_event)} <span class="td-muted">${r.heure || ""}</span></td>
+        <td data-label="Lieu" class="td-muted">${esc(r.lieu) || "—"}</td>
+        <td data-label="Statut">${badgeStatut(r.statut)}</td>
+        <td data-label="Actions">
+          <div class="actions">
+            <button class="icon-btn-sm whatsapp" title="WhatsApp" onclick="waContact('${esc(r.telephone)}','${esc(r.nom)}')">💬</button>
+            <button class="icon-btn-sm" title="Détails" onclick="openModal(${r.id})">👁</button>
+            <button class="icon-btn-sm delete" title="Supprimer" onclick="deleteRes(${r.id})">🗑</button>
+          </div>
+        </td>
+      </tr>
+    `).join("");
+  }
+
+  document.getElementById("searchInput").addEventListener("input", () => renderResTable());
+  document.getElementById("filterEvent").addEventListener("change", () => renderResTable());
+  document.getElementById("filterStatut").addEventListener("change", () => renderResTable());
+  document.getElementById("filterSort").addEventListener("change", () => renderResTable());
+
+  // ═══════════════════════════════════════════
+  //  MODAL DÉTAIL
+  // ═══════════════════════════════════════════
+  function openModal(id) {
+    const r = allReservations.find(x => x.id == id);
+    if (!r) return;
+
+    document.getElementById("modalBody").innerHTML = `
+      <div class="detail-row"><div class="detail-label">Nom</div><div class="detail-value">${esc(r.nom)}</div></div>
+      <div class="detail-row"><div class="detail-label">Téléphone</div><div class="detail-value"><a href="tel:${esc(r.telephone)}" style="color:var(--orange)">${esc(r.telephone)}</a></div></div>
+      <div class="detail-row"><div class="detail-label">Événement</div><div class="detail-value">${badgeEvent(r.evenement)}</div></div>
+      <div class="detail-row"><div class="detail-label">Date</div><div class="detail-value">${formatDate(r.date_event)}</div></div>
+      <div class="detail-row"><div class="detail-label">Heure</div><div class="detail-value">${r.heure || "—"}</div></div>
+      <div class="detail-row"><div class="detail-label">Lieu</div><div class="detail-value">${esc(r.lieu) || "—"}</div></div>
+      <div class="detail-row"><div class="detail-label">Statut</div><div class="detail-value">${badgeStatut(r.statut)}</div></div>
+      ${r.message ? `<div class="detail-row"><div class="detail-label">Message</div><div class="detail-value" style="max-width:260px;word-break:break-word;">${esc(r.message)}</div></div>` : ""}
+      <div class="detail-row"><div class="detail-label">Enregistré le</div><div class="detail-value">${formatDatetime(r.cree_le)}</div></div>
+    `;
+
+    document.getElementById("modalActions").innerHTML = `
+      <button class="btn btn-success" onclick="changerStatut(${r.id},'confirmé'); closeModal()">✅ Confirmer</button>
+      <button class="btn btn-warning" onclick="waContact('${esc(r.telephone)}','${esc(r.nom)}'); closeModal()">💬 WhatsApp</button>
+      <button class="btn btn-danger" onclick="deleteRes(${r.id}); closeModal()">🗑 Supprimer</button>
+    `;
+
+    document.getElementById("modalOverlay").classList.add("open");
+  }
+
+  function closeModal() {
+    document.getElementById("modalOverlay").classList.remove("open");
+  }
+
+  document.getElementById("modalOverlay").addEventListener("click", e => {
+    if (e.target === document.getElementById("modalOverlay")) closeModal();
   });
 
-  let touchStartX = 0;
-  lightbox.addEventListener("touchstart", e => touchStartX = e.touches[0].clientX);
-  lightbox.addEventListener("touchend", e => {
-    const diff = touchStartX - e.changedTouches[0].clientX;
-    visibleItems = getVisibleItems();
-    if (diff > 50)  { currentIdx = (currentIdx + 1) % visibleItems.length; showLb(currentIdx); }
-    if (diff < -50) { currentIdx = (currentIdx - 1 + visibleItems.length) % visibleItems.length; showLb(currentIdx); }
-  });
+  // ═══════════════════════════════════════════
+  //  CHANGER STATUT
+  // ═══════════════════════════════════════════
+  async function changerStatut(id, statut) {
+    try {
+      const res = await fetch(API_URL + "?action=statut&id=" + id, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ statut })
+      });
+      const json = await res.json();
+      if (!json.success) throw new Error(json.message);
+      showToast("Statut mis à jour : " + statut, "success");
+      loadAll();
+    } catch (err) {
+      showToast("Erreur : " + err.message, "error");
+    }
+  }
+
+  // ═══════════════════════════════════════════
+  //  SUPPRIMER
+  // ═══════════════════════════════════════════
+  async function deleteRes(id) {
+    if (!confirm("Supprimer cette réservation définitivement ?")) return;
+    try {
+      const res  = await fetch(API_URL + "?action=reservations&id=" + id, { method: "DELETE" });
+      const json = await res.json();
+      if (!json.success) throw new Error(json.message);
+      showToast("Réservation supprimée", "success");
+      loadAll();
+    } catch (err) {
+      showToast("Erreur : " + err.message, "error");
+    }
+  }
+
+  // ═══════════════════════════════════════════
+  //  WHATSAPP
+  // ═══════════════════════════════════════════
+  function waContact(tel, nom) {
+    const msg = `Bonjour ${nom}, je suis TEOPICTURE. Votre réservation a bien été prise en compte. Merci !`;
+    const clean = tel.replace(/\s/g,"").replace(/^0/, "");
+    window.open(`https://wa.me/221${clean}?text=${encodeURIComponent(msg)}`, "_blank");
+  }
+
+  // ═══════════════════════════════════════════
+  //  EXPORT CSV
+  // ═══════════════════════════════════════════
+  function exportCSV() {
+    const headers = ["ID","Nom","Téléphone","Événement","Date","Heure","Lieu","Message","Statut","Enregistré le"];
+    const rows = allReservations.map(r => [
+      r.id, r.nom, r.telephone, r.evenement, r.date_event, r.heure, r.lieu, r.message, r.statut, r.cree_le
+    ].map(v => `"${(v||"").replace(/"/g,'""')}"`).join(","));
+
+    const csv  = [headers.join(","), ...rows].join("\n");
+    const blob = new Blob(["\uFEFF" + csv], { type: "text/csv;charset=utf-8;" });
+    const a    = document.createElement("a");
+    a.href     = URL.createObjectURL(blob);
+    a.download = `reservations_teopicture_${new Date().toISOString().split("T")[0]}.csv`;
+    a.click();
+    showToast("CSV exporté !", "success");
+  }
+
+  // ═══════════════════════════════════════════
+  //  HELPERS
+  // ═══════════════════════════════════════════
+  function esc(str) {
+    return String(str || "")
+      .replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+  }
+
+  function formatDate(d) {
+    if (!d) return "—";
+    try { return new Date(d).toLocaleDateString("fr-FR",{day:"2-digit",month:"short",year:"numeric"}); }
+    catch { return d; }
+  }
+
+  function formatDatetime(d) {
+    if (!d) return "—";
+    try {
+      const dt = new Date(d);
+      return dt.toLocaleDateString("fr-FR") + " à " + dt.toLocaleTimeString("fr-FR",{hour:"2-digit",minute:"2-digit"});
+    } catch { return d; }
+  }
+
+  function badgeEvent(ev) {
+    const map = { "Mariage":"mariage","Anniversaire":"anniversaire","Shooting":"shooting","Baptême":"bapteme","Korite":"korite","Tabaski":"tabaski" };
+    const cls = map[ev] || "autre";
+    return `<span class="badge badge-${cls}">${esc(ev)||"—"}</span>`;
+  }
+
+  function badgeStatut(s) {
+    if (s === "confirmé") return `<span class="statut-badge statut-confirme">✅ Confirmé</span>`;
+    if (s === "annulé")   return `<span class="statut-badge statut-annule">❌ Annulé</span>`;
+    return `<span class="statut-badge statut-attente">⏳ En attente</span>`;
+  }
+
+  function showToast(msg, type = "success") {
+    const t = document.getElementById("toast");
+    t.textContent = msg;
+    t.className = "toast " + type;
+    t.classList.add("show");
+    setTimeout(() => t.classList.remove("show"), 3500);
+  }
 </script>
-
 </body>
 </html>
