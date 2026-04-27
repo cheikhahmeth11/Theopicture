@@ -7,17 +7,16 @@
 // ── Configuration base de données ──────────────────────────
 define('DB_HOST', 'localhost');
 define('DB_NAME', 'teopicture');
-define('DB_USER', 'root');       // utilisateur WAMP par défaut
-define('DB_PASS', '');           // mot de passe WAMP par défaut (vide)
+define('DB_USER', 'root');
+define('DB_PASS', '');
 define('DB_PORT', 3306);
 
-// ── En-têtes CORS (permet au HTML d'appeler l'API) ──────────
+// ── En-têtes CORS ──────────────────────────────────────────
 header('Content-Type: application/json; charset=utf-8');
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type, Authorization');
 
-// Répondre aux pre-flight CORS
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     http_response_code(200);
     exit;
@@ -41,6 +40,45 @@ function getDB(): PDO {
     return $pdo;
 }
 
+// ── Créer les tables si elles n'existent pas ─────────────────
+function initializeDatabase(): void {
+    $db = getDB();
+    
+    try {
+        // Table réservations
+        $db->exec("
+            CREATE TABLE IF NOT EXISTS reservations (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                nom VARCHAR(255) NOT NULL,
+                telephone VARCHAR(20) NOT NULL,
+                evenement VARCHAR(100) NOT NULL,
+                date_event DATE NOT NULL,
+                heure TIME NOT NULL,
+                lieu VARCHAR(255),
+                message TEXT,
+                statut ENUM('en attente', 'confirmé', 'annulé') DEFAULT 'en attente',
+                cree_le TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                UNIQUE KEY unique_slot (date_event, heure)
+            ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci
+        ");
+        
+        // Table contacts
+        $db->exec("
+            CREATE TABLE IF NOT EXISTS contacts (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                nom VARCHAR(255) NOT NULL,
+                telephone VARCHAR(20),
+                message TEXT NOT NULL,
+                lu TINYINT(1) DEFAULT 0,
+                cree_le TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci
+        ");
+        
+    } catch (PDOException $e) {
+        jsonError(500, 'Erreur initialisation BDD : ' . $e->getMessage());
+    }
+}
+
 // ── Helpers ──────────────────────────────────────────────────
 function jsonOk(array $data, int $code = 200): void {
     http_response_code($code);
@@ -59,57 +97,40 @@ function getBody(): array {
     return json_decode($raw, true) ?? [];
 }
 
-// ── Routeur simple ────────────────────────────────────────────
+// ── Routeur ──────────────────────────────────────────────────
+$action = $_GET['action'] ?? '';
 $method = $_SERVER['REQUEST_METHOD'];
-$path   = trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
 
-// Supprimer le préfixe si le fichier est dans un sous-dossier
-// ex : teopicture/api.php → on normalise le chemin
-$segments = explode('/', $path);
-// On récupère la dernière partie significative
-$resource = '';
-foreach ($segments as $seg) {
-    if ($seg !== '' && $seg !== 'api.php') $resource = $seg;
-}
-
-// Paramètre ?action= en GET
-$action = $_GET['action'] ?? $resource;
+// Initialiser la BDD au premier appel
+initializeDatabase();
 
 // ── ROUTES ───────────────────────────────────────────────────
 
 switch (true) {
-
-    // ── POST /api.php?action=reservations  ──────────────────
     case ($method === 'POST' && $action === 'reservations'):
         creerReservation();
         break;
 
-    // ── GET  /api.php?action=reservations  ──────────────────
     case ($method === 'GET' && $action === 'reservations'):
         listerReservations();
         break;
 
-    // ── PUT  /api.php?action=statut&id=X  ───────────────────
     case ($method === 'PUT' && $action === 'statut'):
         changerStatut();
         break;
 
-    // ── DELETE /api.php?action=reservations&id=X  ───────────
     case ($method === 'DELETE' && $action === 'reservations'):
         supprimerReservation();
         break;
 
-    // ── POST /api.php?action=contacts  ──────────────────────
     case ($method === 'POST' && $action === 'contacts'):
         creerContact();
         break;
 
-    // ── GET  /api.php?action=contacts  ──────────────────────
     case ($method === 'GET' && $action === 'contacts'):
         listerContacts();
         break;
 
-    // ── GET  /api.php?action=stats  ─────────────────────────
     case ($method === 'GET' && $action === 'stats'):
         getStats();
         break;
@@ -122,12 +143,10 @@ switch (true) {
 //  FONCTIONS MÉTIER
 // ═══════════════════════════════════════════════════════════
 
-// ── Créer une réservation ────────────────────────────────────
 function creerReservation(): void {
     $db   = getDB();
     $body = getBody();
 
-    // Validation
     $required = ['nom', 'telephone', 'evenement', 'date', 'heure'];
     foreach ($required as $field) {
         if (empty(trim($body[$field] ?? ''))) {
@@ -138,22 +157,26 @@ function creerReservation(): void {
     $nom      = trim($body['nom']);
     $tel      = trim($body['telephone']);
     $event    = trim($body['evenement']);
-    $date     = trim($body['date']);       // format YYYY-MM-DD
-    $heure    = trim($body['heure']);      // format HH:MM
+    $date     = trim($body['date']);
+    $heure    = trim($body['heure']);
     $lieu     = trim($body['lieu'] ?? 'Non précisé') ?: 'Non précisé';
     $message  = trim($body['message'] ?? '');
 
-    // Vérifier le format de la date
+    // ✅ CORRECTION: Valider format date YYYY-MM-DD
     if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $date)) {
         jsonError(400, 'Format de date invalide (attendu : YYYY-MM-DD).');
     }
 
-    // Vérifier que la date n'est pas dans le passé
+    // ✅ CORRECTION: Valider format heure HH:MM ou HH:MM:SS
+    if (!preg_match('/^\d{2}:\d{2}(:\d{2})?$/', $heure)) {
+        jsonError(400, 'Format d\'heure invalide (attendu : HH:MM ou HH:MM:SS).');
+    }
+
     if ($date < date('Y-m-d')) {
         jsonError(400, 'La date ne peut pas être dans le passé.');
     }
 
-    // Vérifier si le créneau est déjà pris
+    // Vérifier créneau disponible
     $stmt = $db->prepare(
         "SELECT COUNT(*) FROM reservations WHERE date_event = ? AND heure = ? AND statut != 'annulé'"
     );
@@ -162,45 +185,40 @@ function creerReservation(): void {
         jsonError(409, 'Ce créneau est déjà réservé. Choisissez une autre date ou heure.');
     }
 
-    // Insérer
-    $stmt = $db->prepare(
-        "INSERT INTO reservations (nom, telephone, evenement, date_event, heure, lieu, message)
-         VALUES (?, ?, ?, ?, ?, ?, ?)"
-    );
-    $stmt->execute([$nom, $tel, $event, $date, $heure, $lieu, $message ?: null]);
+    try {
+        $stmt = $db->prepare(
+            "INSERT INTO reservations (nom, telephone, evenement, date_event, heure, lieu, message)
+             VALUES (?, ?, ?, ?, ?, ?, ?)"
+        );
+        $stmt->execute([$nom, $tel, $event, $date, $heure, $lieu, $message ?: null]);
 
-    jsonOk([
-        'success' => true,
-        'message' => 'Réservation enregistrée avec succès !',
-        'id'      => (int) $db->lastInsertId(),
-    ], 201);
+        jsonOk([
+            'success' => true,
+            'message' => 'Réservation enregistrée avec succès !',
+            'id'      => (int) $db->lastInsertId(),
+        ], 201);
+    } catch (PDOException $e) {
+        jsonError(400, 'Erreur lors de l\'enregistrement : ' . $e->getMessage());
+    }
 }
 
-// ── Lister les réservations (pour admin) ─────────────────────
 function listerReservations(): void {
     $db = getDB();
 
-    $statut = $_GET['statut'] ?? null;
-    $sql    = "SELECT * FROM reservations";
-    $params = [];
+    try {
+        $stmt = $db->query("SELECT * FROM reservations ORDER BY date_event ASC, heure ASC");
+        $data = $stmt->fetchAll();
 
-    if ($statut) {
-        $sql    .= " WHERE statut = ?";
-        $params[] = $statut;
+        jsonOk([
+            'success' => true,
+            'data'    => $data,
+            'total'   => count($data),
+        ]);
+    } catch (PDOException $e) {
+        jsonError(500, 'Erreur lecture données : ' . $e->getMessage());
     }
-
-    $sql .= " ORDER BY date_event ASC, heure ASC";
-    $stmt = $db->prepare($sql);
-    $stmt->execute($params);
-
-    jsonOk([
-        'success' => true,
-        'data'    => $stmt->fetchAll(),
-        'total'   => $stmt->rowCount(),
-    ]);
 }
 
-// ── Changer le statut d'une réservation ──────────────────────
 function changerStatut(): void {
     $db   = getDB();
     $body = getBody();
@@ -210,33 +228,43 @@ function changerStatut(): void {
 
     if (!$id) jsonError(400, 'Paramètre id manquant.');
     if (!in_array($statut, ['en attente', 'confirmé', 'annulé'], true)) {
-        jsonError(400, 'Statut invalide. Valeurs : en attente, confirmé, annulé');
+        jsonError(400, 'Statut invalide. Valeurs acceptées : en attente, confirmé, annulé');
     }
 
-    $stmt = $db->prepare("UPDATE reservations SET statut = ? WHERE id = ?");
-    $stmt->execute([$statut, $id]);
+    try {
+        $stmt = $db->prepare("UPDATE reservations SET statut = ? WHERE id = ?");
+        $stmt->execute([$statut, $id]);
 
-    if ($stmt->rowCount() === 0) jsonError(404, 'Réservation introuvable.');
+        if ($stmt->rowCount() === 0) {
+            jsonError(404, 'Réservation introuvable.');
+        }
 
-    jsonOk(['success' => true, 'message' => 'Statut mis à jour.']);
+        jsonOk(['success' => true, 'message' => 'Statut mis à jour avec succès.']);
+    } catch (PDOException $e) {
+        jsonError(500, 'Erreur mise à jour : ' . $e->getMessage());
+    }
 }
 
-// ── Supprimer une réservation ────────────────────────────────
 function supprimerReservation(): void {
     $db = getDB();
     $id = (int) ($_GET['id'] ?? 0);
 
     if (!$id) jsonError(400, 'Paramètre id manquant.');
 
-    $stmt = $db->prepare("DELETE FROM reservations WHERE id = ?");
-    $stmt->execute([$id]);
+    try {
+        $stmt = $db->prepare("DELETE FROM reservations WHERE id = ?");
+        $stmt->execute([$id]);
 
-    if ($stmt->rowCount() === 0) jsonError(404, 'Réservation introuvable.');
+        if ($stmt->rowCount() === 0) {
+            jsonError(404, 'Réservation introuvable.');
+        }
 
-    jsonOk(['success' => true, 'message' => 'Réservation supprimée.']);
+        jsonOk(['success' => true, 'message' => 'Réservation supprimée avec succès.']);
+    } catch (PDOException $e) {
+        jsonError(500, 'Erreur suppression : ' . $e->getMessage());
+    }
 }
 
-// ── Créer un message de contact ──────────────────────────────
 function creerContact(): void {
     $db   = getDB();
     $body = getBody();
@@ -249,39 +277,49 @@ function creerContact(): void {
         jsonError(400, 'Les champs nom et message sont obligatoires.');
     }
 
-    $stmt = $db->prepare(
-        "INSERT INTO contacts (nom, telephone, message) VALUES (?, ?, ?)"
-    );
-    $stmt->execute([$nom, $tel, $message]);
+    try {
+        $stmt = $db->prepare(
+            "INSERT INTO contacts (nom, telephone, message) VALUES (?, ?, ?)"
+        );
+        $stmt->execute([$nom, $tel, $message]);
 
-    jsonOk(['success' => true, 'message' => 'Message envoyé !', 'id' => (int) $db->lastInsertId()], 201);
+        jsonOk([
+            'success' => true,
+            'message' => 'Message envoyé avec succès !',
+            'id'      => (int) $db->lastInsertId()
+        ], 201);
+    } catch (PDOException $e) {
+        jsonError(500, 'Erreur création contact : ' . $e->getMessage());
+    }
 }
 
-// ── Lister les contacts ──────────────────────────────────────
 function listerContacts(): void {
-    $db   = getDB();
-    $stmt = $db->query("SELECT * FROM contacts ORDER BY cree_le DESC");
-    jsonOk(['success' => true, 'data' => $stmt->fetchAll()]);
+    $db = getDB();
+
+    try {
+        $stmt = $db->query("SELECT * FROM contacts ORDER BY cree_le DESC");
+        jsonOk(['success' => true, 'data' => $stmt->fetchAll()]);
+    } catch (PDOException $e) {
+        jsonError(500, 'Erreur lecture contacts : ' . $e->getMessage());
+    }
 }
 
-// ── Statistiques pour le dashboard admin ─────────────────────
 function getStats(): void {
     $db = getDB();
 
-    $stats = [];
+    try {
+        $stats = [];
+        $stats['total']      = (int) $db->query("SELECT COUNT(*) FROM reservations")->fetchColumn();
+        $stats['en_attente'] = (int) $db->query("SELECT COUNT(*) FROM reservations WHERE statut='en attente'")->fetchColumn();
+        $stats['confirme']   = (int) $db->query("SELECT COUNT(*) FROM reservations WHERE statut='confirmé'")->fetchColumn();
+        $stats['annule']     = (int) $db->query("SELECT COUNT(*) FROM reservations WHERE statut='annulé'")->fetchColumn();
+        $stats['contacts']   = (int) $db->query("SELECT COUNT(*) FROM contacts")->fetchColumn();
+        $stats['ce_mois']    = (int) $db->query(
+            "SELECT COUNT(*) FROM reservations WHERE MONTH(date_event)=MONTH(NOW()) AND YEAR(date_event)=YEAR(NOW())"
+        )->fetchColumn();
 
-    // Total réservations
-    $stats['total']         = (int) $db->query("SELECT COUNT(*) FROM reservations")->fetchColumn();
-    $stats['en_attente']    = (int) $db->query("SELECT COUNT(*) FROM reservations WHERE statut='en attente'")->fetchColumn();
-    $stats['confirme']      = (int) $db->query("SELECT COUNT(*) FROM reservations WHERE statut='confirmé'")->fetchColumn();
-    $stats['annule']        = (int) $db->query("SELECT COUNT(*) FROM reservations WHERE statut='annulé'")->fetchColumn();
-    $stats['contacts']      = (int) $db->query("SELECT COUNT(*) FROM contacts")->fetchColumn();
-    $stats['non_lus']       = (int) $db->query("SELECT COUNT(*) FROM contacts WHERE lu=0")->fetchColumn();
-
-    // Réservations du mois en cours
-    $stats['ce_mois']       = (int) $db->query(
-        "SELECT COUNT(*) FROM reservations WHERE MONTH(date_event)=MONTH(NOW()) AND YEAR(date_event)=YEAR(NOW())"
-    )->fetchColumn();
-
-    jsonOk(['success' => true, 'stats' => $stats]);
+        jsonOk(['success' => true, 'stats' => $stats]);
+    } catch (PDOException $e) {
+        jsonError(500, 'Erreur stats : ' . $e->getMessage());
+    }
 }

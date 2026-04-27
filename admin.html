@@ -391,7 +391,7 @@
 
   // ═══════════════════════════════════════════
   //  CHARGEMENT DONNÉES
-  // ═══════════════════════════════════════════
+  // ════════════════════════════════��══════════
   async function loadAll() {
     showLoading(true);
     try {
@@ -400,8 +400,9 @@
         headers: { "Content-Type": "application/json" }
       });
       
+      // ✅ CORRECTION: Vérifier res.ok AVANT res.json()
       if (!res.ok) {
-        throw new Error("Erreur API : " + res.status);
+        throw new Error(`Erreur API HTTP ${res.status}: ${res.statusText}`);
       }
 
       const json = await res.json();
@@ -415,11 +416,11 @@
       renderDashTable();
       renderResTable();
       document.getElementById("sidebarCount").textContent = allReservations.length;
-      showToast("Données actualisées (" + allReservations.length + ")", "success");
+      showToast("✅ Données actualisées (" + allReservations.length + ")", "success");
 
     } catch (err) {
-      console.error(err);
-      showToast("❌ Impossible de contacter l'API PHP. Vérifiez que WAMP est démarré.", "error");
+      console.error("Erreur loadAll:", err);
+      showToast("❌ Impossible de contacter l'API. Vérifiez que WAMP est démarré et que api.php est accessible.", "error");
     } finally {
       showLoading(false);
     }
@@ -604,7 +605,7 @@
 
   // ═══════════════════════════════════════════
   //  CHANGER STATUT
-  // ═══════════════════════════════════════════
+  // ════════════════��══════════════════════════
   async function changerStatut(id, statut) {
     try {
       const res = await fetch(API_URL + "?action=statut&id=" + id, {
@@ -612,12 +613,20 @@
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ statut })
       });
+
+      // ✅ CORRECTION: Vérifier res.ok avant res.json()
+      if (!res.ok) {
+        const json = await res.json();
+        throw new Error(json.message || `Erreur HTTP ${res.status}`);
+      }
+
       const json = await res.json();
-      if (!json.success) throw new Error(json.message);
-      showToast("Statut mis à jour : " + statut, "success");
+      if (!json.success) throw new Error(json.message || "Erreur lors de la mise à jour");
+      showToast("✅ Statut mis à jour : " + statut, "success");
       loadAll();
     } catch (err) {
-      showToast("Erreur : " + err.message, "error");
+      showToast("❌ Erreur : " + err.message, "error");
+      console.error(err);
     }
   }
 
@@ -628,12 +637,20 @@
     if (!confirm("Supprimer cette réservation définitivement ?")) return;
     try {
       const res = await fetch(API_URL + "?action=reservations&id=" + id, { method: "DELETE" });
+      
+      // ✅ CORRECTION: Vérifier res.ok avant res.json()
+      if (!res.ok) {
+        const json = await res.json();
+        throw new Error(json.message || `Erreur HTTP ${res.status}`);
+      }
+
       const json = await res.json();
-      if (!json.success) throw new Error(json.message);
-      showToast("Réservation supprimée", "success");
+      if (!json.success) throw new Error(json.message || "Erreur lors de la suppression");
+      showToast("✅ Réservation supprimée", "success");
       loadAll();
     } catch (err) {
-      showToast("Erreur : " + err.message, "error");
+      showToast("❌ Erreur : " + err.message, "error");
+      console.error(err);
     }
   }
 
@@ -661,7 +678,7 @@
     a.href = URL.createObjectURL(blob);
     a.download = `reservations_teopicture_${new Date().toISOString().split("T")[0]}.csv`;
     a.click();
-    showToast("CSV exporté !", "success");
+    showToast("✅ CSV exporté !", "success");
   }
 
   // ═══════════════════════════════════════════

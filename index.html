@@ -363,9 +363,7 @@
         </div>
         <div class="form-group"><label for="lieu">Lieu</label><input type="text" id="lieu" placeholder="Ex : Thiès, Sénégal"></div>
         <div class="form-group"><label for="message">Message (optionnel)</label><textarea id="message" rows="3" placeholder="Détails supplémentaires..."></textarea></div>
-        <button type="button" id="btnReserver" onclick="envoyerReservation()" class="btn btn-primary form-submit">
-          Confirmer la réservation
-        </button>
+        <button type="button" id="btnReserver" onclick="envoyerReservation()" class="btn btn-primary form-submit">Confirmer la réservation</button>
       </div>
     </div>
   </div>
@@ -444,19 +442,13 @@
 </div>
 
 <script>
-  // ═══════════════════════════════════════════════════
-  //  TEOPICTURE — Configuration API PHP (WAMP)
-  //  Adaptez le chemin si votre dossier a un autre nom
-  // ═══════════════════════════════════════════════════
   const API_URL = "http://localhost/teopicture/api.php";
 
-  /* ── Date minimum ── */
   document.addEventListener("DOMContentLoaded", () => {
     const dateInput = document.getElementById("date");
     if (dateInput) dateInput.setAttribute("min", new Date().toISOString().split("T")[0]);
   });
 
-  /* ── ÉTAPE 1 : popup de confirmation ── */
   function envoyerReservation() {
     const nom       = document.getElementById("nom").value.trim();
     const tel       = document.getElementById("telephone").value.trim();
@@ -484,7 +476,6 @@
     document.getElementById("confirmBox").style.display = "flex";
   }
 
-  /* ── ÉTAPE 2 : envoyer à l'API PHP puis WhatsApp ── */
   async function confirmerEnvoi() {
     const btn = document.getElementById("btnConfirmer");
     btn.disabled    = true;
@@ -499,7 +490,6 @@
     const msg       = document.getElementById("message").value.trim();
 
     try {
-      /* ── Appel à l'API PHP ── */
       const response = await fetch(API_URL + "?action=reservations", {
         method:  "POST",
         headers: { "Content-Type": "application/json" },
@@ -514,21 +504,26 @@
         })
       });
 
+      if (!response.ok) {
+        const result = await response.json();
+        alert("❌ " + (result.message || `Erreur HTTP ${response.status}`));
+        return;
+      }
+
       const result = await response.json();
 
-      if (!response.ok) {
-        /* 409 = créneau déjà pris, 400 = données invalides */
+      if (!result.success) {
         alert("❌ " + (result.message || "Erreur lors de la réservation."));
         return;
       }
 
-      /* ── Succès : vider le formulaire ── */
       ["nom","telephone","date","heure","lieu","message"].forEach(id => {
         document.getElementById(id).value = "";
       });
       fermerConfirm();
 
-      /* ── Ouvrir WhatsApp ── */
+      alert("✅ Réservation enregistrée avec succès !\nVous allez être redirigé vers WhatsApp...");
+
       const texteWA =
         "📸 *NOUVELLE RÉSERVATION TEOPICTURE*%0A%0A" +
         "*Nom* : "       + encodeURIComponent(nom)                   + "%0A" +
@@ -542,8 +537,8 @@
       window.open("https://wa.me/221775781956?text=" + texteWA, "_blank");
 
     } catch (err) {
-      alert("❌ Impossible de contacter le serveur.\nVérifiez que WAMP est démarré et que api.php est bien placé.");
-      console.error(err);
+      alert("❌ Impossible de contacter le serveur.\nVérifiez que WAMP est démarré et que api.php est bien placé.\n\nErreur: " + err.message);
+      console.error("Erreur confirmerEnvoi:", err);
     } finally {
       btn.disabled    = false;
       btn.textContent = "Envoyer ✓";
@@ -552,7 +547,6 @@
 
   function fermerConfirm() { document.getElementById("confirmBox").style.display = "none"; }
 
-  /* ── Contact WhatsApp ── */
   function envoyerContact() {
     const nom = document.getElementById("contactNom").value.trim();
     const tel = document.getElementById("contactTel").value.trim();
@@ -565,25 +559,20 @@
     );
   }
 
-  /* ── Navbar scroll ── */
   window.addEventListener("scroll", () => {
     document.getElementById("mainHeader").classList.toggle("scrolled", window.scrollY > 50);
   });
 
-  /* ── Reveal ── */
   const reveals = document.querySelectorAll(".reveal");
   function checkReveal() { reveals.forEach(el => { if (el.getBoundingClientRect().top < window.innerHeight - 80) el.classList.add("visible"); }); }
   window.addEventListener("scroll", checkReveal);
   window.addEventListener("load", checkReveal);
 
-  /* ── Services ── */
   function toggleDetails(service) { const el = document.getElementById("details-" + service); el.style.display = el.style.display === "block" ? "none" : "block"; }
 
-  /* ── Mobile menu ── */
   document.getElementById("menuToggle").addEventListener("click", () => document.getElementById("navLinks").classList.toggle("active"));
   document.querySelectorAll(".nav-links a").forEach(a => a.addEventListener("click", () => document.getElementById("navLinks").classList.remove("active")));
 
-  /* ── Lightbox ── */
   const lightbox  = document.getElementById("lightbox");
   const lbImg     = document.getElementById("lbImg");
   const lbCounter = document.getElementById("lbCounter");
