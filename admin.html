@@ -34,9 +34,8 @@
     }
     .form-group input:focus, .form-group textarea:focus, .form-group select:focus { border-color: var(--orange); }
     .form-group select option { background: var(--dark2); }
-    .login-error { font-size: 13px; color: var(--red); margin-bottom: 14px; display: none; }
 
-    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 13px 24px; border-radius: 10px; font-weight: 600; font-size: 14px; cursor: pointer; transition: all 0.2s ease; border: none; font-family: 'Poppins', sans-serif; }
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 13px 24px; border-radius: 10px; font-weight: 600; font-size: 14px; cursor: pointer; transition: all 0.25s ease; border: none; font-family: 'Poppins', sans-serif; }
     .btn-primary { background: var(--orange); color: var(--black); width: 100%; }
     .btn-primary:hover { background: var(--orange-light); }
     .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
@@ -51,7 +50,7 @@
 
     /* ===== ADMIN LAYOUT ===== */
     #adminPage { display: none; }
-    .admin-header { position: fixed; top: 0; left: 0; width: 100%; height: 64px; background: rgba(17,17,17,0.95); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 28px; z-index: 100; }
+    .admin-header { position: fixed; top: 0; left: 0; width: 100%; height: 64px; background: rgba(17,17,17,0.95); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 32px; z-index: 1000; }
     .admin-logo { display: flex; align-items: center; gap: 10px; }
     .admin-logo-text { font-size: 17px; font-weight: 700; color: var(--orange); }
     .admin-badge { font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--black); background: var(--orange); padding: 3px 8px; border-radius: 4px; }
@@ -65,7 +64,7 @@
     .sidebar { width: 220px; min-width: 220px; background: var(--dark); border-right: 1px solid var(--border); padding: 24px 12px; position: fixed; top: 64px; left: 0; height: calc(100vh - 64px); overflow-y: auto; }
     .sidebar-section { font-size: 10px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); padding: 0 12px; margin-bottom: 8px; margin-top: 20px; }
     .sidebar-section:first-child { margin-top: 0; }
-    .nav-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 8px; font-size: 14px; font-weight: 500; color: rgba(255,255,255,0.55); cursor: pointer; transition: all 0.2s; margin-bottom: 2px; border: none; background: none; width: 100%; text-align: left; font-family: 'Poppins', sans-serif; }
+    .nav-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 8px; font-size: 14px; font-weight: 500; color: rgba(255,255,255,0.55); cursor: pointer; transition: all 0.2s; border: none; background: none; width: 100%; text-align: left; }
     .nav-item:hover { background: rgba(255,255,255,0.05); color: var(--white); }
     .nav-item.active { background: rgba(255,152,0,0.1); color: var(--orange); }
     .nav-item .icon { font-size: 16px; width: 20px; text-align: center; }
@@ -91,7 +90,8 @@
     .search-input { flex: 1; min-width: 200px; padding: 9px 14px; background: var(--dark2); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; color: var(--white); font-size: 13px; font-family: 'Poppins', sans-serif; outline: none; transition: border-color 0.2s; }
     .search-input:focus { border-color: var(--orange); }
     .search-input::placeholder { color: var(--text-muted); }
-    .filter-select { padding: 9px 14px; background: var(--dark2); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; color: var(--white); font-size: 13px; font-family: 'Poppins', sans-serif; outline: none; cursor: pointer; appearance: none; padding-right: 28px; }
+    .filter-select { padding: 9px 14px; background: var(--dark2); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; color: var(--white); font-size: 13px; font-family: 'Poppins', sans-serif; outline: none; cursor: pointer; }
+    .filter-select:focus { border-color: var(--orange); }
     .filter-select option { background: var(--dark2); }
 
     /* ===== TABLE ===== */
@@ -114,8 +114,8 @@
     .badge-anniversaire::before { background: #64b5f6; }
     .badge-shooting { background: rgba(156,39,176,0.12); color: #ce93d8; }
     .badge-shooting::before { background: #ce93d8; }
-    .badge-bapteme, .badge-bap { background: rgba(0,188,212,0.12); color: #4dd0e1; }
-    .badge-bapteme::before, .badge-bap::before { background: #4dd0e1; }
+    .badge-bapteme { background: rgba(0,188,212,0.12); color: #4dd0e1; }
+    .badge-bapteme::before { background: #4dd0e1; }
     .badge-korite { background: rgba(76,175,80,0.12); color: #81c784; }
     .badge-korite::before { background: #81c784; }
     .badge-tabaski { background: rgba(255,235,59,0.1); color: #fff176; }
@@ -123,7 +123,6 @@
     .badge-autre { background: rgba(120,120,120,0.12); color: #aaa; }
     .badge-autre::before { background: #aaa; }
 
-    /* Statut */
     .statut-badge { display: inline-flex; align-items: center; gap: 4px; padding: 3px 9px; border-radius: 20px; font-size: 11px; font-weight: 600; }
     .statut-attente { background: rgba(255,152,0,0.12); color: var(--orange); }
     .statut-confirme { background: rgba(76,175,80,0.12); color: #81c784; }
@@ -165,7 +164,7 @@
     .modal-actions .btn { flex: 1; min-width: 120px; }
 
     /* ===== TOAST ===== */
-    .toast { position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--dark2); border: 1px solid var(--border); border-radius: 10px; padding: 12px 20px; font-size: 13px; font-weight: 500; opacity: 0; transition: all 0.3s ease; z-index: 9999; white-space: nowrap; }
+    .toast { position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--dark2); border: 1px solid var(--border); border-radius: 10px; padding: 12px 20px; font-size: 13px; opacity: 0; transition: all 0.3s ease; z-index: 2000; }
     .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
     .toast.success { border-color: rgba(76,175,80,0.3); color: #81c784; }
     .toast.error { border-color: rgba(244,67,54,0.3); color: #ef9a9a; }
@@ -176,7 +175,7 @@
       .admin-header { padding: 0 16px; height: 56px; }
       .admin-logo-text { font-size: 15px; }
       .admin-user { display: none; }
-      .sidebar { display: flex; position: fixed; bottom: 0; top: auto; left: 0; width: 100%; height: 60px; padding: 0; border-top: 1px solid var(--border); border-right: none; overflow: visible; }
+      .sidebar { width: 100%; height: 60px; position: fixed; bottom: 0; top: auto; border-right: none; border-top: 1px solid var(--border); padding: 0; display: flex; overflow-x: auto; }
       .sidebar-section { display: none; }
       .nav-item { flex: 1; flex-direction: column; justify-content: center; font-size: 10px; gap: 2px; padding: 6px 0; }
       .nav-item .icon { font-size: 18px; }
@@ -200,7 +199,7 @@
 </head>
 <body>
 
-<!-- ===== ADMIN PAGE ===== -->
+<!-- ADMIN PAGE -->
 <div id="adminPage" style="display:block;">
   <div class="admin-header">
     <div class="admin-logo">
@@ -391,15 +390,25 @@
   }
 
   // ═══════════════════════════════════════════
-  //  CHARGEMENT DONNÉES DEPUIS PHP
+  //  CHARGEMENT DONNÉES
   // ═══════════════════════════════════════════
   async function loadAll() {
     showLoading(true);
     try {
-      const res  = await fetch(API_URL + "?action=reservations");
+      const res = await fetch(API_URL + "?action=reservations", {
+        method: "GET",
+        headers: { "Content-Type": "application/json" }
+      });
+      
+      if (!res.ok) {
+        throw new Error("Erreur API : " + res.status);
+      }
+
       const json = await res.json();
 
-      if (!json.success) throw new Error(json.message || "Erreur API");
+      if (!json.success) {
+        throw new Error(json.message || "Erreur API");
+      }
 
       allReservations = json.data || [];
       renderStats();
@@ -418,12 +427,12 @@
 
   function showLoading(on) {
     document.getElementById("dashLoading").style.display = on ? "block" : "none";
-    document.getElementById("resLoading").style.display  = on ? "block" : "none";
+    document.getElementById("resLoading").style.display = on ? "block" : "none";
     if (on) {
       document.getElementById("dashTable").style.display = "none";
-      document.getElementById("resTable").style.display  = "none";
+      document.getElementById("resTable").style.display = "none";
       document.getElementById("dashEmpty").style.display = "none";
-      document.getElementById("resEmpty").style.display  = "none";
+      document.getElementById("resEmpty").style.display = "none";
     }
   }
 
@@ -454,11 +463,11 @@
   }
 
   // ═══════════════════════════════════════════
-  //  DASHBOARD TABLE (prochaines)
+  //  DASHBOARD TABLE
   // ═══════════════════════════════════════════
   function renderDashTable() {
     const now = new Date();
-    now.setHours(0,0,0,0);
+    now.setHours(0, 0, 0, 0);
 
     const upcoming = allReservations
       .filter(r => r.date_event && new Date(r.date_event) >= now && r.statut !== "annulé")
@@ -473,8 +482,8 @@
       return;
     }
 
-    document.getElementById("dashTable").style.display  = "table";
-    document.getElementById("dashEmpty").style.display  = "none";
+    document.getElementById("dashTable").style.display = "table";
+    document.getElementById("dashEmpty").style.display = "none";
 
     document.getElementById("dashBody").innerHTML = upcoming.map(r => `
       <tr>
@@ -495,12 +504,11 @@
   }
 
   // ═══════════════════════════════════════════
-  //  RESERVATIONS TABLE (toutes)
+  //  RESERVATIONS TABLE
   // ═══════════════════════════════════════════
   function renderResTable() {
     let list = [...allReservations];
 
-    // Recherche texte
     const q = document.getElementById("searchInput").value.toLowerCase();
     if (q) {
       list = list.filter(r =>
@@ -511,19 +519,16 @@
       );
     }
 
-    // Filtre événement
     const fe = document.getElementById("filterEvent").value;
     if (fe) list = list.filter(r => r.evenement === fe);
 
-    // Filtre statut
     const fs = document.getElementById("filterStatut").value;
     if (fs) list = list.filter(r => r.statut === fs);
 
-    // Tri
     const sort = document.getElementById("filterSort").value;
-    if (sort === "date_asc")  list.sort((a,b) => new Date(a.date_event) - new Date(b.date_event));
-    if (sort === "date_desc") list.sort((a,b) => new Date(b.date_event) - new Date(a.date_event));
-    if (sort === "recent")    list.sort((a,b) => b.id - a.id);
+    if (sort === "date_asc") list.sort((a, b) => new Date(a.date_event) - new Date(b.date_event));
+    if (sort === "date_desc") list.sort((a, b) => new Date(b.date_event) - new Date(a.date_event));
+    if (sort === "recent") list.sort((a, b) => b.id - a.id);
 
     document.getElementById("resLoading").style.display = "none";
 
@@ -562,7 +567,7 @@
   document.getElementById("filterSort").addEventListener("change", () => renderResTable());
 
   // ═══════════════════════════════════════════
-  //  MODAL DÉTAIL
+  //  MODAL
   // ═══════════════════════════════════════════
   function openModal(id) {
     const r = allReservations.find(x => x.id == id);
@@ -622,7 +627,7 @@
   async function deleteRes(id) {
     if (!confirm("Supprimer cette réservation définitivement ?")) return;
     try {
-      const res  = await fetch(API_URL + "?action=reservations&id=" + id, { method: "DELETE" });
+      const res = await fetch(API_URL + "?action=reservations&id=" + id, { method: "DELETE" });
       const json = await res.json();
       if (!json.success) throw new Error(json.message);
       showToast("Réservation supprimée", "success");
@@ -637,7 +642,7 @@
   // ═══════════════════════════════════════════
   function waContact(tel, nom) {
     const msg = `Bonjour ${nom}, je suis TEOPICTURE. Votre réservation a bien été prise en compte. Merci !`;
-    const clean = tel.replace(/\s/g,"").replace(/^0/, "");
+    const clean = tel.replace(/\s/g, "").replace(/^0/, "");
     window.open(`https://wa.me/221${clean}?text=${encodeURIComponent(msg)}`, "_blank");
   }
 
@@ -645,15 +650,15 @@
   //  EXPORT CSV
   // ═══════════════════════════════════════════
   function exportCSV() {
-    const headers = ["ID","Nom","Téléphone","Événement","Date","Heure","Lieu","Message","Statut","Enregistré le"];
+    const headers = ["ID", "Nom", "Téléphone", "Événement", "Date", "Heure", "Lieu", "Message", "Statut", "Enregistré le"];
     const rows = allReservations.map(r => [
       r.id, r.nom, r.telephone, r.evenement, r.date_event, r.heure, r.lieu, r.message, r.statut, r.cree_le
-    ].map(v => `"${(v||"").replace(/"/g,'""')}"`).join(","));
+    ].map(v => `"${(v || "").replace(/"/g, '""')}"`).join(","));
 
-    const csv  = [headers.join(","), ...rows].join("\n");
+    const csv = [headers.join(","), ...rows].join("\n");
     const blob = new Blob(["\uFEFF" + csv], { type: "text/csv;charset=utf-8;" });
-    const a    = document.createElement("a");
-    a.href     = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
     a.download = `reservations_teopicture_${new Date().toISOString().split("T")[0]}.csv`;
     a.click();
     showToast("CSV exporté !", "success");
@@ -664,12 +669,12 @@
   // ═══════════════════════════════════════════
   function esc(str) {
     return String(str || "")
-      .replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+      .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
   }
 
   function formatDate(d) {
     if (!d) return "—";
-    try { return new Date(d).toLocaleDateString("fr-FR",{day:"2-digit",month:"short",year:"numeric"}); }
+    try { return new Date(d).toLocaleDateString("fr-FR", { day: "2-digit", month: "short", year: "numeric" }); }
     catch { return d; }
   }
 
@@ -677,19 +682,19 @@
     if (!d) return "—";
     try {
       const dt = new Date(d);
-      return dt.toLocaleDateString("fr-FR") + " à " + dt.toLocaleTimeString("fr-FR",{hour:"2-digit",minute:"2-digit"});
+      return dt.toLocaleDateString("fr-FR") + " à " + dt.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" });
     } catch { return d; }
   }
 
   function badgeEvent(ev) {
-    const map = { "Mariage":"mariage","Anniversaire":"anniversaire","Shooting":"shooting","Baptême":"bapteme","Korite":"korite","Tabaski":"tabaski" };
+    const map = { "Mariage": "mariage", "Anniversaire": "anniversaire", "Shooting": "shooting", "Baptême": "bapteme", "Korite": "korite", "Tabaski": "tabaski" };
     const cls = map[ev] || "autre";
-    return `<span class="badge badge-${cls}">${esc(ev)||"—"}</span>`;
+    return `<span class="badge badge-${cls}">${esc(ev) || "—"}</span>`;
   }
 
   function badgeStatut(s) {
     if (s === "confirmé") return `<span class="statut-badge statut-confirme">✅ Confirmé</span>`;
-    if (s === "annulé")   return `<span class="statut-badge statut-annule">❌ Annulé</span>`;
+    if (s === "annulé") return `<span class="statut-badge statut-annule">❌ Annulé</span>`;
     return `<span class="statut-badge statut-attente">⏳ En attente</span>`;
   }
 
