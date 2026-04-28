@@ -443,7 +443,6 @@
 
 <!-- Firebase Configuration -->
 <script type="module">
-  // Firebase Config
   const firebaseConfig = {
     apiKey: "AIzaSyBgr9_DOrwpoz2o-ntxtPE6xz7AZKD7qlY",
     authDomain: "theopicture-v2.firebaseapp.com",
@@ -458,12 +457,10 @@
   import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
   import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-analytics.js";
 
-  // Initialize Firebase
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
   const analytics = getAnalytics(app);
 
-  // Make db available to global scope
   window.db = db;
   window.addDoc = addDoc;
   window.collection = collection;
@@ -518,8 +515,21 @@
     const lieu      = document.getElementById("lieu").value.trim();
     const msg       = document.getElementById("message").value.trim();
 
+    // ✅ Construire le lien WhatsApp AVANT l'appel async
+    const texteWA =
+      "📸 *NOUVELLE RÉSERVATION TEOPICTURE*%0A%0A" +
+      "*Nom* : "       + encodeURIComponent(nom)                   + "%0A" +
+      "*Téléphone* : " + encodeURIComponent(tel)                   + "%0A" +
+      "*Événement* : " + encodeURIComponent(evenement)             + "%0A" +
+      "*Date* : "      + encodeURIComponent(date)                  + "%0A" +
+      "*Heure* : "     + encodeURIComponent(heure)                 + "%0A" +
+      "*Lieu* : "      + encodeURIComponent(lieu || "Non précisé") + "%0A" +
+      "*Message* : "   + encodeURIComponent(msg || "—");
+
+    const waURL = "https://wa.me/221775781956?text=" + texteWA;
+
     try {
-      // Add to Firestore
+      // 1. Sauvegarder dans Firestore
       const docRef = await window.addDoc(window.collection(window.db, "reservations"), {
         nom,
         telephone: tel,
@@ -534,26 +544,16 @@
 
       console.log("✅ Réservation sauvegardée:", docRef.id);
 
-      // Reset form
+      // 2. Vider le formulaire
       ["nom","telephone","date","heure","lieu","message"].forEach(id => {
         document.getElementById(id).value = "";
       });
+
+      // 3. Fermer la popup de confirmation
       fermerConfirm();
 
-      alert("✅ Réservation enregistrée avec succès !\nVous allez être redirigé vers WhatsApp...");
-
-      // Send to WhatsApp
-      const texteWA =
-        "📸 *NOUVELLE RÉSERVATION TEOPICTURE*%0A%0A" +
-        "*Nom* : "       + encodeURIComponent(nom)                   + "%0A" +
-        "*Téléphone* : " + encodeURIComponent(tel)                   + "%0A" +
-        "*Événement* : " + encodeURIComponent(evenement)             + "%0A" +
-        "*Date* : "      + encodeURIComponent(date)                  + "%0A" +
-        "*Heure* : "     + encodeURIComponent(heure)                 + "%0A" +
-        "*Lieu* : "      + encodeURIComponent(lieu || "Non précisé") + "%0A" +
-        "*Message* : "   + encodeURIComponent(msg || "—");
-
-      window.open("https://wa.me/221775781956?text=" + texteWA, "_blank");
+      // 4. ✅ Redirection directe vers WhatsApp SANS alert bloquant
+      window.location.href = waURL;
 
     } catch (err) {
       alert("❌ Erreur lors de la sauvegarde.\n" + err.message);
@@ -564,21 +564,21 @@
     }
   }
 
-  function fermerConfirm() { 
-    document.getElementById("confirmBox").style.display = "none"; 
+  function fermerConfirm() {
+    document.getElementById("confirmBox").style.display = "none";
   }
 
   function envoyerContact() {
     const nom = document.getElementById("contactNom").value.trim();
     const tel = document.getElementById("contactTel").value.trim();
     const msg = document.getElementById("contactMsg").value.trim();
-    
-    if (!nom || !msg) { 
-      alert("⚠️ Remplissez votre nom et votre message."); 
-      return; 
+
+    if (!nom || !msg) {
+      alert("⚠️ Remplissez votre nom et votre message.");
+      return;
     }
 
-    // Save message to Firestore
+    // Sauvegarder dans Firestore
     window.addDoc(window.collection(window.db, "contacts"), {
       nom,
       telephone: tel,
@@ -590,11 +590,10 @@
       console.error("Erreur:", err);
     });
 
-    window.open(
+    window.location.href =
       "https://wa.me/221775781956?text=Bonjour TEOPICTURE,%0A%0ANom : " +
       encodeURIComponent(nom) + "%0ATéléphone : " + encodeURIComponent(tel) +
-      "%0AMessage : " + encodeURIComponent(msg), "_blank"
-    );
+      "%0AMessage : " + encodeURIComponent(msg);
   }
 
   window.addEventListener("scroll", () => {
@@ -602,25 +601,25 @@
   });
 
   const reveals = document.querySelectorAll(".reveal");
-  function checkReveal() { 
-    reveals.forEach(el => { 
-      if (el.getBoundingClientRect().top < window.innerHeight - 80) 
-        el.classList.add("visible"); 
-    }); 
+  function checkReveal() {
+    reveals.forEach(el => {
+      if (el.getBoundingClientRect().top < window.innerHeight - 80)
+        el.classList.add("visible");
+    });
   }
   window.addEventListener("scroll", checkReveal);
   window.addEventListener("load", checkReveal);
 
-  function toggleDetails(service) { 
-    const el = document.getElementById("details-" + service); 
-    el.style.display = el.style.display === "block" ? "none" : "block"; 
+  function toggleDetails(service) {
+    const el = document.getElementById("details-" + service);
+    el.style.display = el.style.display === "block" ? "none" : "block";
   }
 
-  document.getElementById("menuToggle").addEventListener("click", () => 
+  document.getElementById("menuToggle").addEventListener("click", () =>
     document.getElementById("navLinks").classList.toggle("active")
   );
-  document.querySelectorAll(".nav-links a").forEach(a => 
-    a.addEventListener("click", () => 
+  document.querySelectorAll(".nav-links a").forEach(a =>
+    a.addEventListener("click", () =>
       document.getElementById("navLinks").classList.remove("active")
     )
   );
@@ -629,43 +628,43 @@
   const lbImg     = document.getElementById("lbImg");
   const lbCounter = document.getElementById("lbCounter");
   let currentIdx = 0, visibleItems = [];
-  
-  function getVisibleItems() { 
-    return Array.from(document.querySelectorAll(".pm-item:not(.hidden) img")); 
+
+  function getVisibleItems() {
+    return Array.from(document.querySelectorAll(".pm-item:not(.hidden) img"));
   }
-  
-  function showLb(idx) { 
-    visibleItems = getVisibleItems(); 
-    lbImg.src = visibleItems[idx].src; 
-    lbCounter.textContent = (idx+1)+" / "+visibleItems.length; 
+
+  function showLb(idx) {
+    visibleItems = getVisibleItems();
+    lbImg.src = visibleItems[idx].src;
+    lbCounter.textContent = (idx+1)+" / "+visibleItems.length;
   }
-  
+
   document.querySelectorAll(".pm-item").forEach(item => {
-    item.addEventListener("click", () => { 
-      visibleItems = getVisibleItems(); 
-      currentIdx = visibleItems.indexOf(item.querySelector("img")); 
-      showLb(currentIdx); 
-      lightbox.style.display = "flex"; 
+    item.addEventListener("click", () => {
+      visibleItems = getVisibleItems();
+      currentIdx = visibleItems.indexOf(item.querySelector("img"));
+      showLb(currentIdx);
+      lightbox.style.display = "flex";
     });
   });
-  
-  document.querySelector(".lb-close").addEventListener("click", () => 
+
+  document.querySelector(".lb-close").addEventListener("click", () =>
     lightbox.style.display = "none"
   );
-  document.querySelector(".lb-next").addEventListener("click", () => { 
-    visibleItems = getVisibleItems(); 
-    currentIdx = (currentIdx+1)%visibleItems.length; 
-    showLb(currentIdx); 
+  document.querySelector(".lb-next").addEventListener("click", () => {
+    visibleItems = getVisibleItems();
+    currentIdx = (currentIdx+1)%visibleItems.length;
+    showLb(currentIdx);
   });
-  document.querySelector(".lb-prev").addEventListener("click", () => { 
-    visibleItems = getVisibleItems(); 
-    currentIdx = (currentIdx-1+visibleItems.length)%visibleItems.length; 
-    showLb(currentIdx); 
+  document.querySelector(".lb-prev").addEventListener("click", () => {
+    visibleItems = getVisibleItems();
+    currentIdx = (currentIdx-1+visibleItems.length)%visibleItems.length;
+    showLb(currentIdx);
   });
-  lightbox.addEventListener("click", e => { 
-    if(e.target===lightbox) lightbox.style.display="none"; 
+  lightbox.addEventListener("click", e => {
+    if(e.target===lightbox) lightbox.style.display="none";
   });
-  
+
   document.addEventListener("keydown", e => {
     if(lightbox.style.display==="flex") {
       visibleItems = getVisibleItems();
@@ -674,11 +673,11 @@
       if(e.key==="Escape") lightbox.style.display="none";
     }
   });
-  
+
   let touchStartX = 0;
   lightbox.addEventListener("touchstart", e => touchStartX = e.touches[0].clientX);
   lightbox.addEventListener("touchend", e => {
-    const diff = touchStartX - e.changedTouches[0].clientX; 
+    const diff = touchStartX - e.changedTouches[0].clientX;
     visibleItems = getVisibleItems();
     if(diff >  50){ currentIdx=(currentIdx+1)%visibleItems.length; showLb(currentIdx); }
     if(diff < -50){ currentIdx=(currentIdx-1+visibleItems.length)%visibleItems.length; showLb(currentIdx); }
