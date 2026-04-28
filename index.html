@@ -441,9 +441,38 @@
   </div>
 </div>
 
-<script>
-  const API_URL = "http://localhost/teopicture/api.php";
+<!-- Firebase Configuration -->
+<script type="module">
+  // Firebase Config
+  const firebaseConfig = {
+    apiKey: "AIzaSyBgr9_DOrwpoz2o-ntxtPE6xz7AZKD7qlY",
+    authDomain: "theopicture-v2.firebaseapp.com",
+    projectId: "theopicture-v2",
+    storageBucket: "theopicture-v2.firebasestorage.app",
+    messagingSenderId: "992470045107",
+    appId: "1:992470045107:web:d7e5e42e83dc218845fbc6",
+    measurementId: "G-CE7B9HTDGG"
+  };
 
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+  import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-analytics.js";
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const analytics = getAnalytics(app);
+
+  // Make db available to global scope
+  window.db = db;
+  window.addDoc = addDoc;
+  window.collection = collection;
+  window.serverTimestamp = serverTimestamp;
+
+  console.log("✅ Firebase initialisé - theopicture-v2");
+</script>
+
+<script>
   document.addEventListener("DOMContentLoaded", () => {
     const dateInput = document.getElementById("date");
     if (dateInput) dateInput.setAttribute("min", new Date().toISOString().split("T")[0]);
@@ -490,33 +519,22 @@
     const msg       = document.getElementById("message").value.trim();
 
     try {
-      const response = await fetch(API_URL + "?action=reservations", {
-        method:  "POST",
-        headers: { "Content-Type": "application/json" },
-        body:    JSON.stringify({
-          nom,
-          telephone : tel,
-          evenement,
-          date,
-          heure,
-          lieu    : lieu || "Non précisé",
-          message : msg
-        })
+      // Add to Firestore
+      const docRef = await window.addDoc(window.collection(window.db, "reservations"), {
+        nom,
+        telephone: tel,
+        evenement,
+        date,
+        heure,
+        lieu: lieu || "Non précisé",
+        message: msg,
+        dateCreation: window.serverTimestamp(),
+        statut: "en attente"
       });
 
-      if (!response.ok) {
-        const result = await response.json();
-        alert("❌ " + (result.message || `Erreur HTTP ${response.status}`));
-        return;
-      }
+      console.log("✅ Réservation sauvegardée:", docRef.id);
 
-      const result = await response.json();
-
-      if (!result.success) {
-        alert("❌ " + (result.message || "Erreur lors de la réservation."));
-        return;
-      }
-
+      // Reset form
       ["nom","telephone","date","heure","lieu","message"].forEach(id => {
         document.getElementById(id).value = "";
       });
@@ -524,6 +542,7 @@
 
       alert("✅ Réservation enregistrée avec succès !\nVous allez être redirigé vers WhatsApp...");
 
+      // Send to WhatsApp
       const texteWA =
         "📸 *NOUVELLE RÉSERVATION TEOPICTURE*%0A%0A" +
         "*Nom* : "       + encodeURIComponent(nom)                   + "%0A" +
@@ -537,7 +556,7 @@
       window.open("https://wa.me/221775781956?text=" + texteWA, "_blank");
 
     } catch (err) {
-      alert("❌ Impossible de contacter le serveur.\nVérifiez que WAMP est démarré et que api.php est bien placé.\n\nErreur: " + err.message);
+      alert("❌ Erreur lors de la sauvegarde.\n" + err.message);
       console.error("Erreur confirmerEnvoi:", err);
     } finally {
       btn.disabled    = false;
@@ -545,13 +564,32 @@
     }
   }
 
-  function fermerConfirm() { document.getElementById("confirmBox").style.display = "none"; }
+  function fermerConfirm() { 
+    document.getElementById("confirmBox").style.display = "none"; 
+  }
 
   function envoyerContact() {
     const nom = document.getElementById("contactNom").value.trim();
     const tel = document.getElementById("contactTel").value.trim();
     const msg = document.getElementById("contactMsg").value.trim();
-    if (!nom || !msg) { alert("⚠️ Remplissez votre nom et votre message."); return; }
+    
+    if (!nom || !msg) { 
+      alert("⚠️ Remplissez votre nom et votre message."); 
+      return; 
+    }
+
+    // Save message to Firestore
+    window.addDoc(window.collection(window.db, "contacts"), {
+      nom,
+      telephone: tel,
+      message: msg,
+      dateCreation: window.serverTimestamp()
+    }).then(() => {
+      console.log("✅ Message sauvegardé dans Firestore");
+    }).catch(err => {
+      console.error("Erreur:", err);
+    });
+
     window.open(
       "https://wa.me/221775781956?text=Bonjour TEOPICTURE,%0A%0ANom : " +
       encodeURIComponent(nom) + "%0ATéléphone : " + encodeURIComponent(tel) +
@@ -564,28 +602,70 @@
   });
 
   const reveals = document.querySelectorAll(".reveal");
-  function checkReveal() { reveals.forEach(el => { if (el.getBoundingClientRect().top < window.innerHeight - 80) el.classList.add("visible"); }); }
+  function checkReveal() { 
+    reveals.forEach(el => { 
+      if (el.getBoundingClientRect().top < window.innerHeight - 80) 
+        el.classList.add("visible"); 
+    }); 
+  }
   window.addEventListener("scroll", checkReveal);
   window.addEventListener("load", checkReveal);
 
-  function toggleDetails(service) { const el = document.getElementById("details-" + service); el.style.display = el.style.display === "block" ? "none" : "block"; }
+  function toggleDetails(service) { 
+    const el = document.getElementById("details-" + service); 
+    el.style.display = el.style.display === "block" ? "none" : "block"; 
+  }
 
-  document.getElementById("menuToggle").addEventListener("click", () => document.getElementById("navLinks").classList.toggle("active"));
-  document.querySelectorAll(".nav-links a").forEach(a => a.addEventListener("click", () => document.getElementById("navLinks").classList.remove("active")));
+  document.getElementById("menuToggle").addEventListener("click", () => 
+    document.getElementById("navLinks").classList.toggle("active")
+  );
+  document.querySelectorAll(".nav-links a").forEach(a => 
+    a.addEventListener("click", () => 
+      document.getElementById("navLinks").classList.remove("active")
+    )
+  );
 
   const lightbox  = document.getElementById("lightbox");
   const lbImg     = document.getElementById("lbImg");
   const lbCounter = document.getElementById("lbCounter");
   let currentIdx = 0, visibleItems = [];
-  function getVisibleItems() { return Array.from(document.querySelectorAll(".pm-item:not(.hidden) img")); }
-  function showLb(idx) { visibleItems = getVisibleItems(); lbImg.src = visibleItems[idx].src; lbCounter.textContent = (idx+1)+" / "+visibleItems.length; }
+  
+  function getVisibleItems() { 
+    return Array.from(document.querySelectorAll(".pm-item:not(.hidden) img")); 
+  }
+  
+  function showLb(idx) { 
+    visibleItems = getVisibleItems(); 
+    lbImg.src = visibleItems[idx].src; 
+    lbCounter.textContent = (idx+1)+" / "+visibleItems.length; 
+  }
+  
   document.querySelectorAll(".pm-item").forEach(item => {
-    item.addEventListener("click", () => { visibleItems = getVisibleItems(); currentIdx = visibleItems.indexOf(item.querySelector("img")); showLb(currentIdx); lightbox.style.display = "flex"; });
+    item.addEventListener("click", () => { 
+      visibleItems = getVisibleItems(); 
+      currentIdx = visibleItems.indexOf(item.querySelector("img")); 
+      showLb(currentIdx); 
+      lightbox.style.display = "flex"; 
+    });
   });
-  document.querySelector(".lb-close").addEventListener("click", () => lightbox.style.display = "none");
-  document.querySelector(".lb-next").addEventListener("click", () => { visibleItems = getVisibleItems(); currentIdx = (currentIdx+1)%visibleItems.length; showLb(currentIdx); });
-  document.querySelector(".lb-prev").addEventListener("click", () => { visibleItems = getVisibleItems(); currentIdx = (currentIdx-1+visibleItems.length)%visibleItems.length; showLb(currentIdx); });
-  lightbox.addEventListener("click", e => { if(e.target===lightbox) lightbox.style.display="none"; });
+  
+  document.querySelector(".lb-close").addEventListener("click", () => 
+    lightbox.style.display = "none"
+  );
+  document.querySelector(".lb-next").addEventListener("click", () => { 
+    visibleItems = getVisibleItems(); 
+    currentIdx = (currentIdx+1)%visibleItems.length; 
+    showLb(currentIdx); 
+  });
+  document.querySelector(".lb-prev").addEventListener("click", () => { 
+    visibleItems = getVisibleItems(); 
+    currentIdx = (currentIdx-1+visibleItems.length)%visibleItems.length; 
+    showLb(currentIdx); 
+  });
+  lightbox.addEventListener("click", e => { 
+    if(e.target===lightbox) lightbox.style.display="none"; 
+  });
+  
   document.addEventListener("keydown", e => {
     if(lightbox.style.display==="flex") {
       visibleItems = getVisibleItems();
@@ -594,10 +674,12 @@
       if(e.key==="Escape") lightbox.style.display="none";
     }
   });
+  
   let touchStartX = 0;
   lightbox.addEventListener("touchstart", e => touchStartX = e.touches[0].clientX);
   lightbox.addEventListener("touchend", e => {
-    const diff = touchStartX - e.changedTouches[0].clientX; visibleItems = getVisibleItems();
+    const diff = touchStartX - e.changedTouches[0].clientX; 
+    visibleItems = getVisibleItems();
     if(diff >  50){ currentIdx=(currentIdx+1)%visibleItems.length; showLb(currentIdx); }
     if(diff < -50){ currentIdx=(currentIdx-1+visibleItems.length)%visibleItems.length; showLb(currentIdx); }
   });
